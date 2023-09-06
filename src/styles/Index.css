@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root{
+    --color-sidebar: #333333;
+    --color-texto-sidebar: #fefefe;
+
+
+
+    --color-texto-highlight: #eb4034;
+
+    --color-barra-header: red;
+    --color-texto-barra-header: #fefefe;
+
+    /* Partidos */
+    --color-texto-fichapartido: #fefefe;
+    --color-gris-fichapartido: #5f5f5f;
+
+    /* Resultados */
+    --color-texto-resultados: #fefefe;
+    --color-texto-hightlight-resultados: #eb4034;
+
+    /* Clasificacion */
+    --color-texto-clasificacion: #fefefe;
+
+    --color-texto-footer: #fefefe;
+    --color-gris: #333333;
+}
+
+@font-face {
+    font-family: chaosFont;
+    src: url("../assets/fonts/RobotBlocks.ttf");
+}
+
+body{
+    font-family: 'Inter', sans-serif;
+}
