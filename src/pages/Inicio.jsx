@@ -1,10 +1,11 @@
 import Layout from "../components/Layout/Layout.jsx"
+import Tabla from "../components/Jugadores/Tabla/Tabla.jsx"
 
 function Inicio() {
 
   return (
     <Layout >
-      <div>hey</div>
+      <Tabla></Tabla>
     </Layout>
   )
 }
