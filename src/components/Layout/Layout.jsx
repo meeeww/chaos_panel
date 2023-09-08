@@ -1,21 +1,38 @@
+import { useState } from "react";
+import { NavLink } from "react-router-dom";
+
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Avatar, DropdownSection } from "@nextui-org/react";
 
 import Logo from "../../assets/logos/LogoSinTexto.png"
-import { NavLink } from "react-router-dom";
 
-export default function SideBar() {
+export default function Layout() {
+
+    const [sidebarOpen, setSidebarOpen] = useState(false)
+
     return (
         <div className="flex h-screen overflow-hidden">
-            <aside className="absolute bg-[--color-sidebar] left-0 top-0 z-9999 flex h-screen w-[18rem] flex-col overflow-y-hidden duration-300 ease-linear lg:static lg:translate-x-0 -translate-x-full text-[--color-texto-sidebar]">
-                <div className="flex items-center justify-between gap-2 px-6 py-6 lg:py-6.5">
+            <aside className={`absolute bg-[--color-sidebar] left-0 top-0 z-[9999] flex h-screen w-[19rem] flex-col overflow-y-hidden duration-300 ease-linear lg:static lg:translate-x-0 text-[--color-texto-sidebar] ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+                }`}>
+                <div className="flex items-center justify-between gap-2 px-12 py-6 lg:py-6.5">
                     <a href="/" className="w-full flex justify-left items-center gap-3">
                         <img src={Logo} className="w-10 h-11" alt="Chaos Logo"></img>
-                        <p className="font-[700] text-2xl">PanelChaos</p>
+                        <p className="font-[700] text-2xl hidden lg:flex">PanelChaos</p>
                     </a>
+                    <button
+                        aria-controls="sidebar"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            setSidebarOpen(!sidebarOpen);
+                            console.log(sidebarOpen)
+                        }}
+                        className="z-99999 block rounded-sm border border-stroke bg-white p-1.5 shadow-sm lg:hidden"
+                    >
+                        <i className="fa-solid fa-bars text-[var(--color-gris-header)]"></i>
+                    </button>
                 </div>
                 <div className="no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear">
                     <nav className="mt-5 py-4 px-4 lg:mt-9 lg:px-6">
-                    <div>
+                        <div>
                             <h3 className="mb-2 ml-4 text-sm font-[700] text-bodydark2">Liga</h3>
                             <ul className="mb-6 flex flex-col gap-1.5">
                                 <li>
@@ -23,21 +40,21 @@ export default function SideBar() {
                                         to={"/equipos"}
                                         className={"group relative flex items-center gap-2.5 rounded-md py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-[var(--color-gris-sidebar)]"}
                                     >
-                                        <i class="fa-solid fa-people-group w-[20px] text-center"></i>
+                                        <i className="fa-solid fa-people-group w-[20px] text-center"></i>
                                         Equipos
                                     </NavLink>
                                     <NavLink
                                         to={"/usuarios"}
                                         className={"group relative flex items-center gap-2.5 rounded-md py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-[var(--color-gris-sidebar)]"}
                                     >
-                                        <i class="fa-solid fa-users w-[20px] text-center"></i>
+                                        <i className="fa-solid fa-users w-[20px] text-center"></i>
                                         Usuarios
                                     </NavLink>
                                     <NavLink
                                         to={"/calendario"}
                                         className={"group relative flex items-center gap-2.5 rounded-md py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-[var(--color-gris-sidebar)]"}
                                     >
-                                        <i class="fa-solid fa-calendar-days w-[20px] text-center"></i>
+                                        <i className="fa-solid fa-calendar-days w-[20px] text-center"></i>
                                         Calendario
                                     </NavLink>
                                 </li>
@@ -51,21 +68,21 @@ export default function SideBar() {
                                         to={"/equipos"}
                                         className={"group relative flex items-center gap-2.5 rounded-md py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-[var(--color-gris-sidebar)]"}
                                     >
-                                        <i class="fa-solid fa-people-group w-[20px] text-center"></i>
+                                        <i className="fa-solid fa-people-group w-[20px] text-center"></i>
                                         Equipos
                                     </NavLink>
                                     <NavLink
                                         to={"/usuarios"}
                                         className={"group relative flex items-center gap-2.5 rounded-md py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-[var(--color-gris-sidebar)]"}
                                     >
-                                        <i class="fa-solid fa-users w-[20px] text-center"></i>
+                                        <i className="fa-solid fa-users w-[20px] text-center"></i>
                                         Usuarios
                                     </NavLink>
                                     <NavLink
                                         to={"/calendario"}
                                         className={"group relative flex items-center gap-2.5 rounded-md py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-[var(--color-gris-sidebar)]"}
                                     >
-                                        <i class="fa-solid fa-calendar-days w-[20px] text-center"></i>
+                                        <i className="fa-solid fa-calendar-days w-[20px] text-center"></i>
                                         Calendario
                                     </NavLink>
                                 </li>
@@ -76,8 +93,22 @@ export default function SideBar() {
             </aside>
             <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
                 <header className="sticky top-0 z-999 flex w-full bg-[--color-sidebar] drop-shadow-1">
-                    <div className="flex flex-grow items-center justify-end px-4 py-4 shadow-2 md:px-6 2xl:px-11">
-                        <div className="flex items-center gap-12">
+                    <div className="flex flex-grow items-center justify-between lg:justify-end px-4 py-4 shadow-2 md:px-6 2xl:px-11">
+                        <div className="flex items-center gap-2 sm:gap-4 lg:hidden">
+                            <button
+                                aria-controls="sidebar"
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    setSidebarOpen(!sidebarOpen);
+                                    console.log(sidebarOpen)
+                                }}
+                                className="z-99999 block rounded-sm border border-stroke bg-white p-1.5 shadow-sm dark:border-strokedark dark:bg-boxdark lg:hidden"
+                            >
+                                <i className="fa-solid fa-bars text-[var(--color-gris-header)]"></i>
+                            </button>
+                            <img src={Logo} className="w-10 h-11 hidden lg:flex" alt="Chaos Logo"></img>
+                        </div>
+                        <div className="flex items-center gap-6 lg:gap-12">
                             <div className="flex gap-4">
                                 <Dropdown placement="bottom-end">
                                     <DropdownTrigger>
@@ -161,9 +192,9 @@ export default function SideBar() {
                                             </DropdownItem>
                                         </DropdownSection>
                                         <DropdownSection title="Usuario" showDivider>
-                                            <DropdownItem key="perfil" description="Ver información de tu perfil" startContent={<i class="fa-solid fa-user mr-[2px]"></i>}>Perfil</DropdownItem>
-                                            <DropdownItem key="contactos" description="Consultar tus contactos" startContent={<i class="fa-solid fa-address-book"></i>}>Contactos</DropdownItem>
-                                            <DropdownItem key="ajustes" description="Modificar ajustes de tu cuenta" startContent={<i class="fa-solid fa-gear"></i>}>Ajustes</DropdownItem>
+                                            <DropdownItem key="perfil" description="Ver información de tu perfil" startContent={<i className="fa-solid fa-user mr-[2px]"></i>}>Perfil</DropdownItem>
+                                            <DropdownItem key="contactos" description="Consultar tus contactos" startContent={<i className="fa-solid fa-address-book"></i>}>Contactos</DropdownItem>
+                                            <DropdownItem key="ajustes" description="Modificar ajustes de tu cuenta" startContent={<i className="fa-solid fa-gear"></i>}>Ajustes</DropdownItem>
                                         </DropdownSection>
                                         <DropdownSection title="Cerrar Sesión">
                                             <DropdownItem key="logout" className="text-danger" color="danger" description="Cerrar la sesión actual" startContent={<i className="fa-solid fa-right-from-bracket"></i>}>Cerrar Sesión</DropdownItem>
@@ -180,6 +211,6 @@ export default function SideBar() {
                     </div>
                 </main>
             </div>
-        </div>
+        </div >
     )
 }
