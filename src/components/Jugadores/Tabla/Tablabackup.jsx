@@ -17,6 +17,10 @@ import {
     Pagination,
 } from "@nextui-org/react";
 import axios from "axios";
+import useSWR from "swr";
+
+import { useInfiniteScroll } from "@nextui-org/use-infinite-scroll";
+import { useAsyncList } from "@react-stately/data";
 
 import { columns, statusOptions } from "./data";
 
@@ -40,22 +44,9 @@ export default function Tabla() {
         direction: "ascending",
     });
     const [page, setPage] = useState(1);
-    const [users, setUsers] = useState([{
-        "id_usuario": 16,
-        "id_equipo": null,
-        "id_discord": null,
-        "nombre_usuario": "Juan",
-        "apellido_usuario": "Zas",
-        "nick_usuario": "zas",
-        "nombre_ingame": "SupportConPanza",
-        "id_ingame": "MRIE3IB1ZBIkLVTQ5nvEdV-0JkH8cI_RU4WnD7wAF8XKQs94",
-        "puuid_ingame": "EwELBCKj5kiW7l8n0rMQREPcbQq8F_AHGZvKcIbO7qCLSw7cg8xOcSiSPuWdgYfueyYCEEqTiRE4PA",
-        "edad": 20,
-        "rol": 0,
-        "linea_principal": "Support",
-        "linea_secundaria": "Toplane",
-        "verificado": 0
-    }])
+    const [users, setUsers] = useState([])
+    const [totalUsers, setTotalUsers] = useState([])
+
 
     const hasSearchFilter = Boolean(filterValue);
 
@@ -68,6 +59,7 @@ export default function Tabla() {
     useEffect(() => {
         axios.get(`https://api.chaoschampionship.com/.netlify/functions/api/usuarios`).then((usuarios) => {
             setUsers(usuarios.data)
+            setTotalUsers(usuarios.data)
         })
     }, [rowsPerPage, page])
 
