@@ -1,9 +1,11 @@
-import SideBar from "../components/SideBar/SideBar"
+import Layout from "../components/Layout/Layout.jsx"
 
 function Inicio() {
 
   return (
-    <SideBar />
+    <Layout >
+      <div>hey</div>
+    </Layout>
   )
 }
 
