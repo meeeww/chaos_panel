@@ -1,18 +1,17 @@
 const columns = [
-    { name: "ID", uid: "id", sortable: true },
-    { name: "NAME", uid: "name", sortable: true },
-    { name: "AGE", uid: "age", sortable: true },
-    { name: "ROLE", uid: "role", sortable: true },
-    { name: "TEAM", uid: "team" },
-    { name: "EMAIL", uid: "email" },
-    { name: "STATUS", uid: "status", sortable: true },
-    { name: "ACTIONS", uid: "actions" },
+    { name: "ID", uid: "id_usuario", sortable: true },
+    { name: "NICK", uid: "nick_usuario", sortable: true },
+    { name: "NOMBRE", uid: "nombre_usuario", sortable: true },
+    { name: "APELLIDO", uid: "apellido_usuario", sortable: true },
+    { name: "EDAD", uid: "edad", sortable: true },
+    { name: "POSICION", uid: "linea_principal", sortable: true },
+    { name: "POSICION SECUNDARIA", uid: "linea_secundaria", sortable: true },
+    { name: "ESTADO", uid: "verificado", sortable: true },
 ];
 
 const statusOptions = [
-    { name: "Active", uid: "active" },
-    { name: "Paused", uid: "paused" },
-    { name: "Vacation", uid: "vacation" },
+    { name: "Activo", uid: 1 },
+    { name: "Inactivo", uid: 0 },
 ];
 
 export {columns, statusOptions}

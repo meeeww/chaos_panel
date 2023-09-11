@@ -15,22 +15,13 @@ import {
     Chip,
     User,
     Pagination,
+    CircularProgress,
 } from "@nextui-org/react";
 import axios from "axios";
-import useSWR from "swr";
-
-import { useInfiniteScroll } from "@nextui-org/use-infinite-scroll";
-import { useAsyncList } from "@react-stately/data";
 
 import { columns, statusOptions } from "./data";
 
-const statusColorMap = {
-    active: "success",
-    paused: "danger",
-    vacation: "warning",
-};
-
-const INITIAL_VISIBLE_COLUMNS = ["name", "role", "status", "actions"];
+const INITIAL_VISIBLE_COLUMNS = ["id_equipo", "nombre_equipo", "id_liga"];
 
 export default function Tabla() {
 
@@ -44,9 +35,22 @@ export default function Tabla() {
         direction: "ascending",
     });
     const [page, setPage] = useState(1);
-    const [users, setUsers] = useState([])
-    const [totalUsers, setTotalUsers] = useState([])
-
+    const [users, setUsers] = useState([{
+        "id_usuario": 16,
+        "id_equipo": null,
+        "id_discord": null,
+        "nombre_usuario": "Juan",
+        "apellido_usuario": "Zas",
+        "nick_usuario": "zas",
+        "nombre_ingame": "SupportConPanza",
+        "id_ingame": "MRIE3IB1ZBIkLVTQ5nvEdV-0JkH8cI_RU4WnD7wAF8XKQs94",
+        "puuid_ingame": "EwELBCKj5kiW7l8n0rMQREPcbQq8F_AHGZvKcIbO7qCLSw7cg8xOcSiSPuWdgYfueyYCEEqTiRE4PA",
+        "edad": 20,
+        "rol": 0,
+        "linea_principal": "Support",
+        "linea_secundaria": "Toplane",
+        "verificado": 0
+    }])
 
     const hasSearchFilter = Boolean(filterValue);
 
@@ -56,10 +60,12 @@ export default function Tabla() {
         return columns.filter((column) => Array.from(visibleColumns).includes(column.uid));
     }, [visibleColumns]);
 
+    const [cargando, setCargando] = useState(true)
+
     useEffect(() => {
-        axios.get(`https://api.chaoschampionship.com/.netlify/functions/api/usuarios`).then((usuarios) => {
-            setUsers(usuarios.data)
-            setTotalUsers(usuarios.data)
+        axios.get(`https://api.chaoschampionship.com/.netlify/functions/api/equipos`).then((equipos) => {
+            setUsers(equipos.data)
+            setCargando(false)
         })
     }, [rowsPerPage, page])
 
@@ -101,8 +107,8 @@ export default function Tabla() {
 
     const renderCell = useCallback((user, columnKey) => {
         const cellValue = user[columnKey];
-
         switch (columnKey) {
+
             case "name":
                 return (
                     <User
@@ -120,10 +126,10 @@ export default function Tabla() {
                         <p className="text-bold text-tiny capitalize text-default-400">{user.linea_principal}</p>
                     </div>
                 );
-            case "status":
+            case "verificado":
                 return (
-                    <Chip className="capitalize" color={statusColorMap[user.edad]} size="sm" variant="flat">
-                        {cellValue}
+                    <Chip className="capitalize" color={cellValue == 0 ? "warning" : "success"} size="sm" variant="flat">
+                        {cellValue == 0 ? <div>Inactivo</div> : <div>Activo</div>}
                     </Chip>
                 );
             case "actions":
@@ -186,7 +192,7 @@ export default function Tabla() {
                     <Input
                         isClearable
                         className="w-full sm:max-w-[44%]"
-                        placeholder="Search by name..."
+                        placeholder="Buscar por nombre..."
                         startContent={<i className="fa-solid fa-magnifying-glass"></i>}
                         value={filterValue}
                         onClear={() => onClear()}
@@ -196,7 +202,7 @@ export default function Tabla() {
                         <Dropdown>
                             <DropdownTrigger className="hidden sm:flex">
                                 <Button endContent={<i className="fa-solid fa-chevron-down"></i>} variant="flat">
-                                    Status
+                                    Estado
                                 </Button>
                             </DropdownTrigger>
                             <DropdownMenu
@@ -217,7 +223,7 @@ export default function Tabla() {
                         <Dropdown>
                             <DropdownTrigger className="hidden sm:flex">
                                 <Button endContent={<i className="fa-solid fa-chevron-down"></i>} variant="flat">
-                                    Columns
+                                    Columnas
                                 </Button>
                             </DropdownTrigger>
                             <DropdownMenu
@@ -236,21 +242,22 @@ export default function Tabla() {
                             </DropdownMenu>
                         </Dropdown>
                         <Button color="primary" endContent={<i className="fa-solid fa-plus"></i>}>
-                            Add New
+                            Añadir Nuevo
                         </Button>
                     </div>
                 </div>
                 <div className="flex justify-between items-center">
-                    <span className="text-default-400 text-small">Total {users.length} users</span>
+                    <span className="text-default-400 text-small">Total de {users.length} equipos</span>
                     <label className="flex items-center text-default-400 text-small">
-                        Rows per page:
+                        Filas por página
                         <select
-                            className="bg-transparent outline-none text-default-400 text-small"
+                            className="bg-transparent outline-none text-default-400 text-small ml-4"
                             onChange={onRowsPerPageChange}
                         >
                             <option value="5">5</option>
-                            <option value="10">10</option>
-                            <option value="15">15</option>
+                            <option value="20">20</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
                         </select>
                     </label>
                 </div>
@@ -271,8 +278,8 @@ export default function Tabla() {
             <div className="py-2 px-2 flex justify-between items-center">
                 <span className="w-[30%] text-small text-default-400">
                     {selectedKeys === "all"
-                        ? "All items selected"
-                        : `${selectedKeys.size} of ${filteredItems.length} selected`}
+                        ? "Todos los equipos seleccionados"
+                        : `Seleccionados ${selectedKeys.size} de ${filteredItems.length} equipos`}
                 </span>
                 <Pagination
                     isCompact
@@ -285,15 +292,24 @@ export default function Tabla() {
                 />
                 <div className="hidden sm:flex w-[30%] justify-end gap-2">
                     <Button isDisabled={pages === 1} size="sm" variant="flat" onPress={onPreviousPage}>
-                        Previous
+                        Anterior
                     </Button>
                     <Button isDisabled={pages === 1} size="sm" variant="flat" onPress={onNextPage}>
-                        Next
+                        Siguiente
                     </Button>
                 </div>
             </div>
         );
     }, [selectedKeys, items.length, page, pages, hasSearchFilter]);
+
+    if (cargando) {
+        return (
+            <div className="w-full h-full flex justify-center items-center mt-16">
+                <CircularProgress aria-label="Loading..." />
+            </div>
+        )
+    }
+
 
     return (
         <Table
@@ -323,7 +339,7 @@ export default function Tabla() {
                     </TableColumn>
                 )}
             </TableHeader>
-            <TableBody emptyContent={"No users found"} items={sortedItems}>
+            <TableBody emptyContent={"No se han encontrado equipos"} items={sortedItems}>
                 {(item) => (
                     <TableRow key={item.id_usuario}>
                         {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
