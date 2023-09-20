@@ -16,6 +16,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.4.2",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@nextui-org/react": "^2.0.19",
+    "@nextui-org/select": "^2.1.11",
     "@nextui-org/use-infinite-scroll": "^2.1.0",
     "@react-email/button": "^0.0.10",
     "@react-email/html": "^0.0.4",

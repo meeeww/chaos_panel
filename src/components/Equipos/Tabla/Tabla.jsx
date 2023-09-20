@@ -17,7 +17,9 @@ import {
     Pagination,
     CircularProgress,
 } from "@nextui-org/react";
-import ModalEquipos from "../Modal";
+
+import ModalEquipos from "../Modals/ModalCrear";
+import ModalEquiposLiga from "../Modals/ModalEditarLiga";
 
 import axios from "axios";
 import api from "../../../../variables.json"
@@ -55,12 +57,20 @@ export default function Tabla() {
         return columns.filter((column) => Array.from(visibleColumns).includes(column.uid));
     }, [visibleColumns]);
 
+    const [ligas, setLigas] = useState([{
+        id_liga: 1,
+        nombre_liga: 'Primer Split'
+    }])
+
     const [cargando, setCargando] = useState(true)
 
     useEffect(() => {
         axios.get(api.directorio + `equipos`).then((equipos) => {
             setUsers(equipos.data)
-            setCargando(false)
+            axios.get(api.directorio + `ligas`).then((ligas) => {
+                setLigas(ligas.data)
+                setCargando(false)
+            })
         })
     }, [rowsPerPage, page])
 
@@ -127,18 +137,7 @@ export default function Tabla() {
             case "actions":
                 return (
                     <div className="relative flex justify-end items-center gap-2">
-                        <Dropdown>
-                            <DropdownTrigger>
-                                <Button isIconOnly size="sm" variant="light">
-                                    <i className="fa-solid fa-ellipsis-vertical"></i>
-                                </Button>
-                            </DropdownTrigger>
-                            <DropdownMenu>
-                                <DropdownItem>View</DropdownItem>
-                                <DropdownItem>Edit</DropdownItem>
-                                <DropdownItem>Delete</DropdownItem>
-                            </DropdownMenu>
-                        </Dropdown>
+                        <ModalEquiposLiga />
                     </div>
                 );
             default:

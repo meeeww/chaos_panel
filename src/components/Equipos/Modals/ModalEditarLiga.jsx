@@ -2,10 +2,11 @@ import { useState } from "react";
 import { Toaster, toast } from 'sonner'
 
 import axios from "axios";
-import api from "../../../variables.json"
+import api from "../../../../variables.json"
 
 
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Checkbox, Input, Link } from "@nextui-org/react";
+import { Select, SelectSection, SelectItem } from "@nextui-org/select";
 
 export default function ModalEquipos() {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -20,7 +21,6 @@ export default function ModalEquipos() {
     }
 
     const handleUpload = () => {
-        console.log("yo")
         const formdata = new FormData()
         formdata.append("imagenEquipo", file)
         formdata.append("nombre", nombre);
@@ -41,9 +41,7 @@ export default function ModalEquipos() {
     return (
         <>
             <Toaster richColors closeButton />
-            <Button color="primary" onPress={onOpen} endContent={<i className="fa-solid fa-plus"></i>}>
-                Crear Equipo
-            </Button>
+            <Button onClick={onOpen}>hey</Button>
             <Modal
                 isOpen={isOpen}
                 onOpenChange={onOpenChange}
