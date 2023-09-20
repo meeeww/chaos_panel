@@ -7,6 +7,7 @@ const columns = [
     { name: "POSICION", uid: "linea_principal", sortable: true },
     { name: "POSICION SECUNDARIA", uid: "linea_secundaria", sortable: true },
     { name: "ESTADO", uid: "verificado", sortable: true },
+    { name: "ACCIONES", uid: "actions" },
 ];
 
 const statusOptions = [
@@ -14,4 +15,4 @@ const statusOptions = [
     { name: "Inactivo", uid: 0 },
 ];
 
-export {columns, statusOptions}
+export { columns, statusOptions }

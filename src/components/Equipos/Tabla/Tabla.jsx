@@ -17,14 +17,16 @@ import {
     Pagination,
     CircularProgress,
 } from "@nextui-org/react";
+import ModalEquipos from "../Modal";
+
 import axios from "axios";
+import api from "../../../../variables.json"
 
 import { columns, statusOptions } from "./data";
 
-const INITIAL_VISIBLE_COLUMNS = ["id_equipo", "nombre_equipo", "id_liga"];
+const INITIAL_VISIBLE_COLUMNS = ["id_equipo", "nombre_equipo", "logo_equipo", "id_liga", "actions"];
 
 export default function Tabla() {
-
     const [filterValue, setFilterValue] = useState("");
     const [selectedKeys, setSelectedKeys] = useState(new Set([]));
     const [visibleColumns, setVisibleColumns] = useState(new Set(INITIAL_VISIBLE_COLUMNS));
@@ -36,20 +38,13 @@ export default function Tabla() {
     });
     const [page, setPage] = useState(1);
     const [users, setUsers] = useState([{
-        "id_usuario": 16,
-        "id_equipo": null,
-        "id_discord": null,
-        "nombre_usuario": "Juan",
-        "apellido_usuario": "Zas",
-        "nick_usuario": "zas",
-        "nombre_ingame": "SupportConPanza",
-        "id_ingame": "MRIE3IB1ZBIkLVTQ5nvEdV-0JkH8cI_RU4WnD7wAF8XKQs94",
-        "puuid_ingame": "EwELBCKj5kiW7l8n0rMQREPcbQq8F_AHGZvKcIbO7qCLSw7cg8xOcSiSPuWdgYfueyYCEEqTiRE4PA",
-        "edad": 20,
-        "rol": 0,
-        "linea_principal": "Support",
-        "linea_secundaria": "Toplane",
-        "verificado": 0
+        "id_equipo": 33,
+        "id_liga": null,
+        "id_temporada": null,
+        "stage": null,
+        "nombre_equipo": "Prueba1",
+        "logo_equipo": "imagenEquipo_1695225337422undefined.png",
+        "acronimo_equipo": "ppp"
     }])
 
     const hasSearchFilter = Boolean(filterValue);
@@ -63,7 +58,7 @@ export default function Tabla() {
     const [cargando, setCargando] = useState(true)
 
     useEffect(() => {
-        axios.get(`https://api.chaoschampionship.com/.netlify/functions/api/equipos`).then((equipos) => {
+        axios.get(api.directorio + `equipos`).then((equipos) => {
             setUsers(equipos.data)
             setCargando(false)
         })
@@ -74,7 +69,7 @@ export default function Tabla() {
 
         if (hasSearchFilter) {
             filteredUsers = filteredUsers.filter((user) =>
-                user.name.toLowerCase().includes(filterValue.toLowerCase()),
+                user.nombre_equipo.toLowerCase().includes(filterValue.toLowerCase()),
             );
         }
         if (statusFilter !== "all" && Array.from(statusFilter).length !== statusOptions.length) {
@@ -108,15 +103,12 @@ export default function Tabla() {
     const renderCell = useCallback((user, columnKey) => {
         const cellValue = user[columnKey];
         switch (columnKey) {
-
-            case "name":
+            case "logo_equipo":
                 return (
                     <User
-                        //avatarProps={{ radius: "lg", src: user.avatar }}
+                        avatarProps={{ radius: "lg", src: (api.directorio + "images/" + user.logo_equipo) }}
                         description={user.nombre_usuario}
-                        name={cellValue}
                     >
-                        {user.nombre_usuario}
                     </User>
                 );
             case "role":
@@ -241,9 +233,7 @@ export default function Tabla() {
                                 ))}
                             </DropdownMenu>
                         </Dropdown>
-                        <Button color="primary" endContent={<i className="fa-solid fa-plus"></i>}>
-                            Añadir Nuevo
-                        </Button>
+                        <ModalEquipos />
                     </div>
                 </div>
                 <div className="flex justify-between items-center">
@@ -341,7 +331,7 @@ export default function Tabla() {
             </TableHeader>
             <TableBody emptyContent={"No se han encontrado equipos"} items={sortedItems}>
                 {(item) => (
-                    <TableRow key={item.id_usuario}>
+                    <TableRow key={item.id_equipo}>
                         {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
                     </TableRow>
                 )}

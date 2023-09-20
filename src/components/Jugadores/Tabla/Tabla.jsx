@@ -17,7 +17,9 @@ import {
     Pagination,
     CircularProgress,
 } from "@nextui-org/react";
+
 import axios from "axios";
+import api from "../../../../variables.json"
 
 import { columns, statusOptions } from "./data";
 
@@ -63,7 +65,7 @@ export default function Tabla() {
     const [cargando, setCargando] = useState(true)
 
     useEffect(() => {
-        axios.get(`https://api.chaoschampionship.com/.netlify/functions/api/usuarios`).then((usuarios) => {
+        axios.get(api.directorio + `usuarios`).then((usuarios) => {
             setUsers(usuarios.data)
             setCargando(false)
         })
@@ -74,7 +76,7 @@ export default function Tabla() {
 
         if (hasSearchFilter) {
             filteredUsers = filteredUsers.filter((user) =>
-                user.name.toLowerCase().includes(filterValue.toLowerCase()),
+                user.nick_usuario.toLowerCase().includes(filterValue.toLowerCase()),
             );
         }
         if (statusFilter !== "all" && Array.from(statusFilter).length !== statusOptions.length) {
