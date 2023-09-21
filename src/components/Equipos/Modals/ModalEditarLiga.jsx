@@ -5,7 +5,7 @@ import axios from "axios";
 import api from "../../../../variables.json"
 
 
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Checkbox, Input, Link } from "@nextui-org/react";
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input } from "@nextui-org/react";
 import { Select, SelectSection, SelectItem } from "@nextui-org/select";
 
 export default function ModalEquipos() {

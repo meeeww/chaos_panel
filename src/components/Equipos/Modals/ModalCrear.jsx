@@ -1,16 +1,14 @@
 import { useState } from "react";
-import { Toaster, toast } from 'sonner'
 
 import axios from "axios";
 import api from "../../../../variables.json"
 
-
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input } from "@nextui-org/react";
+import { Toaster, toast } from 'sonner'
 
 export default function ModalEquipos() {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
-    //http://localhost:8888/.netlify/functions/api/crearequipo
     const [file, setFile] = useState()
     const [nombre, setNombre] = useState("")
     const [acronimo, setAcronimo] = useState("")
@@ -20,14 +18,13 @@ export default function ModalEquipos() {
     }
 
     const handleUpload = () => {
-        console.log("yo")
         const formdata = new FormData()
         formdata.append("imagenEquipo", file)
         formdata.append("nombre", nombre);
         formdata.append("acronimo", acronimo);
         toast.promise(() => new Promise((resolve, reject) => {
             axios.post(api.directorio + "crearequipo", formdata).then(function () {
-                axios.post(api.directorio + "log", {id_usuario: 16, fecha: Math.floor(new Date().getTime()/1000.0), accion: "Crear Equipo"})
+                axios.post(api.directorio + "log", { id_usuario: 16, fecha: Math.floor(new Date().getTime() / 1000.0), accion: "Crear Equipo" })
                 resolve()
             }).catch(function () {
                 reject()
@@ -55,8 +52,8 @@ export default function ModalEquipos() {
                         <>
                             <ModalHeader className="flex flex-col gap-1">Crear Equipo</ModalHeader>
                             <ModalBody>
-                                <Input type="text" variant={"flat"} label="Nombre" onChange={(e) => { setNombre(e.target.value) }} isRequired />
-                                <Input type="text" variant={"flat"} label="Acronimo" onChange={(e) => { setAcronimo(e.target.value) }} isRequired />
+                                <Input type="text" placeholder="Nombre" className="w-full sm:max-w-[100%]" onChange={(e) => { setNombre(e.target.value) }} isRequired />
+                                <Input type="text" variant={"flat"} placeholder="Acronimo" onChange={(e) => { setAcronimo(e.target.value) }} isRequired />
                                 <Input id="upload" type="file" variant={"flat"} onChange={handleFile} />
                             </ModalBody>
                             <ModalFooter>
