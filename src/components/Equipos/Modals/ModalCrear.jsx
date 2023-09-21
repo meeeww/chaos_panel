@@ -5,7 +5,7 @@ import axios from "axios";
 import api from "../../../../variables.json"
 
 
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Checkbox, Input, Link } from "@nextui-org/react";
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input } from "@nextui-org/react";
 
 export default function ModalEquipos() {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -27,6 +27,7 @@ export default function ModalEquipos() {
         formdata.append("acronimo", acronimo);
         toast.promise(() => new Promise((resolve, reject) => {
             axios.post(api.directorio + "crearequipo", formdata).then(function () {
+                axios.post(api.directorio + "log", {id_usuario: 16, fecha: Math.floor(new Date().getTime()/1000.0), accion: "Crear Equipo"})
                 resolve()
             }).catch(function () {
                 reject()
