@@ -6,6 +6,8 @@ import Inicio from './pages/Inicio.jsx'
 import Usuarios from "./pages/Usuarios.jsx"
 import Equipos from "./pages/Equipos.jsx"
 
+import Equipo from './pages/Individual/Equipo.jsx'
+
 import './styles/Index.css'
 
 import {
@@ -25,6 +27,10 @@ const router = createBrowserRouter([
   {
     path: "/equipos",
     element: <Equipos />,
+  },
+  {
+    path: "/equipo",
+    element: <Equipo />,
   },
 ]);
 

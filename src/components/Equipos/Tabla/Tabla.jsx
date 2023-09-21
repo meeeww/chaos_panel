@@ -19,12 +19,14 @@ import {
 } from "@nextui-org/react";
 
 import ModalEquipos from "../Modals/ModalCrear";
-import ModalEquiposLiga from "../Modals/ModalEditarLiga";
+import ModalBorrar from "../Modals/ModalBorrar"
 
 import axios from "axios";
 import api from "../../../../variables.json"
 
 import { columns, statusOptions } from "./data";
+
+import "../Equipos.css"
 
 const INITIAL_VISIBLE_COLUMNS = ["id_equipo", "nombre_equipo", "logo_equipo", "id_liga", "actions"];
 
@@ -49,6 +51,7 @@ export default function Tabla() {
         "acronimo_equipo": "ppp"
     }])
 
+    const [cambioDeDatos, setCambioDeDatos] = useState(false)
     const hasSearchFilter = Boolean(filterValue);
 
     const headerColumns = useMemo(() => {
@@ -65,6 +68,7 @@ export default function Tabla() {
     const [cargando, setCargando] = useState(true)
 
     useEffect(() => {
+        setCambioDeDatos(false)
         axios.get(api.directorio + `equipos`).then((equipos) => {
             setUsers(equipos.data)
             axios.get(api.directorio + `ligas`).then((ligas) => {
@@ -72,7 +76,7 @@ export default function Tabla() {
                 setCargando(false)
             })
         })
-    }, [rowsPerPage, page])
+    }, [rowsPerPage, page, cambioDeDatos])
 
     const filteredItems = useMemo(() => {
         let filteredUsers = [...users];
@@ -137,13 +141,14 @@ export default function Tabla() {
             case "actions":
                 return (
                     <div className="relative flex justify-end items-center gap-2">
-                        <ModalEquiposLiga />
+                        <Button onClick={() => { window.location.replace("/equipo?id=" + user.id_equipo) }} size="sm" isIconOnly aria-label="Informacion" color="primary"><i className="fa-solid fa-info font-[900]"></i></Button>
+                        {!cargando ? <ModalBorrar equipo={user} cambioDatos={setCambioDeDatos} /> : null}
                     </div>
                 );
             default:
                 return cellValue;
         }
-    }, []);
+    }, [cargando, ligas]);
 
     const onNextPage = useCallback(() => {
         if (page < pages) {
@@ -232,7 +237,7 @@ export default function Tabla() {
                                 ))}
                             </DropdownMenu>
                         </Dropdown>
-                        <ModalEquipos />
+                        <ModalEquipos cambioDatos={setCambioDeDatos} />
                     </div>
                 </div>
                 <div className="flex justify-between items-center">
