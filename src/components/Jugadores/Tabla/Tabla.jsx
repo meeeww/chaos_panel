@@ -21,9 +21,12 @@ import {
 import axios from "axios";
 import api from "../../../../variables.json"
 
+import ModalCrear from "../Modals/ModalCrear"
+import ModalBorrar from "../Modals/ModalBorrar"
+
 import { columns, statusOptions } from "./data";
 
-const INITIAL_VISIBLE_COLUMNS = ["id_usuario", "nick_usuario", "linea_principal", "verificado", "actions"];
+const INITIAL_VISIBLE_COLUMNS = ["id_usuario", "nick_usuario", "actions"];
 
 export default function Tabla() {
 
@@ -54,6 +57,7 @@ export default function Tabla() {
         "verificado": 0
     }])
 
+    const [cambioDeDatos, setCambioDeDatos] = useState(false)
     const hasSearchFilter = Boolean(filterValue);
 
     const headerColumns = useMemo(() => {
@@ -65,11 +69,12 @@ export default function Tabla() {
     const [cargando, setCargando] = useState(true)
 
     useEffect(() => {
+        setCambioDeDatos(false)
         axios.get(api.directorio + `usuarios`).then((usuarios) => {
             setUsers(usuarios.data)
             setCargando(false)
         })
-    }, [rowsPerPage, page])
+    }, [rowsPerPage, page, cambioDeDatos])
 
     const filteredItems = useMemo(() => {
         let filteredUsers = [...users];
@@ -111,10 +116,10 @@ export default function Tabla() {
         const cellValue = user[columnKey];
         switch (columnKey) {
 
-            case "name":
+            case "nick_usuario":
                 return (
                     <User
-                        //avatarProps={{ radius: "lg", src: user.avatar }}
+                        avatarProps={{ radius: "lg", src: "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/profile-icons/" + user.icono + ".jpg" }}
                         description={user.nombre_usuario}
                         name={cellValue}
                     >
@@ -137,24 +142,14 @@ export default function Tabla() {
             case "actions":
                 return (
                     <div className="relative flex justify-end items-center gap-2">
-                        <Dropdown>
-                            <DropdownTrigger>
-                                <Button isIconOnly size="sm" variant="light">
-                                    <i className="fa-solid fa-ellipsis-vertical"></i>
-                                </Button>
-                            </DropdownTrigger>
-                            <DropdownMenu>
-                                <DropdownItem>View</DropdownItem>
-                                <DropdownItem>Edit</DropdownItem>
-                                <DropdownItem>Delete</DropdownItem>
-                            </DropdownMenu>
-                        </Dropdown>
+                        <Button onClick={() => { window.location.replace("/usuario?id=" + user.id_usuario) }} size="sm" isIconOnly aria-label="Informacion" color="primary"><i className="fa-solid fa-info font-[900]"></i></Button>
+                        {!cargando ? <ModalBorrar equipo={user} cambioDatos={setCambioDeDatos} /> : null}
                     </div>
                 );
             default:
                 return cellValue;
         }
-    }, []);
+    }, [cargando]);
 
     const onNextPage = useCallback(() => {
         if (page < pages) {
@@ -243,9 +238,7 @@ export default function Tabla() {
                                 ))}
                             </DropdownMenu>
                         </Dropdown>
-                        <Button color="primary" endContent={<i className="fa-solid fa-plus"></i>}>
-                            Añadir Nuevo
-                        </Button>
+                        <ModalCrear cambioDatos={setCambioDeDatos} />
                     </div>
                 </div>
                 <div className="flex justify-between items-center">

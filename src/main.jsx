@@ -7,6 +7,9 @@ import Usuarios from "./pages/Usuarios.jsx"
 import Equipos from "./pages/Equipos.jsx"
 
 import Equipo from './pages/Individual/Equipo.jsx'
+import Usuario from './pages/Individual/Usuario.jsx'
+
+import Perfil from './pages/Perfil/Perfil.jsx'
 
 import './styles/Index.css'
 
@@ -25,12 +28,20 @@ const router = createBrowserRouter([
     element: <Usuarios />,
   },
   {
+    path: "/usuario",
+    element: <Usuario />,
+  },
+  {
     path: "/equipos",
     element: <Equipos />,
   },
   {
     path: "/equipo",
     element: <Equipo />,
+  },
+  {
+    path: "/perfil",
+    element: <Perfil />,
   },
 ]);
 

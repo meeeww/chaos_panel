@@ -26,8 +26,6 @@ import api from "../../../../variables.json"
 
 import { columns, statusOptions } from "./data";
 
-import "../Equipos.css"
-
 const INITIAL_VISIBLE_COLUMNS = ["id_equipo", "nombre_equipo", "logo_equipo", "id_liga", "actions"];
 
 export default function Tabla() {
@@ -299,7 +297,7 @@ export default function Tabla() {
     if (cargando) {
         return (
             <div className="w-full h-full flex justify-center items-center mt-16">
-                <CircularProgress aria-label="Loading..." />
+                <CircularProgress aria-label="Cargando..." />
             </div>
         )
     }
