@@ -12,6 +12,12 @@ export default function ModalJugadores(info) {
 
     const [valor, setValor] = useState()
 
+    let equiposOrdenados = info.equipos && info.equipos.sort(function (a, b) {
+        var textA = a.nombre_equipo.toUpperCase();
+        var textB = b.nombre_equipo.toUpperCase();
+        return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+    })
+
     const RenderInput = (columna) => {
         const [selectedKeys, setSelectedKeys] = useState(new Set(["Permisos"]));
 
@@ -21,6 +27,7 @@ export default function ModalJugadores(info) {
         );
 
         switch (columna) {
+
             case "rol":
                 return (
                     <Dropdown>
@@ -70,9 +77,33 @@ export default function ModalJugadores(info) {
                         </DropdownMenu>
                     </Dropdown>
                 )
-            case "equipo":
+            case "id_equipo":
                 return (
-                    <Input type="number" placeholder={"ID de Equipo"} className="w-full sm:max-w-[100%]" isRequired onChange={(e) => { setValor(e.target.value) }} />
+                    <Dropdown>
+                        <DropdownTrigger>
+                            <Button
+                                variant="bordered"
+                                className="capitalize"
+                            >
+                                {selectedValu}
+                            </Button>
+                        </DropdownTrigger>
+                        <DropdownMenu
+                            aria-label="Selection Rol"
+                            className="h-[19.5rem] overflow-y-auto"
+                            variant="solid"
+                            disallowEmptySelection
+                            selectionMode="single"
+                            selectedKeys={selectedKeys}
+                            onSelectionChange={setSelectedKeys}
+                        >
+                            <DropdownSection>
+                                {equiposOrdenados && equiposOrdenados.map((equipito) => (
+                                    <DropdownItem key={equipito.id_equipo} value={equipito.id_equipo} onPress={(e) => { setValor(e.target.value) }}>{equipito.nombre_equipo}</DropdownItem>
+                                ))}
+                            </DropdownSection>
+                        </DropdownMenu>
+                    </Dropdown>
                 )
             default:
                 return (

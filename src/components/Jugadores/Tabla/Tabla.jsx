@@ -122,6 +122,8 @@ export default function Tabla() {
                         avatarProps={{ radius: "lg", src: "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/profile-icons/" + user.icono + ".jpg" }}
                         description={user.nombre_usuario}
                         name={cellValue}
+                        onClick={() => { window.location.replace("/usuario?id=" + user.id_usuario) }}
+                        className="cursor-pointer"
                     >
                         {user.nombre_usuario}
                     </User>

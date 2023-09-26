@@ -6,6 +6,8 @@ import api from "../../../variables.json"
 
 import ModalJugadores from "./Modals/ModalEditar";
 
+import Cuentas from "../../pages/Perfil/Cuentas";
+
 import { columns } from "./data";
 
 const queryString = window.location.search;
@@ -17,6 +19,7 @@ export default function Jugador() {
     const [jugador, setJugador] = useState()
     const [cargando, setCargando] = useState(true)
 
+    const [listaEquipos, setListaEquipos] = useState()
     const [equipo, setEquipo] = useState()
     const [equipoCargando, setEquipoCargando] = useState(true)
 
@@ -32,6 +35,9 @@ export default function Jugador() {
                 setEquipoCargando(false)
                 axios.get(api.directorio + "usuarios/cuentas/id=" + urlParams.get('id')).then((cuentas) => {
                     setCuentas(cuentas.data)
+                    axios.get(api.directorio + "equipos").then((listaEquipos) => {
+                        setListaEquipos(listaEquipos.data)
+                    })
                 })
             })
             setCargando(false)
@@ -81,45 +87,48 @@ export default function Jugador() {
     }
 
     const renderEquipo = () => {
-        if (!equipoCargando && equipo.length != 0) {
-            return (
-                <Card className="max-w-[400px]">
-                    <CardHeader className="flex gap-3">
-                        <Image
-                            alt="Logo Equipo"
-                            height={100}
-                            radius="sm"
-                            src={(api.directorio + "images/" + equipo.logo_equipo)}
-                            width={100}
-                        />
-                        <div className="flex flex-col gap-2">
-                            <p className="text-md">{equipo.nombre_equipo}</p>
-                            {renderChipEquipo(equipo.activa)}
-                        </div>
-                    </CardHeader>
-                    <Divider />
-                    <CardBody>
-                        <div className="flex flex-col gap-2">
-                            {columns.map((columna) => (
-                                <div key={columna.name} className="flex items-center justify-between">
-                                    <p className="text-sm w-[5rem]">{columna.name}</p>
-                                    <p className="text-md font-[500] text-center w-[9rem]">{equipo[columna.uid]}</p>
-                                </div>
-                            ))}
-                        </div>
-                    </CardBody>
-                    <Divider />
-                    <CardFooter>
-                        <Link
-                            isExternal
-                            showAnchorIcon
-                            href={"/equipo?id=" + equipo.id_equipo}
-                        >
-                            Visitar Página del Equipo
-                        </Link>
-                    </CardFooter>
-                </Card>
-            )
+        console.log(equipoCargando)
+        if (!equipoCargando && typeof (equipo) !== "undefined") {
+            if (equipo.length != 0) {
+                return (
+                    <Card className="max-w-[300px] w-full">
+                        <CardHeader className="flex gap-3">
+                            <Image
+                                alt="Logo Equipo"
+                                height={100}
+                                radius="sm"
+                                src={(api.directorio + "images/" + equipo.logo_equipo)}
+                                width={100}
+                            />
+                            <div className="flex flex-col gap-2">
+                                <p className="text-md">{equipo.nombre_equipo}</p>
+                                {renderChipEquipo(equipo.activa)}
+                            </div>
+                        </CardHeader>
+                        <Divider />
+                        <CardBody>
+                            <div className="flex flex-col gap-2">
+                                {columns.map((columna) => (
+                                    <div key={columna.name} className="flex items-center justify-between">
+                                        <p className="text-sm w-[5rem]">{columna.name}</p>
+                                        <p className="text-md font-[500] text-center w-[9rem]">{equipo[columna.uid]}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        </CardBody>
+                        <Divider />
+                        <CardFooter>
+                            <Link
+                                isExternal
+                                showAnchorIcon
+                                href={"/equipo?id=" + equipo.id_equipo}
+                            >
+                                Visitar Página del Equipo
+                            </Link>
+                        </CardFooter>
+                    </Card>
+                )
+            }
         }
     }
 
@@ -129,49 +138,52 @@ export default function Jugador() {
 
     return (
         <>
-            <div className="flex gap-16">
-                <Card className="max-w-[400px]">
-                    <CardHeader className="flex gap-3">
-                        <Image
-                            alt="Logo Usuario"
-                            height={100}
-                            radius="sm"
-                            src={("https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/profile-icons/" + jugador.icono + ".jpg")}
-                            width={100}
-                        />
-                        <div className="flex flex-col gap-2">
-                            <div className="flex gap-1">
-                                <p className="text-md">{jugador.nombre_usuario}</p>
-                                <p className="text-md">{jugador.apellido_usuario}</p>
-                            </div>
-                            <p className="text-md">{jugador.nick_usuario}</p>
-                            {renderChip()}
-                        </div>
-                    </CardHeader>
-                    <Divider />
-                    <CardBody>
-                        <div className="flex flex-col gap-2">
-                            {columns.map((columna) => (
-                                <div key={columna.name} className="flex items-center justify-between">
-                                    <p className="text-sm w-[5rem]">{columna.name}</p>
-                                    <p className="text-md font-[500] text-center w-[9rem]">{jugador[columna.uid]}</p>
-                                    <ModalJugadores jugador={jugador} columna={columna} cambioDatos={setCambioDeDatos} />
+            <div className="flex flex-col gap-8">
+                <div className="flex gap-16">
+                    <Card className="max-w-[300px] w-full">
+                        <CardHeader className="flex gap-3">
+                            <Image
+                                alt="Logo Usuario"
+                                height={100}
+                                radius="sm"
+                                src={("https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/profile-icons/" + jugador.icono + ".jpg")}
+                                width={100}
+                            />
+                            <div className="flex flex-col gap-2">
+                                <div className="flex gap-1">
+                                    <p className="text-md">{jugador.nombre_usuario}</p>
+                                    <p className="text-md">{jugador.apellido_usuario}</p>
                                 </div>
-                            ))}
-                        </div>
-                    </CardBody>
-                    <Divider />
-                    <CardFooter>
-                        <Link
-                            isExternal
-                            showAnchorIcon
-                            href="#"
-                        >
-                            Visitar Página del Usuario
-                        </Link>
-                    </CardFooter>
-                </Card>
-                {renderEquipo()}
+                                <p className="text-md">{jugador.nombre_equipo}</p>
+                                {renderChip()}
+                            </div>
+                        </CardHeader>
+                        <Divider />
+                        <CardBody>
+                            <div className="flex flex-col gap-2">
+                                {columns.map((columna) => (
+                                    <div key={columna.name} className="flex items-center justify-between">
+                                        <p className="text-sm w-[5rem]">{columna.name}</p>
+                                        <p className="text-md font-[500] text-center w-[9rem]">{jugador[columna.uid]}</p>
+                                        <ModalJugadores jugador={jugador} columna={columna} cambioDatos={setCambioDeDatos} equipos={listaEquipos} />
+                                    </div>
+                                ))}
+                            </div>
+                        </CardBody>
+                        <Divider />
+                        <CardFooter>
+                            <Link
+                                isExternal
+                                showAnchorIcon
+                                href="#"
+                            >
+                                Visitar Página del Usuario
+                            </Link>
+                        </CardFooter>
+                    </Card>
+                    {renderEquipo()}
+                </div>
+                <Cuentas />
             </div>
         </>
     )

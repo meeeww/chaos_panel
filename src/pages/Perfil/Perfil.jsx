@@ -6,6 +6,8 @@ import { Card, CardHeader, CardBody, Image, Divider, Button } from "@nextui-org/
 
 import ModalPerfil from "./ModalEditar/ModalEditar.jsx";
 
+import Cuentas from "./Cuentas.jsx";
+
 import { columns } from "./ModalEditar/data";
 
 export default function Perfil() {
@@ -54,37 +56,7 @@ export default function Perfil() {
           </CardBody>
         </Card>
         <div className="flex flex-col w-[50%] gap-4">
-          <Card className="py-4 max-h-[273px]">
-            <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
-              <div className="flex mb-[1rem] w-full justify-between items-center">
-                <h4 className="font-[800] text-2xl">Mis Cuentas</h4>
-                <Button color="primary" endContent={<i className="fa-solid fa-plus"></i>}>
-                  Nueva Cuenta
-                </Button>
-              </div>
-            </CardHeader>
-            <Divider className="mt-2" />
-            <CardBody className="flex flex-col gap-6 overflow-y-auto no-scrollbar">
-              <div className="flex justify-between items-center">
-                <div className="flex flex-col gap-1">
-                  <h3 className="font-[600] text-lg">SupportConPanza</h3>
-                  <h4 className="font-[300] text-sm">Support, Toplaner</h4>
-                </div>
-                <div>
-                  <Button color="warning" radius="full" variant="bordered" size="sm" isIconOnly endContent={<i className="fa-solid fa-hammer"></i>} />
-                </div>
-              </div>
-              <div className="flex justify-between items-center">
-                <div className="flex flex-col gap-1">
-                  <h3 className="font-[600] text-lg">SupportConPanza</h3>
-                  <h4 className="font-[300] text-sm">Support, Toplaner</h4>
-                </div>
-                <div>
-                  <Button color="warning" radius="full" variant="bordered" size="sm" isIconOnly endContent={<i className="fa-solid fa-hammer"></i>} />
-                </div>
-              </div>
-            </CardBody>
-          </Card>
+            <Cuentas />
           <Card className="py-4 max-h-[425px]">
             <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
               <div className="flex mb-[1rem] w-full justify-between items-center">
