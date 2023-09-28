@@ -34,7 +34,11 @@ const checkSession = (rol) => {
         return "Desarrollador"
 
     case 20:
-        return "Presidente"
+        return "CTO"
+    case 21:
+        return "COO"
+    case 22:
+        return "CEO"
   }
 };
 
