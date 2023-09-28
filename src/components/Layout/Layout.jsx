@@ -30,7 +30,7 @@ export default function Layout({ children }) {
     }
 
     return (
-        <NextUIProvider sesion={usuario}>
+        <NextUIProvider>
             <div className="flex h-screen overflow-hidden">
                 <aside className={`absolute bg-[--color-sidebar] left-0 top-0 z-[9999] flex h-screen w-[19rem] flex-col overflow-y-hidden duration-300 ease-linear lg:static lg:translate-x-0 text-[--color-texto-sidebar] ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'
                     }`}>
@@ -208,7 +208,7 @@ export default function Layout({ children }) {
                                         </DropdownTrigger>
                                         <DropdownMenu aria-label="Usuario" variant="flat" className="text-[var(--color-principal-light)]">
                                             <DropdownSection title="Sesión Iniciada" showDivider>
-                                                <DropdownItem key="sesion" className="h-4" onClick={() => { window.location = "/dashboardadmin" }}>
+                                                <DropdownItem key="sesion" className="h-4" textValue="sesion">
                                                     <p className="font-semibold">{usuario.informacion.nick_usuario}</p>
                                                 </DropdownItem>
                                             </DropdownSection>
