@@ -22,11 +22,15 @@ export default function Layout({ children }) {
         }
     }, [cargando])
 
+    if(usuario == undefined){
+        
+        window.location.replace("/iniciosesion")
+        return (<></>)
+    }
+
     if(!acceso){
         return(<></>)
     }
-
-    console.log(usuario)
 
     return (
         <NextUIProvider sesion={usuario}>
@@ -217,7 +221,7 @@ export default function Layout({ children }) {
                                                 <DropdownItem key="ajustes" description="Modificar ajustes de tu cuenta" startContent={<i className="fa-solid fa-gear"></i>}>Ajustes</DropdownItem>
                                             </DropdownSection>
                                             <DropdownSection title="Cerrar Sesión">
-                                                <DropdownItem key="logout" className="text-danger" color="danger" description="Cerrar la sesión actual" startContent={<i className="fa-solid fa-right-from-bracket"></i>}>Cerrar Sesión</DropdownItem>
+                                                <DropdownItem key="logout" className="text-danger" color="danger" description="Cerrar la sesión actual" startContent={<i className="fa-solid fa-right-from-bracket"></i>} onClick={() => { window.localStorage.removeItem("token"); window.location.replace("/iniciosesion") }}>Cerrar Sesión</DropdownItem>
                                             </DropdownSection>
                                         </DropdownMenu>
                                     </Dropdown>
