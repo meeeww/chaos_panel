@@ -1,5 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
+
+import checkSession from "../../utils/checkSession";
+import returnSession from "../../utils/returnSession"
 
 import { NextUIProvider, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Avatar, DropdownSection } from "@nextui-org/react";
 
@@ -8,9 +11,25 @@ import Logo from "../../assets/logos/LogoSinTexto.png"
 export default function Layout({ children }) {
 
     const [sidebarOpen, setSidebarOpen] = useState(false)
+    const [usuario, setUsuario] = useState()
+    const [cargando, setCargando] = useState(true)
+    const [acceso, setAcceso] = useState(false)
+
+    useEffect(() => {
+        checkSession(setUsuario, setCargando)
+        if (!cargando) {
+            returnSession(usuario, setAcceso)
+        }
+    }, [cargando])
+
+    if(!acceso){
+        return(<></>)
+    }
+
+    console.log(usuario)
 
     return (
-        <NextUIProvider>
+        <NextUIProvider sesion={usuario}>
             <div className="flex h-screen overflow-hidden">
                 <aside className={`absolute bg-[--color-sidebar] left-0 top-0 z-[9999] flex h-screen w-[19rem] flex-col overflow-y-hidden duration-300 ease-linear lg:static lg:translate-x-0 text-[--color-texto-sidebar] ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'
                     }`}>
@@ -174,8 +193,8 @@ export default function Layout({ children }) {
                                 </div>
                                 <div className="flex justify-center items-center gap-6">
                                     <div className="text-end">
-                                        <p className="font-[500] text-[var(--color-texto-header)] text-sm">Zas</p>
-                                        <p className="text-[var(--color-texto-header)] text-xs">Desarrollador</p>
+                                        <p className="font-[500] text-[var(--color-texto-header)] text-sm">{usuario.informacion.nick_usuario}</p>
+                                        <p className="text-[var(--color-texto-header)] text-xs">{usuario.nombrerol}</p>
                                     </div>
                                     <Dropdown placement="bottom-end">
                                         <DropdownTrigger>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, Component } from "react";
 
 import Layout from "../../components/Layout/Layout.jsx"
 
@@ -10,9 +10,11 @@ import Cuentas from "./Cuentas.jsx";
 
 import { columns } from "./ModalEditar/data";
 
-export default function Perfil() {
+export default function Perfil(sesion) {
 
   const [cambioDeDatos, setCambioDeDatos] = useState()
+
+  console.log(sesion)
 
   return (
     <Layout>
@@ -30,7 +32,7 @@ export default function Perfil() {
           <CardBody className="py-2">
             <div className="flex mb-[3rem] justify-between items-center">
               <h4 className="font-[800] text-4xl">Mi Perfil</h4>
-              <h className="font-[300] text-bs pr-6">Juan Zas</h>
+              <h6 className="font-[300] text-bs pr-6">Juan Zas</h6>
             </div>
             <div className="overflow-y-auto no-scrollbar pr-4">
               <div className="flex flex-col gap-2">
