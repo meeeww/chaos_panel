@@ -14,22 +14,20 @@ export default function Layout({ children }) {
     const [usuario, setUsuario] = useState()
     const [cargando, setCargando] = useState(true)
     const [acceso, setAcceso] = useState(false)
+    const [seguridad, setSeguridad] = useState(false)
 
     useEffect(() => {
-        checkSession(setUsuario, setCargando)
+        checkSession(setUsuario, setCargando, setSeguridad)
         if (!cargando) {
             returnSession(usuario, setAcceso)
         }
     }, [cargando])
 
     if(usuario == undefined){
-        
-        window.location.replace("/iniciosesion")
-        return (<></>)
-    }
-
-    if(!acceso){
-        return(<></>)
+        if(seguridad){
+            window.location.replace("/iniciosesion")
+        }
+        return <></>
     }
 
     return (

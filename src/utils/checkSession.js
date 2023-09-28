@@ -3,7 +3,7 @@ import api from "../../variables.json";
 
 import User from "../clases/User";
 
-const checkSession = (setUsuario, setCargando) => {
+const checkSession = (setUsuario, setCargando, setSeguridad) => {
   axios
     .get(api.directorio + "buscarsesion/token=" + localStorage.getItem("token"))
     .then((check) => {
@@ -11,6 +11,9 @@ const checkSession = (setUsuario, setCargando) => {
       usuario.setInformacion(check.data[0]);
       setUsuario(usuario);
       setCargando(false);
+    })
+    .finally(() => {
+      setSeguridad(true);
     });
 };
 
