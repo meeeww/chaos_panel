@@ -1,10 +1,7 @@
-const returnSession = (usuario, setAcceso) => {
-  console.log(usuario.informacion)
+const returnSession = (usuario) => {
   if (usuario.informacion == undefined) {
     window.location.replace("/iniciosesion");
     window.localStorage.removeItem("token")
-  } else {
-    setAcceso(true)
   }
 };
 

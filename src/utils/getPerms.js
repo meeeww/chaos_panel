@@ -1,5 +1,4 @@
 const checkSession = (rol) => {
-  console.log(rol);
   switch (rol) {
     case 0:
         return "Usuario"

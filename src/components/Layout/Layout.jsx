@@ -13,13 +13,12 @@ export default function Layout({ children }) {
     const [sidebarOpen, setSidebarOpen] = useState(false)
     const [usuario, setUsuario] = useState()
     const [cargando, setCargando] = useState(true)
-    const [acceso, setAcceso] = useState(false)
     const [seguridad, setSeguridad] = useState(false)
 
     useEffect(() => {
         checkSession(setUsuario, setCargando, setSeguridad)
         if (!cargando) {
-            returnSession(usuario, setAcceso)
+            returnSession(usuario)
         }
     }, [cargando])
 
@@ -210,13 +209,13 @@ export default function Layout({ children }) {
                                         <DropdownMenu aria-label="Usuario" variant="flat" className="text-[var(--color-principal-light)]">
                                             <DropdownSection title="Sesión Iniciada" showDivider>
                                                 <DropdownItem key="sesion" className="h-4" onClick={() => { window.location = "/dashboardadmin" }}>
-                                                    <p className="font-semibold">{"Zas"}</p>
+                                                    <p className="font-semibold">{usuario.informacion.nick_usuario}</p>
                                                 </DropdownItem>
                                             </DropdownSection>
                                             <DropdownSection title="Usuario" showDivider>
-                                                <DropdownItem key="perfil" description="Ver información de tu perfil" startContent={<i className="fa-solid fa-user mr-[2px]"></i>}>Perfil</DropdownItem>
-                                                <DropdownItem key="contactos" description="Consultar tus contactos" startContent={<i className="fa-solid fa-address-book"></i>}>Contactos</DropdownItem>
-                                                <DropdownItem key="ajustes" description="Modificar ajustes de tu cuenta" startContent={<i className="fa-solid fa-gear"></i>}>Ajustes</DropdownItem>
+                                                <DropdownItem key="perfil" description="Ver información de tu perfil" startContent={<i className="fa-solid fa-user mr-[2px]"></i>} onPress={() => {window.location.replace("/perfil")}}>Perfil</DropdownItem>
+                                                <DropdownItem key="contactos" description="Consultar tus contactos" startContent={<i className="fa-solid fa-address-book"></i>} variant="disabled">Contactos</DropdownItem>
+                                                <DropdownItem key="ajustes" description="Modificar ajustes de tu cuenta" startContent={<i className="fa-solid fa-gear"></i>} variant="disabled">Ajustes</DropdownItem>
                                             </DropdownSection>
                                             <DropdownSection title="Cerrar Sesión">
                                                 <DropdownItem key="logout" className="text-danger" color="danger" description="Cerrar la sesión actual" startContent={<i className="fa-solid fa-right-from-bracket"></i>} onClick={() => { window.localStorage.removeItem("token"); window.location.replace("/iniciosesion") }}>Cerrar Sesión</DropdownItem>

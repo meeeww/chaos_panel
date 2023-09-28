@@ -4,7 +4,7 @@ import md5 from "md5"
 import axios from "axios"
 import api from "../../variables.json"
 
-import checkSession from "../utils/checkSession";
+import checkSessionInicio from "../utils/checkSessionInicio";
 
 import { Toaster, toast } from 'sonner'
 
@@ -20,7 +20,7 @@ export default function InicioSesion() {
   const [cargando, setCargando] = useState(true)
 
   useEffect(() => {
-    checkSession(setUsuario, setCargando)
+    checkSessionInicio(setUsuario, setCargando)
     if (!cargando && usuario.informacion != undefined) {
       window.location.replace("/perfil")
     }
