@@ -125,7 +125,7 @@ export default function ModalPerfil(info) {
         toast.promise(() => new Promise((resolve, reject) => {
             axios.put(api.directorio + "modificarequipo", { id: info.equipo.id_equipo, columna: info.columna.modificar, valor: valor }).then(function () {
                 sendLog(16, "Modificar Equipo", { id_equipo: info.equipo.id_equipo, nombre_equipo: info.equipo.nombre_equipo, columna_modificada: info.columna.modificar, valor_modificado: valor })
-                info.cambioDatos(true)
+                //info.cambioDatos(true)
                 resolve()
             }).catch(function () {
                 reject()

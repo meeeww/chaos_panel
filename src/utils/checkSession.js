@@ -13,6 +13,7 @@ const checkSession = (setUsuario, setCargando, setSeguridad) => {
       setCargando(false);
     })
     .finally(() => {
+      console.log("seguridad")
       setSeguridad(true);
     });
 };

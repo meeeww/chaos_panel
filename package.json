@@ -36,6 +36,7 @@
     "react-hook-form": "^7.46.2",
     "react-router-dom": "^6.15.0",
     "sonner": "^0.6.2",
+    "state-pool": "^0.10.0",
     "swr": "^2.2.2"
   },
   "devDependencies": {

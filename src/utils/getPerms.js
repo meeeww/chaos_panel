@@ -1,4 +1,4 @@
-const checkSession = (rol) => {
+const getPerms = (rol) => {
   switch (rol) {
     case 0:
         return "Usuario"
@@ -41,4 +41,4 @@ const checkSession = (rol) => {
   }
 };
 
-export default checkSession;
+export default getPerms;

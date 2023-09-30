@@ -1,33 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
-
-import checkSession from "../../utils/checkSession";
-import returnSession from "../../utils/returnSession"
 
 import { NextUIProvider, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Avatar, DropdownSection } from "@nextui-org/react";
 
 import Logo from "../../assets/logos/LogoSinTexto.png"
 
-export default function Layout({ children }) {
+export default function Layout(datos) {
 
     const [sidebarOpen, setSidebarOpen] = useState(false)
-    const [usuario, setUsuario] = useState()
-    const [cargando, setCargando] = useState(true)
-    const [seguridad, setSeguridad] = useState(false)
-
-    useEffect(() => {
-        checkSession(setUsuario, setCargando, setSeguridad)
-        if (!cargando) {
-            returnSession(usuario)
-        }
-    }, [cargando])
-
-    if(usuario == undefined){
-        if(seguridad){
-            window.location.replace("/iniciosesion")
-        }
-        return <></>
-    }
 
     return (
         <NextUIProvider>
@@ -194,8 +174,8 @@ export default function Layout({ children }) {
                                 </div>
                                 <div className="flex justify-center items-center gap-6">
                                     <div className="text-end">
-                                        <p className="font-[500] text-[var(--color-texto-header)] text-sm">{usuario.informacion.nick_usuario}</p>
-                                        <p className="text-[var(--color-texto-header)] text-xs">{usuario.nombrerol}</p>
+                                        <p className="font-[500] text-[var(--color-texto-header)] text-sm">{datos.info.informacion.nick_usuario}</p>
+                                        <p className="text-[var(--color-texto-header)] text-xs">{datos.info.nombrerol}</p>
                                     </div>
                                     <Dropdown placement="bottom-end">
                                         <DropdownTrigger>
@@ -208,8 +188,8 @@ export default function Layout({ children }) {
                                         </DropdownTrigger>
                                         <DropdownMenu aria-label="Usuario" variant="flat" className="text-[var(--color-principal-light)]">
                                             <DropdownSection title="Sesión Iniciada" showDivider>
-                                                <DropdownItem key="sesion" className="h-4" textValue="sesion">
-                                                    <p className="font-semibold">{usuario.informacion.nick_usuario}</p>
+                                                <DropdownItem key="sesion" className="h-4" onClick={() => { window.location = "/perfil" }}>
+                                                    <p className="font-semibold">{datos.info.informacion.nick_usuario}</p>
                                                 </DropdownItem>
                                             </DropdownSection>
                                             <DropdownSection title="Usuario" showDivider>
@@ -228,7 +208,7 @@ export default function Layout({ children }) {
                     </header>
                     <main>
                         <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
-                            {children}
+                            {datos.children}
                         </div>
                     </main>
                 </div>
