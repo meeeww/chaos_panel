@@ -10,6 +10,8 @@ import { Toaster, toast } from 'sonner'
 export default function ModalPerfil(info) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
+    console.log(info)
+
     const [valor, setValor] = useState("")
 
     const RenderInput = (tipo, columna) => {
@@ -158,7 +160,6 @@ export default function ModalPerfil(info) {
                                     Cerrar
                                 </Button>
                                 <Button color="primary" onPress={onClose} onClick={() => {
-                                    console.log(valor)
                                     if (valor != "") {
                                         handleUpload()
                                     } else {

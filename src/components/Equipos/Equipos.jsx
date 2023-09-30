@@ -63,6 +63,8 @@ export default function Equipo() {
 
     if (cargando) {
         return (<div>yo</div>)
+    } else{
+        console.log(equipo)
     }
 
     return (

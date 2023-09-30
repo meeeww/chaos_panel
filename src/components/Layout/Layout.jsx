@@ -51,40 +51,19 @@ export default function Layout(datos) {
                                             <i className="fa-solid fa-users w-[20px] text-center"></i>
                                             Usuarios
                                         </NavLink>
-                                        <NavLink
-                                            to={"/calendario"}
-                                            className={"group relative flex items-center gap-2.5 rounded-md py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-[var(--color-gris-sidebar)]"}
-                                        >
-                                            <i className="fa-solid fa-calendar-days w-[20px] text-center"></i>
-                                            Calendario
-                                        </NavLink>
                                     </li>
                                 </ul>
                             </div>
                             <div>
-                                <h3 className="mb-2 ml-4 text-sm font-[700] text-bodydark2">Liga</h3>
+                                <h3 className="mb-2 ml-4 text-sm font-[700] text-bodydark2">Usuario</h3>
                                 <ul className="mb-6 flex flex-col gap-1.5">
                                     <li>
                                         <NavLink
-                                            to={"/equipos"}
+                                            to={"/perfil"}
                                             className={"group relative flex items-center gap-2.5 rounded-md py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-[var(--color-gris-sidebar)]"}
                                         >
-                                            <i className="fa-solid fa-people-group w-[20px] text-center"></i>
-                                            Equipos
-                                        </NavLink>
-                                        <NavLink
-                                            to={"/usuarios"}
-                                            className={"group relative flex items-center gap-2.5 rounded-md py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-[var(--color-gris-sidebar)]"}
-                                        >
-                                            <i className="fa-solid fa-users w-[20px] text-center"></i>
-                                            Usuarios
-                                        </NavLink>
-                                        <NavLink
-                                            to={"/calendario"}
-                                            className={"group relative flex items-center gap-2.5 rounded-md py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-[var(--color-gris-sidebar)]"}
-                                        >
-                                            <i className="fa-solid fa-calendar-days w-[20px] text-center"></i>
-                                            Calendario
+                                            <i className="fa-solid fa-user w-[20px] text-center"></i>
+                                            Perfil
                                         </NavLink>
                                     </li>
                                 </ul>

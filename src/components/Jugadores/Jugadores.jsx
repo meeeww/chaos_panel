@@ -10,6 +10,8 @@ import Cuentas from "../../pages/Perfil/Cuentas";
 
 import { columns } from "./data";
 
+import getEdad from "../../utils/getEdad";
+
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 
@@ -161,13 +163,25 @@ export default function Jugador() {
                         <Divider />
                         <CardBody>
                             <div className="flex flex-col gap-2">
-                                {columns.map((columna) => (
-                                    <div key={columna.name} className="flex items-center justify-between">
-                                        <p className="text-sm w-[5rem]">{columna.name}</p>
-                                        <p className="text-md font-[500] text-center w-[9rem]">{jugador[columna.uid]}</p>
-                                        <ModalJugadores jugador={jugador} columna={columna} cambioDatos={setCambioDeDatos} equipos={listaEquipos} />
-                                    </div>
-                                ))}
+                                {columns.map((columna) => {
+                                    if (columna.name == "Edad") {
+                                        return (
+                                            <div key={columna.name} className="flex items-center justify-between">
+                                                <p className="text-sm w-[5rem]">{columna.name}</p>
+                                                <p className="text-md font-[500] text-center w-[9rem]">{getEdad(jugador[columna.uid])}</p>
+                                                <ModalJugadores jugador={jugador} columna={columna} cambioDatos={setCambioDeDatos} equipos={listaEquipos} />
+                                            </div>
+                                        )
+                                    } else {
+                                        return (
+                                            <div key={columna.name} className="flex items-center justify-between">
+                                                <p className="text-sm w-[5rem]">{columna.name}</p>
+                                                <p className="text-md font-[500] text-center w-[9rem]">{jugador[columna.uid]}</p>
+                                                <ModalJugadores jugador={jugador} columna={columna} cambioDatos={setCambioDeDatos} equipos={listaEquipos} />
+                                            </div>
+                                        )
+                                    }
+                                })}
                             </div>
                         </CardBody>
                         <Divider />

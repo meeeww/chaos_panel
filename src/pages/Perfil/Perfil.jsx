@@ -19,11 +19,15 @@ import { columns } from "./ModalEditar/data";
 export default function Perfil() {
 
   const [usuario, setUsuario] = useState()
+  const [equipo, setEquipo] = useState()
   const [cargando, setCargando] = useState(true)
+  const [extraData, setExtraData] = useState(false)
   const [seguridad, setSeguridad] = useState(false)
   const [cuentas, setCuentas] = useState()
+  const [cambioDatos, setCambioDeDatos] = useState(false)
 
   useEffect(() => {
+    setCambioDeDatos(false)
     checkSession(setUsuario, setCargando, setSeguridad)
     if (!cargando) {
       returnSession(usuario)
@@ -32,10 +36,14 @@ export default function Perfil() {
       if (Object.keys(usuario).length != 0) {
         axios.get(api.directorio + "usuarios/cuentas/id=" + usuario.informacion.id_usuario).then((cuenta) => {
           setCuentas(cuenta.data)
+          axios.get(api.directorio + "usuarios/equipo/id=" + usuario.informacion.id_usuario).then((equipito) => {
+            setEquipo(equipito.data[0])
+            setExtraData(true)
+          })
         })
       }
     }
-  }, [cargando])
+  }, [cargando, cambioDatos])
 
   if (usuario == undefined) {
     if (seguridad) {
@@ -77,7 +85,7 @@ export default function Perfil() {
                             <p>{columna.name}</p>
                             <div className="flex justify-center items-center gap-4">
                               <p className="font-[600] text-lg">{getPerms(usuario.informacion[columna.uid])}</p>
-                              <ModalPerfil columna={columna} />
+                              {extraData ? <ModalPerfil jugador={usuario} columna={columna} cambioDatos={setCambioDeDatos} equipo={equipo} /> : <></>}
                             </div>
                           </div>
                           <Divider className="my-2" />
@@ -89,8 +97,7 @@ export default function Perfil() {
                           <div className="flex justify-between items-center">
                             <p>{columna.name}</p>
                             <div className="flex justify-center items-center gap-4">
-                              <p className="font-[600] text-lg">{getEdad(usuario.informacion[columna.uid])}</p>
-                              <ModalPerfil columna={columna} />
+                              {extraData ? <ModalPerfil jugador={usuario} columna={columna} cambioDatos={setCambioDeDatos} equipo={equipo} /> : <></>}
                             </div>
                           </div>
                           <Divider className="my-2" />
@@ -103,14 +110,13 @@ export default function Perfil() {
                             <p>{columna.name}</p>
                             <div className="flex justify-center items-center gap-4">
                               <p className="font-[600] text-lg">{usuario.informacion[columna.uid]}</p>
-                              <ModalPerfil columna={columna} />
+                              {extraData ? <ModalPerfil jugador={usuario} columna={columna} cambioDatos={setCambioDeDatos} equipo={equipo} /> : <></>}
                             </div>
                           </div>
                           <Divider className="my-2" />
                         </div>
                       )
                   }
-
                 })}
               </div>
             </div>

@@ -1,7 +1,6 @@
 import { Card, CardHeader, CardBody, Image, Divider, Button } from "@nextui-org/react";
 
 export default function Cuentas(cuentas) {
-    console.log(cuentas.cuentas)
     return (
         <Card className="py-4 w-full h-[273px]">
             <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
@@ -14,7 +13,7 @@ export default function Cuentas(cuentas) {
             </CardHeader>
             <Divider className="mt-2" />
             <CardBody className="flex flex-col gap-6 overflow-y-auto no-scrollbar">
-                {cuentas.cuentas.map((cuenta) => (
+                {cuentas.cuentas && cuentas.cuentas.map((cuenta) => (
                     <div key={cuenta.id_cuenta} className="flex justify-between items-center">
                         <div className="flex flex-col gap-1">
                             <h3 className="font-[600] text-lg">{cuenta.invocador}</h3>

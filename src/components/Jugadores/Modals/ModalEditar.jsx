@@ -110,6 +110,10 @@ export default function ModalJugadores(info) {
                         </DropdownMenu>
                     </Dropdown>
                 )
+            case "edad":
+                return (
+                    <Input type="date" placeholder={info.jugador[info.columna.uid]} className="w-full sm:max-w-[100%]" isRequired onChange={(e) => { setValor(e.target.value) }} />
+                )
             default:
                 return (
                     <Input type="text" placeholder={info.jugador[info.columna.uid]} className="w-full sm:max-w-[100%]" isRequired onChange={(e) => { setValor(e.target.value) }} />
@@ -119,13 +123,23 @@ export default function ModalJugadores(info) {
 
     const handleUpload = () => {
         toast.promise(() => new Promise((resolve, reject) => {
-            axios.put(api.directorio + "modificarusuario", { id: info.jugador.id_usuario, columna: info.columna.modificar, valor: valor }).then(function () {
-                sendLog(48, "Modificar Usuario", { nombre: info.jugador.nombre_usuario, apellido: info.jugador.apellido_usuario, nick: info.jugador.nick_usuario, edad: info.jugador.edad, rol: info.jugador.rol })
-                info.cambioDatos(true)
-                resolve()
-            }).catch(function () {
-                reject()
-            })
+            if (info.columna.modificar == "edad") {
+                axios.put(api.directorio + "modificarusuario", { id: info.jugador.id_usuario, columna: info.columna.modificar, valor: (Date.parse(valor) / 1000.0) }).then(function () {
+                    sendLog(48, "Modificar Usuario", { nombre: info.jugador.nombre_usuario, apellido: info.jugador.apellido_usuario, nick: info.jugador.nick_usuario, edad: (Date.parse(info.jugador.edad) / 1000.0), rol: info.jugador.rol })
+                    info.cambioDatos(true)
+                    resolve()
+                }).catch(function () {
+                    reject()
+                })
+            } else {
+                axios.put(api.directorio + "modificarusuario", { id: info.jugador.id_usuario, columna: info.columna.modificar, valor: valor }).then(function () {
+                    sendLog(48, "Modificar Usuario", { nombre: info.jugador.nombre_usuario, apellido: info.jugador.apellido_usuario, nick: info.jugador.nick_usuario, edad: (Date.parse(info.jugador.edad) / 1000.0), rol: info.jugador.rol })
+                    info.cambioDatos(true)
+                    resolve()
+                }).catch(function () {
+                    reject()
+                })
+            }
         }), {
             loading: 'Modificando usuario',
             success: 'Usuario modificado',
