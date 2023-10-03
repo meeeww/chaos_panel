@@ -1,6 +1,7 @@
 import { Card, CardHeader, CardBody, Image, Divider, Button } from "@nextui-org/react";
 
-import ModalCrearCuenta from "./ModalCrearUsuario/ModalCrear";
+import ModalCrearCuenta from "./ModalCrearCuenta/ModalCrear";
+import ModalEliminarCuenta from "./ModalCrearCuenta/ModalEliminar";
 
 export default function Cuentas(cuentas) {
     return (
@@ -19,6 +20,7 @@ export default function Cuentas(cuentas) {
                             <h3 className="font-[600] text-lg">{cuenta.invocador}</h3>
                             <h4 className="font-[300] text-sm">{cuenta.linea_principal}, {cuenta.linea_secundaria}</h4>
                         </div>
+                        <ModalEliminarCuenta cuenta={cuenta} cambioDatos={cuentas.cambioDatos} />
                     </div>
                 ))}
             </CardBody>

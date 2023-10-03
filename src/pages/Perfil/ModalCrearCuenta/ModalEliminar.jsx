@@ -1,13 +1,13 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 
 import axios from "axios"
 import api from "../../../../variables.json";
 import sendLog from "../../../utils/sendLog";
 
-import { Modal, ModalContent, ModalHeader, ModalBody, Button, useDisclosure, Checkbox } from "@nextui-org/react";
+import { Modal, ModalContent, ModalHeader, ModalBody, Checkbox, Button, useDisclosure, Input, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/react";
 import { Toaster, toast } from 'sonner'
 
-export default function ModalEliminar(info) {
+export default function ModalEliminarCuenta(info) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
     const [confirmacion, setConfirmacion] = useState(false)
@@ -16,18 +16,20 @@ export default function ModalEliminar(info) {
         setConfirmacion(!confirmacion)
     }
 
+    console.log(info)
+
     const handleUpload = () => {
         toast.promise(() => new Promise((resolve, reject) => {
-            axios.delete(api.directorio + "usuarios/enlaces", { data: { id_usuario: info.usuario.usuario.informacion.id_usuario, columna: info.tipo } }).then(function () {
-                sendLog(info.usuario.usuario.informacion.id_usuario, "Añadir Enlaze", { "accion": "Añadido Enlace" })
+            axios.delete(api.directorio + "eliminarcuenta", { data: { id_cuenta: info.cuenta.id_cuenta } }).then(function () {
+                sendLog(info.cuenta.id_usuario, "Añadir Cuenta", { "accion": "Cuenta Añadida" })
                 info.cambioDatos(true)
                 resolve()
             }).catch(function () {
                 reject()
             })
         }), {
-            loading: 'Eliminando enlace',
-            success: 'Enlace eliminado',
+            loading: 'Añadiendo cuenta',
+            success: 'Cuenta añadida',
             error: 'Error',
         });
     }
@@ -44,10 +46,10 @@ export default function ModalEliminar(info) {
                 <ModalContent>
                     {(onClose) => (
                         <>
-                            <ModalHeader className="flex flex-col gap-1">{"Eliminar Enlace"}</ModalHeader>
+                            <ModalHeader className="flex flex-col gap-1">{"Eliminar cuenta de League of Legends"}</ModalHeader>
                             <ModalBody>
                                 <div className="flex flex-col justify-center gap-2 mb-8">
-                                    <Checkbox onChange={cambiarConfirmacion} id="checkBoxConfirmacion">¿Estás seguro de que quieres eliminar el enlace?</Checkbox>
+                                    <Checkbox onChange={cambiarConfirmacion} id="checkBoxConfirmacion">¿Estás seguro de que quieres eliminar la cuenta?</Checkbox>
                                 </div>
                                 <div className="flex justify-evenly">
                                     <Button color="danger" variant="flat" onPress={onClose}>

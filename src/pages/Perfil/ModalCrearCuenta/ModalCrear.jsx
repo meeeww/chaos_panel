@@ -7,7 +7,7 @@ import sendLog from "../../../utils/sendLog";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/react";
 import { Toaster, toast } from 'sonner'
 
-export default function ModalEnlazar(info) {
+export default function ModalCrearCuenta(info) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
     const [valor, setValor] = useState("")

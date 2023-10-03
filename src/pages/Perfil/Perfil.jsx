@@ -7,7 +7,7 @@ import axios from "axios";
 import api from "../../../variables.json"
 
 import ModalPerfil from "./ModalEditar/ModalEditar.jsx";
-import ModalEnlazar from "./ModalCrearUsuario/ModalCrear.jsx";
+import ModalEnlazar from "./ModalCrearCuenta/ModalCrear.jsx";
 
 import CuentasTabla from "./Cuentas.jsx";
 import Enlazar from "./Enlazamientos.jsx";
@@ -67,7 +67,7 @@ export default function Perfil() {
             <Image
               alt="Card background"
               className="object-cover rounded-xl"
-              src={"https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/profile-icons/5000.jpg"}
+              src={"https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/profile-icons/" + usuario.informacion.icono + ".jpg"}
               width={270}
             />
           </CardHeader>
