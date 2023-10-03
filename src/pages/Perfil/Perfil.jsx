@@ -7,7 +7,10 @@ import axios from "axios";
 import api from "../../../variables.json"
 
 import ModalPerfil from "./ModalEditar/ModalEditar.jsx";
+import ModalEnlazar from "./ModalCrearUsuario/ModalCrear.jsx";
+
 import CuentasTabla from "./Cuentas.jsx";
+import Enlazar from "./Enlazamientos.jsx";
 
 import checkSession from "../../utils/checkSession.js";
 import returnSession from "../../utils/returnSession";
@@ -37,7 +40,8 @@ export default function Perfil() {
         axios.get(api.directorio + "usuarios/cuentas/id=" + usuario.informacion.id_usuario).then((cuenta) => {
           setCuentas(cuenta.data)
           axios.get(api.directorio + "usuarios/equipo/id=" + usuario.informacion.id_usuario).then((equipito) => {
-            setEquipo(equipito.data[0])
+            setEquipo(equipito.data)
+            console.log(equipito.data)
             setExtraData(true)
           })
         })
@@ -85,7 +89,18 @@ export default function Perfil() {
                             <p>{columna.name}</p>
                             <div className="flex justify-center items-center gap-4">
                               <p className="font-[600] text-lg">{getPerms(usuario.informacion[columna.uid])}</p>
-                              {extraData ? <ModalPerfil jugador={usuario} columna={columna} cambioDatos={setCambioDeDatos} equipo={equipo} /> : <></>}
+                            </div>
+                          </div>
+                          <Divider className="my-2" />
+                        </div>
+                      )
+                    case "Equipo":
+                      return (
+                        <div key={columna.name}>
+                          <div className="flex justify-between items-center">
+                            <p>{columna.name}</p>
+                            <div className="flex justify-center items-center gap-4">
+                              {extraData ? <p className="font-[600] text-lg">{equipo[0].nombre_equipo}</p> : <></>}
                             </div>
                           </div>
                           <Divider className="my-2" />
@@ -97,7 +112,20 @@ export default function Perfil() {
                           <div className="flex justify-between items-center">
                             <p>{columna.name}</p>
                             <div className="flex justify-center items-center gap-4">
+                              <p className="font-[600] text-lg">{getEdad(usuario.informacion[columna.uid])}</p>
                               {extraData ? <ModalPerfil jugador={usuario} columna={columna} cambioDatos={setCambioDeDatos} equipo={equipo} /> : <></>}
+                            </div>
+                          </div>
+                          <Divider className="my-2" />
+                        </div>
+                      )
+                    case "Nick":
+                      return (
+                        <div key={columna.name}>
+                          <div className="flex justify-between items-center">
+                            <p>{columna.name}</p>
+                            <div className="flex justify-center items-center gap-4">
+                              <p className="font-[600] text-lg">{usuario.informacion[columna.uid]}</p>
                             </div>
                           </div>
                           <Divider className="my-2" />
@@ -123,50 +151,8 @@ export default function Perfil() {
           </CardBody>
         </Card>
         <div className="flex flex-col w-[50%] gap-4">
-          {cuentas == undefined ? <></> : <CuentasTabla cuentas={cuentas} />}
-          <Card className="py-4 h-[425px]">
-            <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
-              <div className="flex mb-[1rem] w-full justify-between items-center">
-                <h4 className="font-[800] text-2xl">Mis Contactos</h4>
-                <Button color="primary" endContent={<i className="fa-solid fa-plus"></i>}>
-                  Añadir Contacto
-                </Button>
-              </div>
-            </CardHeader>
-            <Divider className="mt-2" />
-            <CardBody className="overflow-y-scroll no-scrollbar flex flex-col gap-6">
-              <div className="flex justify-between items-center">
-                <div className="flex flex-col gap-1">
-                  <h3 className="font-[600] text-lg">Circuito Tormenta</h3>
-                  <h4 className="font-[300] text-sm">{usuario.informacion.circuitotormenta}</h4>
-                </div>
-                <div className="flex gap-2">
-                  <Button color="primary" radius="full" variant="bordered" size="sm" isIconOnly endContent={<i className="fa-solid fa-info"></i>} />
-                  <Button color="danger" radius="full" variant="bordered" size="sm" isIconOnly endContent={<i className="fa-solid fa-ban"></i>} />
-                </div>
-              </div>
-              <div className="flex justify-between items-center">
-                <div className="flex flex-col gap-1">
-                  <h3 className="font-[600] text-lg">Twitter</h3>
-                  <h4 className="font-[300] text-sm">{usuario.informacion.twitter}</h4>
-                </div>
-                <div className="flex gap-2">
-                  <Button color="primary" radius="full" variant="bordered" size="sm" isIconOnly endContent={<i className="fa-solid fa-info"></i>} />
-                  <Button color="danger" radius="full" variant="bordered" size="sm" isIconOnly endContent={<i className="fa-solid fa-ban"></i>} />
-                </div>
-              </div>
-              <div className="flex justify-between items-center">
-                <div className="flex flex-col gap-1">
-                  <h3 className="font-[600] text-lg">Discord</h3>
-                  <h4 className="font-[300] text-sm">{usuario.informacion.discord}</h4>
-                </div>
-                <div className="flex gap-2">
-                  <Button color="primary" radius="full" variant="bordered" size="sm" isIconOnly endContent={<i className="fa-solid fa-info"></i>} />
-                  <Button color="danger" radius="full" variant="bordered" size="sm" isIconOnly endContent={<i className="fa-solid fa-ban"></i>} />
-                </div>
-              </div>
-            </CardBody>
-          </Card>
+          {cuentas == undefined ? <></> : <CuentasTabla cuentas={cuentas} cambioDatos={setCambioDeDatos} />}
+          {<Enlazar cambioDatos={setCambioDeDatos} usuario={usuario} />}
         </div>
       </div>
     </Layout>

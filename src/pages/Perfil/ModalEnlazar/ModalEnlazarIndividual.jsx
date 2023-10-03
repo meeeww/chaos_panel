@@ -7,35 +7,23 @@ import sendLog from "../../../utils/sendLog";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/react";
 import { Toaster, toast } from 'sonner'
 
-export default function ModalPerfil(info) {
+export default function ModalEnlazarIndividual(info) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
-    const [valor, setValor] = useState("")
-
-    const RenderInput = (tipo, columna) => {
-        if(tipo == "date") {
-            return (
-                <Input type="date" placeholder={info.jugador.informacion["edad"]} className="w-full sm:max-w-[100%]" isRequired onChange={(e) => { setValor(Date.parse(e.target.value) / 1000) }} />
-            )
-        } else {
-            return (
-                <Input type="text" placeholder={info.jugador.informacion[info.columna.uid]} className="w-full sm:max-w-[100%]" isRequired onChange={(e) => { setValor(e.target.value) }} />
-            )
-        }
-    }
+    const [valor, setValor] = useState()
 
     const handleUpload = () => {
         toast.promise(() => new Promise((resolve, reject) => {
-            axios.put(api.directorio + "modificarusuario", { id: info.jugador.informacion.id_usuario, columna: info.columna.modificar, valor: valor }).then(function () {
-                sendLog(16, "Modificar Perfil", { "accion": "Perfil Cambiado" })
+            axios.put(api.directorio + "usuarios/enlaces", { id_usuario: info.usuario.usuario.informacion.id_usuario, columna: info.tipo, valor: valor }).then(function () {
+                sendLog(info.usuario.usuario.informacion.id_usuario, "Añadir Enlaze", { "accion": "Añadido Enlace" })
                 info.cambioDatos(true)
                 resolve()
             }).catch(function () {
                 reject()
             })
         }), {
-            loading: 'Modificando perfil',
-            success: 'Perfil modificado',
+            loading: 'Añadiendo enlace',
+            success: 'Enlace añadido',
             error: 'Error',
         });
     }
@@ -52,9 +40,9 @@ export default function ModalPerfil(info) {
                 <ModalContent>
                     {(onClose) => (
                         <>
-                            <ModalHeader className="flex flex-col gap-1">Mofidicar {info.columna.name}</ModalHeader>
+                            <ModalHeader className="flex flex-col gap-1">{"Modificar Enlace"}</ModalHeader>
                             <ModalBody>
-                                {RenderInput(info.columna.tipo, info.columna.modificar)}
+                                <Input type="text" placeholder={"Nombre de Cuenta"} className="w-full sm:max-w-[100%]" isRequired onChange={(e) => { setValor(e.target.value) }} />
                             </ModalBody>
                             <ModalFooter>
                                 <Button color="danger" variant="flat" onPress={onClose}>
@@ -67,7 +55,7 @@ export default function ModalPerfil(info) {
                                         toast.error('No has rellenado todos los campos.')
                                     }
                                 }}>
-                                    Modificar
+                                    Añadir
                                 </Button>
                             </ModalFooter>
                         </>

@@ -9,6 +9,34 @@ export default function Layout(datos) {
 
     const [sidebarOpen, setSidebarOpen] = useState(false)
 
+    const renderAdmin = () => {
+        if (datos.info.informacion.rol >= 20) {
+            return (
+                <div>
+                    <h3 className="mb-2 ml-4 text-sm font-[700] text-bodydark2">Liga</h3>
+                    <ul className="mb-6 flex flex-col gap-1.5">
+                        <li>
+                            <NavLink
+                                to={"/equipos"}
+                                className={"group relative flex items-center gap-2.5 rounded-md py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-[var(--color-gris-sidebar)]"}
+                            >
+                                <i className="fa-solid fa-people-group w-[20px] text-center"></i>
+                                Equipos
+                            </NavLink>
+                            <NavLink
+                                to={"/usuarios"}
+                                className={"group relative flex items-center gap-2.5 rounded-md py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-[var(--color-gris-sidebar)]"}
+                            >
+                                <i className="fa-solid fa-users w-[20px] text-center"></i>
+                                Usuarios
+                            </NavLink>
+                        </li>
+                    </ul>
+                </div>
+            )
+        }
+    }
+
     return (
         <NextUIProvider>
             <div className="flex h-screen overflow-hidden">
@@ -33,27 +61,7 @@ export default function Layout(datos) {
                     </div>
                     <div className="no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear">
                         <nav className="mt-5 py-4 px-4 lg:mt-9 lg:px-6">
-                            <div>
-                                <h3 className="mb-2 ml-4 text-sm font-[700] text-bodydark2">Liga</h3>
-                                <ul className="mb-6 flex flex-col gap-1.5">
-                                    <li>
-                                        <NavLink
-                                            to={"/equipos"}
-                                            className={"group relative flex items-center gap-2.5 rounded-md py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-[var(--color-gris-sidebar)]"}
-                                        >
-                                            <i className="fa-solid fa-people-group w-[20px] text-center"></i>
-                                            Equipos
-                                        </NavLink>
-                                        <NavLink
-                                            to={"/usuarios"}
-                                            className={"group relative flex items-center gap-2.5 rounded-md py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-[var(--color-gris-sidebar)]"}
-                                        >
-                                            <i className="fa-solid fa-users w-[20px] text-center"></i>
-                                            Usuarios
-                                        </NavLink>
-                                    </li>
-                                </ul>
-                            </div>
+                            {renderAdmin()}
                             <div>
                                 <h3 className="mb-2 ml-4 text-sm font-[700] text-bodydark2">Usuario</h3>
                                 <ul className="mb-6 flex flex-col gap-1.5">
@@ -90,7 +98,7 @@ export default function Layout(datos) {
                             </div>
                             <div className="flex items-center gap-6 lg:gap-12">
                                 <div className="flex gap-4">
-                                    <Dropdown placement="bottom-end">
+                                    {/* <Dropdown placement="bottom-end">
                                         <DropdownTrigger>
                                             <div className="relative flex items-center justify-center">
                                                 <Avatar
@@ -149,7 +157,7 @@ export default function Layout(datos) {
                                                 </DropdownItem>
                                             </DropdownSection>
                                         </DropdownMenu>
-                                    </Dropdown>
+                                    </Dropdown> */}
                                 </div>
                                 <div className="flex justify-center items-center gap-6">
                                     <div className="text-end">
@@ -172,7 +180,7 @@ export default function Layout(datos) {
                                                 </DropdownItem>
                                             </DropdownSection>
                                             <DropdownSection title="Usuario" showDivider>
-                                                <DropdownItem key="perfil" description="Ver información de tu perfil" startContent={<i className="fa-solid fa-user mr-[2px]"></i>} onPress={() => {window.location.replace("/perfil")}}>Perfil</DropdownItem>
+                                                <DropdownItem key="perfil" description="Ver información de tu perfil" startContent={<i className="fa-solid fa-user mr-[2px]"></i>} onPress={() => { window.location.replace("/perfil") }}>Perfil</DropdownItem>
                                                 <DropdownItem key="contactos" description="Consultar tus contactos" startContent={<i className="fa-solid fa-address-book"></i>} variant="disabled">Contactos</DropdownItem>
                                                 <DropdownItem key="ajustes" description="Modificar ajustes de tu cuenta" startContent={<i className="fa-solid fa-gear"></i>} variant="disabled">Ajustes</DropdownItem>
                                             </DropdownSection>
