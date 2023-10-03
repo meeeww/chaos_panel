@@ -3,13 +3,14 @@ import { useState, useMemo } from "react";
 import axios from "axios";
 import api from "../../../../variables.json"
 import sendLog from "../../../utils/sendLog";
+import md5 from "md5"
 
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, DropdownSection } from "@nextui-org/react";
 import { Toaster, toast } from 'sonner'
 
 export default function ModalUsuarios(cambioDatos) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
-
+    
     const [selectedKeys, setSelectedKeys] = useState(new Set(["Permisos"]));
 
     const selectedValue = useMemo(
@@ -21,22 +22,34 @@ export default function ModalUsuarios(cambioDatos) {
     const [apellido, setApellido] = useState("")
     const [nick, setNick] = useState("")
     const [edad, setEdad] = useState(0)
+    const [contra, setContra] = useState()
     const [rol, setRol] = useState(0)
 
     const handleUpload = () => {
-        toast.promise(() => new Promise((resolve, reject) => {
-            axios.post(api.directorio + "crearusuario", { nombre: nombre, apellido: apellido, nick: nick, edad: edad, rol: rol }).then(function () {
-                cambioDatos.cambioDatos(true)
-                sendLog(48, "Crear Usuario", { nombre: nombre, apellido: apellido, nick: nick, edad: edad, rol: rol })
-                resolve()
-            }).catch(function () {
-                reject()
+        const encriptarPass = () => {
+            return new Promise((resolve) => {
+                resolve(md5(contra))
             })
-        }), {
-            loading: 'Creando usuario',
-            success: 'Usuario creado',
-            error: 'Error',
-        });
+        }
+
+        encriptarPass().then(
+            (contrasenaEncriptada) => {
+                toast.promise(() => new Promise((resolve, reject) => {
+                    axios.post(api.directorio + "crearusuario", { nombre: nombre, apellido: apellido, nick: nick, edad: edad, rol: rol, contra: contrasenaEncriptada }).then(function () {
+                        cambioDatos.cambioDatos(true)
+                        sendLog(48, "Crear Usuario", { nombre: nombre, apellido: apellido, nick: nick, edad: edad, rol: rol })
+                        resolve()
+                    }).catch(function () {
+                        reject()
+                    })
+                }), {
+                    loading: 'Creando usuario',
+                    success: 'Usuario creado',
+                    error: 'Error',
+                });
+            }
+        )
+        
     }
 
     return (
@@ -59,6 +72,7 @@ export default function ModalUsuarios(cambioDatos) {
                                 <Input type="text" placeholder="Apellido" onChange={(e) => { setApellido(e.target.value) }} isRequired />
                                 <Input type="text" placeholder="Nick" onChange={(e) => { setNick(e.target.value) }} isRequired />
                                 <Input type="text" placeholder="Edad" onChange={(e) => { setEdad(e.target.value) }} isRequired />
+                                <Input type="text" placeholder="Contraseña" onChange={(e) => { setContra(e.target.value) }} isRequired />
                                 <Dropdown>
                                     <DropdownTrigger>
                                         <Button

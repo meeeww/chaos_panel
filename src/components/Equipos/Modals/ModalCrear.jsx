@@ -55,7 +55,7 @@ export default function ModalEquipos(cambioDatos) {
                             <ModalHeader className="flex flex-col gap-1">Crear Equipo</ModalHeader>
                             <ModalBody>
                                 <Input type="text" placeholder="Nombre" className="w-full sm:max-w-[100%]" onChange={(e) => { setNombre(e.target.value) }} isRequired />
-                                <Input type="text" variant={"flat"} placeholder="Acronimo" onChange={(e) => { setAcronimo(e.target.value) }} isRequired />
+                                <Input type="text" variant={"flat"} placeholder="Acrónimo (MÁX 3 CARÁCTERES)" onChange={(e) => { setAcronimo(e.target.value) }} isRequired />
                                 <Input id="upload" type="file" variant={"flat"} onChange={handleFile} />
                             </ModalBody>
                             <ModalFooter>
