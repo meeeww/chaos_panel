@@ -41,7 +41,6 @@ export default function Perfil() {
           setCuentas(cuenta.data)
           axios.get(api.directorio + "usuarios/equipo/id=" + usuario.informacion.id_usuario).then((equipito) => {
             setEquipo(equipito.data)
-            console.log(equipito.data)
             setExtraData(true)
           })
         })
@@ -156,7 +155,7 @@ export default function Perfil() {
           </CardBody>
         </Card>
         <div className="flex flex-col w-[50%] gap-4">
-          {cuentas == undefined ? <></> : <CuentasTabla cuentas={cuentas} cambioDatos={setCambioDeDatos} />}
+          {cuentas == undefined ? <></> : <CuentasTabla usuario={usuario} cuentas={cuentas} cambioDatos={setCambioDeDatos} />}
           {<Enlazar cambioDatos={setCambioDeDatos} usuario={usuario} />}
         </div>
       </div>

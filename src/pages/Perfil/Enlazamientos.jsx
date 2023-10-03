@@ -25,7 +25,7 @@ export default function Enlazar(cuentas) {
                         {cuentas.usuario.informacion.circuitotormenta != null ?
                             <>
                                 <ModalEnlazarIndividual usuario={cuentas} tipo={"circuitotormenta"} cambioDatos={cuentas.cambioDatos} />
-                                <ModalEliminar usuario={cuentas} tipo={"discord"} cambioDatos={cuentas.cambioDatos} />
+                                <ModalEliminar usuario={cuentas} tipo={"circuitotormenta"} cambioDatos={cuentas.cambioDatos} />
                             </> :
                             <></>
                         }
@@ -40,7 +40,7 @@ export default function Enlazar(cuentas) {
                         {cuentas.usuario.informacion.twitter != null ?
                             <>
                                 <ModalEnlazarIndividual usuario={cuentas} tipo={"twitter"} cambioDatos={cuentas.cambioDatos} />
-                                <ModalEliminar usuario={cuentas} tipo={"discord"} cambioDatos={cuentas.cambioDatos} />
+                                <ModalEliminar usuario={cuentas} tipo={"twitter"} cambioDatos={cuentas.cambioDatos} />
                             </> :
                             <></>
                         }

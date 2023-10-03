@@ -10,7 +10,7 @@ import { Toaster, toast } from 'sonner'
 export default function ModalEnlazar(info) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
-    const [valor, setValor] = useState()
+    const [valor, setValor] = useState(1)
     const [cuenta, setCuenta] = useState("")
 
     const handleUpload = () => {

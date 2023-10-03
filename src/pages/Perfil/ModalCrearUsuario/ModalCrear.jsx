@@ -14,6 +14,8 @@ export default function ModalEnlazar(info) {
     const [valorPrimaria, setValorPrimaria] = useState("")
     const [valorSecundaria, setValorSecundaria] = useState("")
 
+    console.log(info.info.usuario.informacion.id_usuario)
+
     const handleUpload = () => {
         toast.promise(() => new Promise((resolve, reject) => {
             let principal = ""
@@ -54,9 +56,8 @@ export default function ModalEnlazar(info) {
                     secundaria = "Support"
                     break;
             }
-
-            axios.post(api.directorio + "crearcuenta", { id_usuario: info.info.cuentas[0].id_usuario, invocador: valor, linea_principal: principal, linea_secundaria: secundaria }).then(function () {
-                sendLog(info.info.cuentas[0].id_usuario, "Añadir Cuenta", { "accion": "Perfil Cambiado" })
+            axios.post(api.directorio + "crearcuenta", { id_usuario: info.info.usuario.informacion.id_usuario, invocador: valor, linea_principal: principal, linea_secundaria: secundaria }).then(function () {
+                sendLog(info.info.usuario.informacion.id_usuario, "Añadir Cuenta", { "accion": "Perfil Cambiado" })
                 info.cambioDatos(true)
                 resolve()
             }).catch(function () {
