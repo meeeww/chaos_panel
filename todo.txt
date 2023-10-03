@@ -4,6 +4,8 @@ haciendo
     - validacion para enlazar cuentas
 
 para hacer
+    - en el apartado de usuario, cambiar que aparezca el id del equipo y el numero del rol
     - arreglar añadir usuario desde el panel de admin
     - en equipos falta poder ver que usuarios lo componen
     - en /usuarios en crear cuenta, poner que se pueda meter fecha en vez de un input a secas
+    - poder modificar la contraseña de los usuarios o forzar a cambiarla
