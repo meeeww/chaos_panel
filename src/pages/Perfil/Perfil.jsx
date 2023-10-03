@@ -95,17 +95,22 @@ export default function Perfil() {
                         </div>
                       )
                     case "Equipo":
-                      return (
-                        <div key={columna.name}>
-                          <div className="flex justify-between items-center">
-                            <p>{columna.name}</p>
-                            <div className="flex justify-center items-center gap-4">
-                              {extraData ? <p className="font-[600] text-lg">{equipo[0].nombre_equipo}</p> : <></>}
+                      if (equipo != undefined) {
+                        if (equipo.length != 0) {
+                          return (
+                            <div key={columna.name}>
+                              <div className="flex justify-between items-center">
+                                <p>{columna.name}</p>
+                                <div className="flex justify-center items-center gap-4">
+                                  {extraData ? <p className="font-[600] text-lg">{equipo[0].nombre_equipo}</p> : <></>}
+                                </div>
+                              </div>
+                              <Divider className="my-2" />
                             </div>
-                          </div>
-                          <Divider className="my-2" />
-                        </div>
-                      )
+                          )
+                        }
+                      }
+                      break;
                     case "Edad":
                       return (
                         <div key={columna.name}>
