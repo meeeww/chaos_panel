@@ -28,10 +28,15 @@ export default function Jugador() {
     const [cuentas, setCuentas] = useState()
     const [cuentaCargando, setCuentasCargando] = useState(true)
 
+    if (urlParams.get('id') == null)
+        window.location.replace("/usuarios")
+
     useEffect(() => {
         setCambioDeDatos(false)
         axios.get(api.directorio + "usuarios/id=" + urlParams.get('id')).then((jugador) => {
             setJugador(jugador.data[0])
+            if (jugador.data[0] == undefined)
+                window.location.replace("/usuarios")
             axios.get(api.directorio + "usuarios/equipo/id=" + urlParams.get('id')).then((equipos) => {
                 setEquipo(equipos.data[0])
                 setEquipoCargando(false)

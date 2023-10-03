@@ -40,7 +40,7 @@ export default function ModalEnlazarIndividual(info) {
                 <ModalContent>
                     {(onClose) => (
                         <>
-                            <ModalHeader className="flex flex-col gap-1">{"Modificar Enlace"}</ModalHeader>
+                            <ModalHeader className="flex flex-col gap-1">{"Modificar " + (info.tipo.charAt(0).toUpperCase() + info.tipo.slice(1))}</ModalHeader>
                             <ModalBody>
                                 <Input type="text" placeholder={"Nombre de Cuenta"} className="w-full sm:max-w-[100%]" isRequired onChange={(e) => { setValor(e.target.value) }} />
                             </ModalBody>

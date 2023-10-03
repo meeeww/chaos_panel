@@ -52,7 +52,7 @@ export default function ModalPerfil(info) {
                 <ModalContent>
                     {(onClose) => (
                         <>
-                            <ModalHeader className="flex flex-col gap-1">Mofidicar {info.columna.name}</ModalHeader>
+                            <ModalHeader className="flex flex-col gap-1">Modificar {info.columna.name == "Edad" ? "Fecha de Nacimiento" : info.columna.name}</ModalHeader>
                             <ModalBody>
                                 {RenderInput(info.columna.tipo)}
                             </ModalBody>

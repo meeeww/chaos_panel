@@ -20,11 +20,16 @@ export default function Equipo() {
     const [ligas, setLigas] = useState()
     const [temporadas, setTemporadas] = useState()
 
+    if (urlParams.get('id') == null)
+        window.location.replace("/equipos")
+
     useEffect(() => {
         setCambioDeDatos(false)
         axios.get(api.directorio + "equipos/id=" + urlParams.get('id')).then((equipo) => {
             setEquipo(equipo.data[0])
             setCargando(false)
+            if (equipo.data[0] == undefined)
+                window.location.replace("/equipos")
         })
         axios.get(api.directorio + "ligas").then((liga) => {
             setLigas(liga.data)
@@ -33,6 +38,8 @@ export default function Equipo() {
             setTemporadas(temporada.data)
         })
     }, [cambioDeDatos])
+
+
 
     const renderChip = (activo) => {
         switch (activo) {
