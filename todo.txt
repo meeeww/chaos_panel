@@ -1,0 +1,9 @@
+hecho
+
+haciendo
+    - validacion para enlazar cuentas
+
+para hacer
+    - arreglar añadir usuario desde el panel de admin
+    - en equipos falta poder ver que usuarios lo componen
+    - en /usuarios en crear cuenta, poner que se pueda meter fecha en vez de un input a secas
