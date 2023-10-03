@@ -25,7 +25,6 @@ function Inicio() {
     }
     return <></>
   } else {
-    console.log(Object.keys(usuario).length == 0)
     if (Object.keys(usuario).length == 0) {
       window.location.replace("/iniciosesion")
     }

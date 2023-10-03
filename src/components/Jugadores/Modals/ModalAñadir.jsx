@@ -110,7 +110,6 @@ export default function ModalUsuarios(cambioDatos) {
                                     Cerrar
                                 </Button>
                                 <Button color="primary" onPress={onClose} onClick={() => {
-                                    console.log(nombre, apellido, nick, edad, rol)
                                     if (nombre != "" && apellido != "" && nick != "" && edad != "") {
                                         handleUpload()
                                     } else {

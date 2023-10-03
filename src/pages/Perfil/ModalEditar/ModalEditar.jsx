@@ -1,10 +1,10 @@
-import { useState, useMemo } from "react";
+import { useState } from "react";
 
 import axios from "axios"
 import api from "../../../../variables.json";
 import sendLog from "../../../utils/sendLog";
 
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/react";
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input } from "@nextui-org/react";
 import { Toaster, toast } from 'sonner'
 
 export default function ModalPerfil(info) {
@@ -12,8 +12,8 @@ export default function ModalPerfil(info) {
 
     const [valor, setValor] = useState("")
 
-    const RenderInput = (tipo, columna) => {
-        if(tipo == "date") {
+    const RenderInput = (tipo) => {
+        if (tipo == "date") {
             return (
                 <Input type="date" placeholder={info.jugador.informacion["edad"]} className="w-full sm:max-w-[100%]" isRequired onChange={(e) => { setValor(Date.parse(e.target.value) / 1000) }} />
             )
@@ -54,7 +54,7 @@ export default function ModalPerfil(info) {
                         <>
                             <ModalHeader className="flex flex-col gap-1">Mofidicar {info.columna.name}</ModalHeader>
                             <ModalBody>
-                                {RenderInput(info.columna.tipo, info.columna.modificar)}
+                                {RenderInput(info.columna.tipo)}
                             </ModalBody>
                             <ModalFooter>
                                 <Button color="danger" variant="flat" onPress={onClose}>

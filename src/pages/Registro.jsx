@@ -22,9 +22,9 @@ export default function Registro() {
     useEffect(() => {
         checkSessionInicio(setUsuario, setCargando)
         if (!cargando && usuario.informacion != undefined) {
-          window.location.replace("/perfil")
+            window.location.replace("/perfil")
         }
-      }, [cargando])
+    }, [cargando])
 
     const rand = () => {
         return Math.random().toString(36).substr(2);
@@ -94,7 +94,7 @@ export default function Registro() {
                     <CardBody className="w-[20rem]">
                         <div className="flex flex-col justify-center items-center h-full w-full mt-2">
                             <div className="w-full h-full flex flex-col justify-center items-center gap-4">
-                            <img src={Logo} className="w-[6.5rem] h-[9.25rem] hidden md:flex"></img>
+                                <img src={Logo} className="w-[6.5rem] h-[9.25rem] hidden md:flex"></img>
                                 <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 mt-2 justify-start h-full">
                                     <Input
                                         {...register("nombre", { required: true })}

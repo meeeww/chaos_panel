@@ -168,7 +168,6 @@ export default function ModalJugadores(info) {
                                     Cerrar
                                 </Button>
                                 <Button color="primary" onPress={onClose} onClick={() => {
-                                    console.log(valor)
                                     if (valor != null) {
                                         handleUpload()
                                     } else {

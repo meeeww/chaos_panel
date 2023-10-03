@@ -89,7 +89,6 @@ export default function Jugador() {
     }
 
     const renderEquipo = () => {
-        console.log(equipoCargando)
         if (!equipoCargando && typeof (equipo) !== "undefined") {
             if (equipo.length != 0) {
                 return (

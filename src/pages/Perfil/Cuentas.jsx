@@ -1,4 +1,4 @@
-import { Card, CardHeader, CardBody, Image, Divider, Button } from "@nextui-org/react";
+import { Card, CardHeader, CardBody, Divider } from "@nextui-org/react";
 
 import ModalCrearCuenta from "./ModalCrearCuenta/ModalCrear";
 import ModalEliminarCuenta from "./ModalCrearCuenta/ModalEliminar";

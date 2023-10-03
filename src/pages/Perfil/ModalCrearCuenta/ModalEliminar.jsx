@@ -1,10 +1,10 @@
-import { useState, useMemo } from "react";
+import { useState } from "react";
 
 import axios from "axios"
 import api from "../../../../variables.json";
 import sendLog from "../../../utils/sendLog";
 
-import { Modal, ModalContent, ModalHeader, ModalBody, Checkbox, Button, useDisclosure, Input, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/react";
+import { Modal, ModalContent, ModalHeader, ModalBody, Checkbox, Button, useDisclosure } from "@nextui-org/react";
 import { Toaster, toast } from 'sonner'
 
 export default function ModalEliminarCuenta(info) {
@@ -15,8 +15,6 @@ export default function ModalEliminarCuenta(info) {
     const cambiarConfirmacion = () => {
         setConfirmacion(!confirmacion)
     }
-
-    console.log(info)
 
     const handleUpload = () => {
         toast.promise(() => new Promise((resolve, reject) => {

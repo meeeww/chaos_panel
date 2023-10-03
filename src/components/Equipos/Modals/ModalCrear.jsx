@@ -26,7 +26,7 @@ export default function ModalEquipos(cambioDatos) {
         toast.promise(() => new Promise((resolve, reject) => {
             axios.post(api.directorio + "crearequipo", formdata).then(function () {
                 cambioDatos.cambioDatos(true)
-                sendLog(16, "Crear Equipo", {nombre_equipo: nombre, acronimo_equipo: acronimo, imagen: true})
+                sendLog(16, "Crear Equipo", { nombre_equipo: nombre, acronimo_equipo: acronimo, imagen: true })
                 resolve()
             }).catch(function () {
                 reject()

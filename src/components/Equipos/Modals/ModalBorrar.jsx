@@ -18,9 +18,9 @@ export default function ModalEquipos(equipo) {
 
     const confirmarBorracion = () => {
         toast.promise(() => new Promise((resolve, reject) => {
-            axios.delete(api.directorio + "borrarequipo", { data: {id: equipo["equipo"].id_equipo}}).then(function () {
+            axios.delete(api.directorio + "borrarequipo", { data: { id: equipo["equipo"].id_equipo } }).then(function () {
                 equipo.cambioDatos(true)
-                sendLog(16, "Borrar Equipo", {id_equipo: equipo["equipo"].id_equipo, nombre_equipo: equipo["equipo"].nombre_equipo, acronimo_equipo: equipo["equipo"].acronimo_equipo, imagen: true, liga_equipo: equipo["equipo"].id_liga, temporada_equipo: equipo["equipo"].id_temporada, stage: equipo["equipo"].stage})
+                sendLog(16, "Borrar Equipo", { id_equipo: equipo["equipo"].id_equipo, nombre_equipo: equipo["equipo"].nombre_equipo, acronimo_equipo: equipo["equipo"].acronimo_equipo, imagen: true, liga_equipo: equipo["equipo"].id_liga, temporada_equipo: equipo["equipo"].id_temporada, stage: equipo["equipo"].stage })
                 resolve()
             }).catch(function () {
                 reject()
@@ -35,7 +35,7 @@ export default function ModalEquipos(equipo) {
     return (
         <>
             <Toaster richColors closeButton />
-            <Button onClick={onOpen} onPress={() => {setConfirmacion(false)}} size="sm" isIconOnly aria-label="Borrar" color="danger"><i className="fa-solid fa-trash"></i></Button>
+            <Button onClick={onOpen} onPress={() => { setConfirmacion(false) }} size="sm" isIconOnly aria-label="Borrar" color="danger"><i className="fa-solid fa-trash"></i></Button>
             <Modal
                 isOpen={isOpen}
                 onOpenChange={onOpenChange}

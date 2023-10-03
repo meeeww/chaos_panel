@@ -14,8 +14,6 @@ export default function ModalCrearCuenta(info) {
     const [valorPrimaria, setValorPrimaria] = useState("")
     const [valorSecundaria, setValorSecundaria] = useState("")
 
-    console.log(info.info.usuario.informacion.id_usuario)
-
     const handleUpload = () => {
         toast.promise(() => new Promise((resolve, reject) => {
             let principal = ""

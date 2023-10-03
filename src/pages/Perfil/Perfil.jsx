@@ -1,13 +1,12 @@
 import { useState, useEffect } from "react";
 
 import Layout from "../../components/Layout/Layout.jsx"
-import { Card, CardHeader, CardBody, Image, Divider, Button } from "@nextui-org/react";
+import { Card, CardHeader, CardBody, Image, Divider } from "@nextui-org/react";
 
 import axios from "axios";
 import api from "../../../variables.json"
 
 import ModalPerfil from "./ModalEditar/ModalEditar.jsx";
-import ModalEnlazar from "./ModalCrearCuenta/ModalCrear.jsx";
 
 import CuentasTabla from "./Cuentas.jsx";
 import Enlazar from "./Enlazamientos.jsx";

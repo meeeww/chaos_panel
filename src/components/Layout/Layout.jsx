@@ -52,7 +52,6 @@ export default function Layout(datos) {
                             onClick={(e) => {
                                 e.stopPropagation();
                                 setSidebarOpen(!sidebarOpen);
-                                console.log(sidebarOpen)
                             }}
                             className="z-99999 block rounded-sm border border-stroke bg-white p-1.5 shadow-sm lg:hidden"
                         >
@@ -88,7 +87,6 @@ export default function Layout(datos) {
                                     onClick={(e) => {
                                         e.stopPropagation();
                                         setSidebarOpen(!sidebarOpen);
-                                        console.log(sidebarOpen)
                                     }}
                                     className="z-99999 block rounded-sm border border-stroke bg-white p-1.5 shadow-sm dark:border-strokedark dark:bg-boxdark lg:hidden"
                                 >

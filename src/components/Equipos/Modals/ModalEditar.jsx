@@ -158,7 +158,6 @@ export default function ModalEquipos(info) {
                                     Cerrar
                                 </Button>
                                 <Button color="primary" onPress={onClose} onClick={() => {
-                                    console.log(valor)
                                     if (valor != "") {
                                         handleUpload()
                                     } else {

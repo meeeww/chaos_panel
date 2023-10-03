@@ -1,4 +1,4 @@
-import { Card, CardHeader, CardBody, Image, Divider, Button } from "@nextui-org/react";
+import { Card, CardHeader, CardBody, Divider } from "@nextui-org/react";
 
 import ModalEnlazar from "./ModalEnlazar/ModalEnlazar";
 import ModalEnlazarIndividual from "./ModalEnlazar/ModalEnlazarIndividual";

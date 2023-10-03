@@ -19,15 +19,12 @@ function Inicio() {
   }, [cargando])
 
   if (usuario == undefined) {
-    console.log(seguridad)
     if (seguridad) {
-      console.log("hey")
       window.location.replace("/iniciosesion")
     }
     return <></>
   } else {
-    console.log(Object.keys(usuario).length == 0)
-    if(Object.keys(usuario).length == 0){
+    if (Object.keys(usuario).length == 0) {
       window.location.replace("/iniciosesion")
     }
   }
