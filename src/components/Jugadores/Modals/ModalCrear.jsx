@@ -35,7 +35,7 @@ export default function ModalUsuarios(cambioDatos) {
         encriptarPass().then(
             (contrasenaEncriptada) => {
                 toast.promise(() => new Promise((resolve, reject) => {
-                    axios.post(api.directorio + "crearusuario", { nombre: nombre, apellido: apellido, nick: nick, edad: edad, rol: rol, contra: contrasenaEncriptada }).then(function () {
+                    axios.post(api.directorio + "crearusuario", { nombre: nombre, apellido: apellido, nick: nick, edad: (Date.parse(edad) / 1000.0), rol: rol, contra: contrasenaEncriptada }).then(function () {
                         cambioDatos.cambioDatos(true)
                         sendLog(48, "Crear Usuario", { nombre: nombre, apellido: apellido, nick: nick, edad: edad, rol: rol })
                         resolve()
@@ -71,7 +71,7 @@ export default function ModalUsuarios(cambioDatos) {
                                 <Input type="text" placeholder="Nombre" className="w-full sm:max-w-[100%]" onChange={(e) => { setNombre(e.target.value) }} isRequired />
                                 <Input type="text" placeholder="Apellido" onChange={(e) => { setApellido(e.target.value) }} isRequired />
                                 <Input type="text" placeholder="Nick" onChange={(e) => { setNick(e.target.value) }} isRequired />
-                                <Input type="text" placeholder="Edad" onChange={(e) => { setEdad(e.target.value) }} isRequired />
+                                <Input type="date" placeholder="Edad" onChange={(e) => { setEdad(e.target.value) }} isRequired />
                                 <Input type="text" placeholder="Contraseña" onChange={(e) => { setContra(e.target.value) }} isRequired />
                                 <Dropdown>
                                     <DropdownTrigger>

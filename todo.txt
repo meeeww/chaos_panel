@@ -1,13 +1,13 @@
 hecho
     - al borrar usuario, apetece "Equipo borrado"
     - usuarios: al ponerle a un usuario rol de presidente y asignarlo a un equipo, despues de quitarlo todo el usuario no se borra (fix: endpoint)
+    - arreglar añadir usuario desde el panel de admin
+    - en /usuarios en crear cuenta, poner que se pueda meter fecha en vez de un input a secas
 
 haciendo
-    - validacion para enlazar cuentas
 
 para hacer
+    - validacion para enlazar cuentas
     - en el apartado de usuario, cambiar que aparezca el id del equipo y el numero del rol
-    - arreglar añadir usuario desde el panel de admin
     - en equipos falta poder ver que usuarios lo componen
-    - en /usuarios en crear cuenta, poner que se pueda meter fecha en vez de un input a secas
     - poder modificar la contraseña de los usuarios o forzar a cambiarla
