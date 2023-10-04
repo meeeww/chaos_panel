@@ -6,7 +6,7 @@ import api from "../../../variables.json"
 
 import ModalEquipos from "./Modals/ModalEditar";
 
-import { columns } from "./data";
+import { columnsEquipo } from "./data";
 
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
@@ -91,7 +91,7 @@ export default function Equipo() {
                 <Divider />
                 <CardBody>
                     <div className="flex flex-col gap-2">
-                        {columns.map((columna) => (
+                        {columnsEquipo.map((columna) => (
                             <div key={columna.name} className="flex items-center justify-between">
                                 <p className="text-sm w-[5rem]">{columna.name}</p>
                                 <p className="text-md font-[500] text-center w-[9rem]">{equipo[columna.uid]}</p>

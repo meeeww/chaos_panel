@@ -9,8 +9,10 @@ import ModalJugadores from "./Modals/ModalEditar";
 import Cuentas from "../../pages/Perfil/Cuentas";
 
 import { columns } from "./data";
+import { columnsEquipo } from "../Equipos/data";
 
 import getEdad from "../../utils/getEdad";
+import getPerms from "../../utils/getPerms"
 
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
@@ -114,7 +116,7 @@ export default function Jugador() {
                         <Divider />
                         <CardBody>
                             <div className="flex flex-col gap-2">
-                                {columns.map((columna) => (
+                                {columnsEquipo.map((columna) => (
                                     <div key={columna.name} className="flex items-center justify-between">
                                         <p className="text-sm w-[5rem]">{columna.name}</p>
                                         <p className="text-md font-[500] text-center w-[9rem]">{equipo[columna.uid]}</p>
@@ -173,6 +175,22 @@ export default function Jugador() {
                                             <div key={columna.name} className="flex items-center justify-between">
                                                 <p className="text-sm w-[5rem]">{columna.name}</p>
                                                 <p className="text-md font-[500] text-center w-[9rem]">{getEdad(jugador[columna.uid])}</p>
+                                                <ModalJugadores jugador={jugador} columna={columna} cambioDatos={setCambioDeDatos} equipos={listaEquipos} />
+                                            </div>
+                                        )
+                                    } else if (equipo && columna.name == "Equipo") {
+                                        return (
+                                            <div key={columna.name} className="flex items-center justify-between">
+                                                <p className="text-sm w-[5rem]">{columna.name}</p>
+                                                <p className="text-md font-[500] text-center w-[9rem]">{equipo["nombre_equipo"]}</p>
+                                                <ModalJugadores jugador={jugador} columna={columna} cambioDatos={setCambioDeDatos} equipos={listaEquipos} />
+                                            </div>
+                                        )
+                                    } else if (columna.name == "Rol") {
+                                        return (
+                                            <div key={columna.name} className="flex items-center justify-between">
+                                                <p className="text-sm w-[5rem]">{columna.name}</p>
+                                                <p className="text-md font-[500] text-center w-[9rem]">{getPerms(jugador[columna.uid])}</p>
                                                 <ModalJugadores jugador={jugador} columna={columna} cambioDatos={setCambioDeDatos} equipos={listaEquipos} />
                                             </div>
                                         )
