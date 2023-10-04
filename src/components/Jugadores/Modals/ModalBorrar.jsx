@@ -26,8 +26,8 @@ export default function ModalEquipos(equipo) {
                 reject()
             })
         }), {
-            loading: 'Borrando equipo',
-            success: 'Equipo borrado',
+            loading: 'Borrando usuario',
+            success: 'Usuario borrado',
             error: 'Error',
         });
     }
