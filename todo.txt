@@ -1,6 +1,7 @@
 hecho
     - al borrar usuario, apetece "Equipo borrado"
-    
+    - usuarios: al ponerle a un usuario rol de presidente y asignarlo a un equipo, despues de quitarlo todo el usuario no se borra (fix: endpoint)
+
 haciendo
     - validacion para enlazar cuentas
 
@@ -10,4 +11,3 @@ para hacer
     - en equipos falta poder ver que usuarios lo componen
     - en /usuarios en crear cuenta, poner que se pueda meter fecha en vez de un input a secas
     - poder modificar la contraseña de los usuarios o forzar a cambiarla
-    - usuarios: al ponerle a un usuario rol de presidente y asignarlo a un equipo, despues de quitarlo todo el usuario no se borra
