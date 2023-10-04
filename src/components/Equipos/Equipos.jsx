@@ -5,8 +5,13 @@ import axios from "axios";
 import api from "../../../variables.json"
 
 import ModalEquipos from "./Modals/ModalEditar";
+import ModalJugadores from "../Jugadores/Modals/ModalEditar";
+
+import getEdad from "../../utils/getEdad";
+import getPerms from "../../utils/getPerms";
 
 import { columnsEquipo } from "./data";
+import { columns } from "../Jugadores/data";
 
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
@@ -19,6 +24,7 @@ export default function Equipo() {
 
     const [ligas, setLigas] = useState()
     const [temporadas, setTemporadas] = useState()
+    const [jugadores, setJugadores] = useState()
 
     if (urlParams.get('id') == null)
         window.location.replace("/equipos")
@@ -36,6 +42,9 @@ export default function Equipo() {
         })
         axios.get(api.directorio + "temporadas").then((temporada) => {
             setTemporadas(temporada.data)
+        })
+        axios.get(api.directorio + "equipos/usuarios/id=" + urlParams.get("id")).then((jugador) => {
+            setJugadores(jugador.data)
         })
     }, [cambioDeDatos])
 
@@ -68,13 +77,95 @@ export default function Equipo() {
         }
     }
 
+    const renderJugadores = () => (
+        jugadores && jugadores.map((jugador) => {
+            console.log(jugador)
+            return (
+                <div key={jugador["id_jugador"]} className="flex flex-col gap-8">
+                    <div className="flex gap-16">
+                        <Card className="max-w-[300px] w-full">
+                            <CardHeader className="flex gap-3">
+                                <Image
+                                    alt="Logo Usuario"
+                                    height={100}
+                                    radius="sm"
+                                    src={("https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/profile-icons/" + jugador.icono + ".jpg")}
+                                    width={100}
+                                />
+                                <div className="flex flex-col gap-2">
+                                    <div className="flex gap-1">
+                                        <p className="text-md">{jugador.nombre_usuario}</p>
+                                        <p className="text-md">{jugador.apellido_usuario}</p>
+                                    </div>
+                                    <p className="text-md">{jugador.nombre_equipo}</p>
+                                </div>
+                            </CardHeader>
+                            <Divider />
+                            <CardBody>
+                                <div className="flex flex-col gap-2">
+                                    {columns.map((columna) => {
+                                        if (columna.name == "Edad") {
+                                            return (
+                                                <div key={columna.name} className="flex items-center justify-between">
+                                                    <p className="text-sm w-[5rem]">{columna.name}</p>
+                                                    <p className="text-md font-[500] text-center w-[9rem]">{getEdad(jugador[columna.uid])}</p>
+                                                    <ModalJugadores jugador={jugador} columna={columna} cambioDatos={setCambioDeDatos} />
+                                                </div>
+                                            )
+                                        } else if (equipo && columna.name == "Equipo") {
+                                            return (
+                                                <div key={columna.name} className="flex items-center justify-between">
+                                                    <p className="text-sm w-[5rem]">{columna.name}</p>
+                                                    <p className="text-md font-[500] text-center w-[9rem]">{equipo["nombre_equipo"]}</p>
+                                                    <ModalJugadores jugador={jugador} columna={columna} cambioDatos={setCambioDeDatos} />
+                                                </div>
+                                            )
+                                        } else if (columna.name == "Rol") {
+                                            return (
+                                                <div key={columna.name} className="flex items-center justify-between">
+                                                    <p className="text-sm w-[5rem]">{columna.name}</p>
+                                                    <p className="text-md font-[500] text-center w-[9rem]">{getPerms(jugador[columna.uid])}</p>
+                                                    <ModalJugadores jugador={jugador} columna={columna} cambioDatos={setCambioDeDatos} />
+                                                </div>
+                                            )
+                                        } else {
+                                            return (
+                                                <div key={columna.name} className="flex items-center justify-between">
+                                                    <p className="text-sm w-[5rem]">{columna.name}</p>
+                                                    <p className="text-md font-[500] text-center w-[9rem]">{jugador[columna.uid]}</p>
+                                                    <ModalJugadores jugador={jugador} columna={columna} cambioDatos={setCambioDeDatos} />
+                                                </div>
+                                            )
+                                        }
+                                    })}
+                                </div>
+                            </CardBody>
+                            <Divider />
+                            <CardFooter>
+                                <Link
+                                    isExternal
+                                    showAnchorIcon
+                                    href="#"
+                                >
+                                    Visitar Página del Usuario
+                                </Link>
+                            </CardFooter>
+                        </Card>
+                    </div>
+                </div>
+            )
+        })
+
+
+    )
+
     if (cargando) {
         return (<div>yo</div>)
     }
 
     return (
-        <>
-            <Card className="max-w-[400px]">
+        <div className="flex gap-16">
+            <Card className="w-[400px]">
                 <CardHeader className="flex gap-3">
                     <Image
                         alt="Logo Equipo"
@@ -111,6 +202,9 @@ export default function Equipo() {
                     </Link>
                 </CardFooter>
             </Card>
-        </>
+            <div className="flex gap-4 overflow-x-auto no-scrollbar">
+            {renderJugadores()}
+            </div>
+        </div>
     )
 }
