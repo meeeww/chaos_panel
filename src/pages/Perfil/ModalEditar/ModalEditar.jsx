@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import axios from "axios"
 import api from "../../../../variables.json";
+import md5 from "md5"
 import sendLog from "../../../utils/sendLog";
 
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input } from "@nextui-org/react";
@@ -17,6 +18,10 @@ export default function ModalPerfil(info) {
             return (
                 <Input type="date" placeholder={info.jugador.informacion["edad"]} className="w-full sm:max-w-[100%]" isRequired onChange={(e) => { setValor(Date.parse(e.target.value) / 1000) }} />
             )
+        } else if (tipo == "password") {
+            return (
+                <Input type="password" className="w-full sm:max-w-[100%]" isRequired onChange={(e) => { setValor(e.target.value) }} />
+            )
         } else {
             return (
                 <Input type="text" placeholder={info.jugador.informacion[info.columna.uid]} className="w-full sm:max-w-[100%]" isRequired onChange={(e) => { setValor(e.target.value) }} />
@@ -25,19 +30,45 @@ export default function ModalPerfil(info) {
     }
 
     const handleUpload = () => {
-        toast.promise(() => new Promise((resolve, reject) => {
-            axios.put(api.directorio + "modificarusuario", { id: info.jugador.informacion.id_usuario, columna: info.columna.modificar, valor: valor }).then(function () {
-                sendLog(16, "Modificar Perfil", { "accion": "Perfil Cambiado" })
-                info.cambioDatos(true)
-                resolve()
-            }).catch(function () {
-                reject()
-            })
-        }), {
-            loading: 'Modificando perfil',
-            success: 'Perfil modificado',
-            error: 'Error',
-        });
+        if (info.columna.tipo == "password") {
+            const encriptarPass = () => {
+                return new Promise((resolve) => {
+                    resolve(md5(valor))
+                })
+            }
+
+            encriptarPass().then(
+                (contrasenaEncriptada) => {
+                    toast.promise(() => new Promise((resolve, reject) => {
+                        axios.put(api.directorio + "modificarusuario", { id: info.jugador.informacion.id_usuario, columna: info.columna.modificar, valor: contrasenaEncriptada }).then(function () {
+                            info.cambioDatos(true)
+                            sendLog(info.jugador.informacion.id_usuario, "Actualizar Contraseña", { id: info.jugador.informacion.id_usuario })
+                            resolve()
+                        }).catch(function () {
+                            reject()
+                        })
+                    }), {
+                        loading: 'Actualizando contraseña',
+                        success: 'Contraseña actualizada',
+                        error: 'Error',
+                    });
+                }
+            )
+        } else {
+            toast.promise(() => new Promise((resolve, reject) => {
+                axios.put(api.directorio + "modificarusuario", { id: info.jugador.informacion.id_usuario, columna: info.columna.modificar, valor: valor }).then(function () {
+                    sendLog(16, "Modificar Perfil", { "accion": "Perfil Cambiado" })
+                    info.cambioDatos(true)
+                    resolve()
+                }).catch(function () {
+                    reject()
+                })
+            }), {
+                loading: 'Modificando perfil',
+                success: 'Perfil modificado',
+                error: 'Error',
+            });
+        }
     }
 
     return (

@@ -80,6 +80,18 @@ export default function Perfil() {
               <div className="flex flex-col gap-2">
                 {columns.map((columna) => {
                   switch (columna.name) {
+                    case "Contraseña":
+                      return (
+                        <div key={columna.name}>
+                          <div className="flex justify-between items-center">
+                            <p>{columna.name}</p>
+                            <div className="flex justify-center items-center gap-4">
+                              {extraData ? <ModalPerfil jugador={usuario} columna={columna} cambioDatos={setCambioDeDatos} equipo={equipo} /> : <></>}
+                            </div>
+                          </div>
+                          <Divider className="my-2" />
+                        </div>
+                      )
                     case "Rol":
                       return (
                         <div key={columna.name}>
