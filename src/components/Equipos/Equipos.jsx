@@ -79,7 +79,6 @@ export default function Equipo() {
 
     const renderJugadores = () => (
         jugadores && jugadores.map((jugador) => {
-            console.log(jugador)
             return (
                 <div key={jugador["id_jugador"]} className="flex flex-col gap-8">
                     <div className="flex gap-16">
@@ -109,6 +108,14 @@ export default function Equipo() {
                                                 <div key={columna.name} className="flex items-center justify-between">
                                                     <p className="text-sm w-[5rem]">{columna.name}</p>
                                                     <p className="text-md font-[500] text-center w-[9rem]">{getEdad(jugador[columna.uid])}</p>
+                                                    <ModalJugadores jugador={jugador} columna={columna} cambioDatos={setCambioDeDatos} />
+                                                </div>
+                                            )
+                                        } else if (columna.name == "Contraseña") {
+                                            return (
+                                                <div key={columna.name} className="flex items-center justify-between">
+                                                    <p className="text-sm w-[5rem]">{columna.name}</p>
+                                                    <p className="text-md font-[500] text-center w-[9rem]">--</p>
                                                     <ModalJugadores jugador={jugador} columna={columna} cambioDatos={setCambioDeDatos} />
                                                 </div>
                                             )
@@ -203,7 +210,7 @@ export default function Equipo() {
                 </CardFooter>
             </Card>
             <div className="flex gap-4 overflow-x-auto no-scrollbar">
-            {renderJugadores()}
+                {renderJugadores()}
             </div>
         </div>
     )

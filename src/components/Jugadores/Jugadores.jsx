@@ -178,6 +178,14 @@ export default function Jugador() {
                                                 <ModalJugadores jugador={jugador} columna={columna} cambioDatos={setCambioDeDatos} equipos={listaEquipos} />
                                             </div>
                                         )
+                                    } else if (columna.name == "Contraseña") {
+                                        return (
+                                            <div key={columna.name} className="flex items-center justify-between">
+                                                <p className="text-sm w-[5rem]">{columna.name}</p>
+                                                <p className="text-md font-[500] text-center w-[9rem]">--</p>
+                                                <ModalJugadores jugador={jugador} columna={columna} cambioDatos={setCambioDeDatos} equipos={listaEquipos} />
+                                            </div>
+                                        )
                                     } else if (equipo && columna.name == "Equipo") {
                                         return (
                                             <div key={columna.name} className="flex items-center justify-between">

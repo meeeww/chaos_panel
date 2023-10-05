@@ -72,7 +72,7 @@ export default function ModalUsuarios(cambioDatos) {
                                 <Input type="text" placeholder="Apellido" onChange={(e) => { setApellido(e.target.value) }} isRequired />
                                 <Input type="text" placeholder="Nick" onChange={(e) => { setNick(e.target.value) }} isRequired />
                                 <Input type="date" placeholder="Edad" onChange={(e) => { setEdad(e.target.value) }} isRequired />
-                                <Input type="text" placeholder="Contraseña" onChange={(e) => { setContra(e.target.value) }} isRequired />
+                                <Input type="password" placeholder="Contraseña" onChange={(e) => { setContra(e.target.value) }} isRequired />
                                 <Dropdown>
                                     <DropdownTrigger>
                                         <Button

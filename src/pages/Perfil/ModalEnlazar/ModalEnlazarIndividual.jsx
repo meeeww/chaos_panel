@@ -14,10 +14,14 @@ export default function ModalEnlazarIndividual(info) {
 
     const handleUpload = () => {
         toast.promise(() => new Promise((resolve, reject) => {
-            axios.put(api.directorio + "usuarios/enlaces", { id_usuario: info.usuario.usuario.informacion.id_usuario, columna: info.tipo, valor: valor }).then(function () {
-                sendLog(info.usuario.usuario.informacion.id_usuario, "Añadir Enlaze", { "accion": "Añadido Enlace" })
-                info.cambioDatos(true)
-                resolve()
+            axios.put(api.directorio + "usuarios/enlaces", { id_usuario: info.usuario.usuario.informacion.id_usuario, columna: info.tipo, valor: valor }).then(function (check) {
+                if (check.data["fieldCount"] >= 0) {
+                    sendLog(info.info.usuario.informacion.id_usuario, "Añadir Enlaze", { "accion": "Añadido Enlace" })
+                    info.cambioDatos(true)
+                    resolve()
+                } else {
+                    reject()
+                }
             }).catch(function () {
                 reject()
             })
