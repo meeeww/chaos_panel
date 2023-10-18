@@ -168,7 +168,7 @@ export default function Layout(datos) {
                                                 isBordered
                                                 as="button"
                                                 className="transition-transform"
-                                                src={"https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/profile-icons/5555.jpg"}
+                                                src={`https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/profile-icons/${datos.info.informacion.icono}.jpg`}
                                             />
                                         </DropdownTrigger>
                                         <DropdownMenu aria-label="Usuario" variant="flat" className="text-[var(--color-principal-light)]">

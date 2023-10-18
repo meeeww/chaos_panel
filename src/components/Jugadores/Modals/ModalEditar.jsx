@@ -20,7 +20,7 @@ export default function ModalJugadores(info) {
     })
 
     const RenderInput = (columna) => {
-        const [selectedKeys, setSelectedKeys] = useState(new Set(["Permisos"]));
+        const [selectedKeys, setSelectedKeys] = useState(new Set(["Seleccionar"]));
 
         const selectedValu = useMemo(
             () => Array.from(selectedKeys).join(", ").replaceAll("_", " "),

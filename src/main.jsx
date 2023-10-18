@@ -24,7 +24,7 @@ import {
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <InicioSesion />,
+    element: <Perfil />,
   },
   {
     path: "/iniciosesion",

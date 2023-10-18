@@ -4,6 +4,7 @@ import axios from "axios"
 import api from "../../../../variables.json";
 import md5 from "md5"
 import sendLog from "../../../utils/sendLog";
+import getEdad from "../../../utils/getEdad";
 
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input } from "@nextui-org/react";
 import { Toaster, toast } from 'sonner'
@@ -56,13 +57,18 @@ export default function ModalPerfil(info) {
             )
         } else {
             toast.promise(() => new Promise((resolve, reject) => {
-                axios.put(api.directorio + "modificarusuario", { id: info.jugador.informacion.id_usuario, columna: info.columna.modificar, valor: valor }).then(function () {
-                    sendLog(16, "Modificar Perfil", { "accion": "Perfil Cambiado" })
-                    info.cambioDatos(true)
-                    resolve()
-                }).catch(function () {
+                if (getEdad(valor) >= 16) {
+                    axios.put(api.directorio + "modificarusuario", { id: info.jugador.informacion.id_usuario, columna: info.columna.modificar, valor: valor }).then(function () {
+                        sendLog(16, "Modificar Perfil", { "accion": "Perfil Cambiado" })
+                        info.cambioDatos(true)
+                        resolve()
+                    }).catch(function () {
+                        reject()
+                    })
+                } else {
+                    toast.error("Tienes que ser mayor de 16 años")
                     reject()
-                })
+                }
             }), {
                 loading: 'Modificando perfil',
                 success: 'Perfil modificado',

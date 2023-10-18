@@ -1,4 +1,4 @@
-hecho
+    hecho
     - al borrar usuario, apetece "Equipo borrado"
     - usuarios: al ponerle a un usuario rol de presidente y asignarlo a un equipo, despues de quitarlo todo el usuario no se borra (fix: endpoint)
     - arreglar añadir usuario desde el panel de admin
@@ -9,9 +9,15 @@ hecho
     - poder modificar la contraseña de los usuarios (modificar contraseña)
     - en equipos falta poder ver que usuarios lo componen
     - validacion para enlazar cuentas
+    - al crear cuenta como admin se debe permitir dejar en blanco nombre, apellidos y edad
+    - solo se puede crear cuentas +16 años
+    - conseguir foto de perfil a partir de cuenta de lol
+    - cambiar nombre de invocador automaticamente
+    - no puedes crear una cuenta con el mismo rol
+    - validar cuentas del lol (no se pueden añadir cuentas de lol si ya existe en la bbdd)
 
 haciendo
+    - mostrar la lista de equipos en el modal "modificar equipo" de un usuario dentro de la pagina de equipo
 
 para hacer
-    - conseguir foto de perfil a partir de cuenta de lol
-    - validar cuentas del lol (no se pueden añadir cuentas de lol si ya existe en la bbdd)
+    - terminar pagina principal 

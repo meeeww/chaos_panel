@@ -165,7 +165,17 @@ export default function ModalCrearCuenta(info) {
                                 </Button>
                                 <Button color="primary" onPress={onClose} onClick={() => {
                                     if (valor != "" && valorPrimaria != "" && valorSecundaria != "") {
-                                        handleUpload()
+                                        if (valorPrimaria == valorSecundaria) {
+                                            toast.error("No puedes poner la misma línea como ambas opciones.")
+                                        } else {
+                                            axios.get(api.directorio + "cuenta/nombre=" + valor).then((cuentaComprobacion) => {
+                                                if (cuentaComprobacion.data.length > 0) {
+                                                    toast.error("Esta cuenta ya ha sido vinculada.")
+                                                } else {
+                                                    handleUpload()
+                                                }
+                                            })
+                                        }
                                     } else {
                                         toast.error('No has rellenado todos los campos.')
                                     }

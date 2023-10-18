@@ -5,6 +5,7 @@ import axios from "axios"
 import api from "../../variables.json"
 
 import checkSessionInicio from "../utils/checkSessionInicio";
+import getEdad from "../utils/getEdad";
 
 import { Toaster, toast } from 'sonner'
 
@@ -49,28 +50,34 @@ export default function Registro() {
         encriptarPass().then(
             (contrasenaEncriptada) => {
                 toast.promise(() => new Promise((resolve, reject) => {
-                    axios.get(api.directorio + "usuarios/nombre=" + data.usuario).then(response => {
-                        if (response.data.length == 0) {
-                            const tokenP = token()
-                            axios.post(api.directorio + "registrarse", { nombre: data.nombre, apellido: data.apellido, nick: data.usuario, edad: (Date.parse(data.fecha) / 1000.0), contra: contrasenaEncriptada }).then(function () {
-                                localStorage.setItem("token", tokenP)
-                                axios.get(api.directorio + "usuarios/nombre=" + data.usuario).then(response => {
-                                    if (response.data.length > 0) {
-                                        const tokenP = token()
-                                        axios.post(api.directorio + "crearsesion", { id: response.data[0]["id_usuario"], fecha: Math.floor(new Date().getTime() / 1000.0), dispositivo: navigator.userAgent, token: tokenP }).then(function () {
-                                            localStorage.setItem("token", tokenP)
-                                        })
-                                    }
+                    if (getEdad((Date.parse(data.fecha) / 1000.0)) >= 16) {
+                        axios.get(api.directorio + "usuarios/nombre=" + data.usuario).then(response => {
+                            if (response.data.length == 0) {
+                                const tokenP = token()
+                                axios.post(api.directorio + "registrarse", { nombre: data.nombre, apellido: data.apellido, nick: data.usuario, edad: (Date.parse(data.fecha) / 1000.0), contra: contrasenaEncriptada }).then(function () {
+                                    localStorage.setItem("token", tokenP)
+                                    axios.get(api.directorio + "usuarios/nombre=" + data.usuario).then(response => {
+                                        if (response.data.length > 0) {
+                                            const tokenP = token()
+                                            axios.post(api.directorio + "crearsesion", { id: response.data[0]["id_usuario"], fecha: Math.floor(new Date().getTime() / 1000.0), dispositivo: navigator.userAgent, token: tokenP }).then(function () {
+                                                localStorage.setItem("token", tokenP)
+                                                window.location.replace("/")
+                                                resolve()
+                                            })
+                                        }
+                                    })
+                                }).catch(function () {
+                                    reject()
                                 })
-                                window.location.replace("/perfil")
-                                resolve()
-                            }).catch(function () {
+                            } else {
+                                toast.error("Ya existe el usuario")
                                 reject()
-                            })
-                        } else {
-                            toast.error("Ya existe el usuario")
-                        }
-                    })
+                            }
+                        })
+                    } else {
+                        toast.error("Tienes que ser mayor de 16 años")
+                        reject()
+                    }
                 }), {
                     loading: 'Registrando',
                     success: 'Registro completado',

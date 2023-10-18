@@ -126,6 +126,11 @@ export default function ModalUsuarios(cambioDatos) {
                                 <Button color="primary" onPress={onClose} onClick={() => {
                                     if (nombre != "" && apellido != "" && nick != "" && edad != "") {
                                         handleUpload()
+                                    } else if (nombre == "" && apellido == "" && nick != "" && edad == "") {
+                                        setNombre("NECESITA CAMBIAR")
+                                        setApellido("NECESITA CAMBIAR")
+                                        setEdad("2000-01-01")
+                                        handleUpload()
                                     } else {
                                         toast.error('No has rellenado todos los campos.')
                                     }
