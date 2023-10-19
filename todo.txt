@@ -1,23 +1,15 @@
-    hecho
-    - al borrar usuario, apetece "Equipo borrado"
-    - usuarios: al ponerle a un usuario rol de presidente y asignarlo a un equipo, despues de quitarlo todo el usuario no se borra (fix: endpoint)
-    - arreglar añadir usuario desde el panel de admin
-    - en /usuarios en crear cuenta, poner que se pueda meter fecha en vez de un input a secas
-    - en el apartado de usuario, cambiar que aparezca el id del equipo y el nombre del rol
-    - en equipos falta poder ver que usuarios lo componen
-    - desde perfil se puede modificar la contraseña
-    - poder modificar la contraseña de los usuarios (modificar contraseña)
-    - en equipos falta poder ver que usuarios lo componen
-    - validacion para enlazar cuentas
-    - al crear cuenta como admin se debe permitir dejar en blanco nombre, apellidos y edad
-    - solo se puede crear cuentas +16 años
-    - conseguir foto de perfil a partir de cuenta de lol
-    - cambiar nombre de invocador automaticamente
-    - no puedes crear una cuenta con el mismo rol
-    - validar cuentas del lol (no se pueden añadir cuentas de lol si ya existe en la bbdd)
+hecho
 
 haciendo
-    - mostrar la lista de equipos en el modal "modificar equipo" de un usuario dentro de la pagina de equipo
+    - Cambiar todo lo que ponga "Chaos Championship" a "Chaos Series" // falta el sendemail, cambiar de configurar
 
 para hacer
-    - terminar pagina principal 
+    - Migrar Summoner Name a Riot ID
+    - mostrar la lista de cuentas en la pagina individual de un usuario (el boton de añadir cuenta no deberia de funcionar ahora)
+    - terminar pagina principal
+    - Cuando la cuenta no existe, aparece como si la hubiera añadido pero no lo hace, cosa que esta bien (Cambio visual)
+    - Comprobar que existe la cuenta en CT
+    - Al comprobar cuentas, filtrar solo por las de EUW1 y evitar errores en Discord
+    - En los modales de permisos, actualizar los roles o que los coja de DB
+    - al crear usuario = (cannot read properties of undefined reading icons)
+    - mostrar la lista de equipos en el modal "modificar equipo" de un usuario dentro de la pagina de equipo
