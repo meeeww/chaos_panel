@@ -1,15 +1,15 @@
 import { useState } from "react";
 
-import axios from "axios"
-import api from "../../../../variables.json";
 import md5 from "md5"
-import sendLog from "../../../utils/sendLog";
+import { actualizarPerfil } from "../../../services/usuario";
+
 import getEdad from "../../../utils/getEdad";
 
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input } from "@nextui-org/react";
-import { Toaster, toast } from 'sonner'
+import { toast } from 'sonner'
 
 export default function ModalPerfil(info) {
+    console.log(info.jugador)
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
     const [valor, setValor] = useState("")
@@ -17,7 +17,7 @@ export default function ModalPerfil(info) {
     const RenderInput = (tipo) => {
         if (tipo == "date") {
             return (
-                <Input type="date" placeholder={info.jugador.informacion["edad"]} className="w-full sm:max-w-[100%]" isRequired onChange={(e) => { setValor(Date.parse(e.target.value) / 1000) }} />
+                <Input type="date" placeholder={info.jugador.info["edad"]} className="w-full sm:max-w-[100%]" isRequired onChange={(e) => { setValor(Date.parse(e.target.value) / 1000) }} />
             )
         } else if (tipo == "password") {
             return (
@@ -25,7 +25,7 @@ export default function ModalPerfil(info) {
             )
         } else {
             return (
-                <Input type="text" placeholder={info.jugador.informacion[info.columna.uid]} className="w-full sm:max-w-[100%]" isRequired onChange={(e) => { setValor(e.target.value) }} />
+                <Input type="text" placeholder={info.jugador.info[info.columna.uid]} className="w-full sm:max-w-[100%]" isRequired onChange={(e) => { setValor(e.target.value) }} />
             )
         }
     }
@@ -41,13 +41,7 @@ export default function ModalPerfil(info) {
             encriptarPass().then(
                 (contrasenaEncriptada) => {
                     toast.promise(() => new Promise((resolve, reject) => {
-                        axios.put(api.directorio + "modificarusuario", { id: info.jugador.informacion.id_usuario, columna: info.columna.modificar, valor: contrasenaEncriptada }).then(function () {
-                            info.cambioDatos(true)
-                            sendLog(info.jugador.informacion.id_usuario, "Actualizar Contraseña", { id: info.jugador.informacion.id_usuario })
-                            resolve()
-                        }).catch(function () {
-                            reject()
-                        })
+                        actualizarPerfil(info.jugador, info.columna.uid, contrasenaEncriptada, info.cambioDatos, resolve, reject)
                     }), {
                         loading: 'Actualizando contraseña',
                         success: 'Contraseña actualizada',
@@ -55,20 +49,22 @@ export default function ModalPerfil(info) {
                     });
                 }
             )
-        } else {
+        } else if (info.columna.tipo == "date") {
             toast.promise(() => new Promise((resolve, reject) => {
                 if (getEdad(valor) >= 16) {
-                    axios.put(api.directorio + "modificarusuario", { id: info.jugador.informacion.id_usuario, columna: info.columna.modificar, valor: valor }).then(function () {
-                        sendLog(16, "Modificar Perfil", { "accion": "Perfil Cambiado" })
-                        info.cambioDatos(true)
-                        resolve()
-                    }).catch(function () {
-                        reject()
-                    })
+                    actualizarPerfil(info.jugador, info.columna.uid, valor, info.cambioDatos, resolve, reject)
                 } else {
                     toast.error("Tienes que ser mayor de 16 años")
                     reject()
                 }
+            }), {
+                loading: 'Modificando perfil',
+                success: 'Perfil modificado',
+                error: 'Error',
+            });
+        } else {
+            toast.promise(() => new Promise((resolve, reject) => {
+                    actualizarPerfil(info.jugador, info.columna.uid, valor, info.cambioDatos, resolve, reject)
             }), {
                 loading: 'Modificando perfil',
                 success: 'Perfil modificado',
@@ -79,7 +75,6 @@ export default function ModalPerfil(info) {
 
     return (
         <>
-            <Toaster richColors closeButton />
             <Button onClick={onOpen} color="warning" radius="full" variant="bordered" size="sm" isIconOnly endContent={<i className="fa-solid fa-hammer"></i>} />
             <Modal
                 isOpen={isOpen}

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 
-import checkSession from "../utils/checkSession.js";
-import returnSession from "../utils/returnSession";
+//import checkSession from "../utils/checkSession.js";
+//import returnSession from "../utils/returnSession";
 
 import Layout from "../components/Layout/Layout.jsx"
 import TablaUsuarios from "../components/Jugadores/Tabla/Tabla.jsx"
@@ -13,9 +13,9 @@ function Inicio() {
   const [seguridad, setSeguridad] = useState(false)
 
   useEffect(() => {
-    checkSession(setUsuario, setCargando, setSeguridad)
+    //checkSession(setUsuario, setCargando, setSeguridad)
     if (!cargando) {
-      returnSession(usuario)
+      //returnSession(usuario)
     }
   }, [cargando])
 

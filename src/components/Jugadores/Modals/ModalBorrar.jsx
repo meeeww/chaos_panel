@@ -34,7 +34,6 @@ export default function ModalEquipos(equipo) {
 
     return (
         <>
-            <Toaster richColors closeButton />
             <Button onClick={onOpen} onPress={() => { setConfirmacion(false) }} size="sm" isIconOnly aria-label="Borrar" color="danger"><i className="fa-solid fa-trash"></i></Button>
             <Modal
                 isOpen={isOpen}

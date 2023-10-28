@@ -3,7 +3,6 @@ import { useState, useMemo } from "react";
 import axios from "axios";
 import api from "../../../../variables.json"
 import sendLog from "../../../utils/sendLog";
-import md5 from "md5"
 
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, DropdownSection } from "@nextui-org/react";
 import { Toaster, toast } from 'sonner'
@@ -28,7 +27,7 @@ export default function ModalUsuarios(cambioDatos) {
     const handleUpload = () => {
         const encriptarPass = () => {
             return new Promise((resolve) => {
-                resolve(md5(contra))
+                //resolve(md5(contra))
             })
         }
 
@@ -54,7 +53,6 @@ export default function ModalUsuarios(cambioDatos) {
 
     return (
         <>
-            <Toaster richColors closeButton />
             <Button color="primary" onPress={onOpen} endContent={<i className="fa-solid fa-plus"></i>}>
                 Crear Usuario
             </Button>

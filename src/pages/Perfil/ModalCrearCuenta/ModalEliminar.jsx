@@ -1,11 +1,9 @@
 import { useState } from "react";
 
-import axios from "axios"
-import api from "../../../../variables.json";
-import sendLog from "../../../utils/sendLog";
+import { eliminarCuenta } from "../../../services/cuentas";
 
 import { Modal, ModalContent, ModalHeader, ModalBody, Checkbox, Button, useDisclosure } from "@nextui-org/react";
-import { Toaster, toast } from 'sonner'
+import { toast } from 'sonner'
 
 export default function ModalEliminarCuenta(info) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -18,23 +16,16 @@ export default function ModalEliminarCuenta(info) {
 
     const handleUpload = () => {
         toast.promise(() => new Promise((resolve, reject) => {
-            axios.delete(api.directorio + "eliminarcuenta", { data: { id_cuenta: info.cuenta.id_cuenta } }).then(function () {
-                sendLog(info.cuenta.id_usuario, "Añadir Cuenta", { "accion": "Cuenta Añadida" })
-                info.cambioDatos(true)
-                resolve()
-            }).catch(function () {
-                reject()
-            })
+            eliminarCuenta(info, resolve, reject, info.cambioDatos)
         }), {
-            loading: 'Añadiendo cuenta',
-            success: 'Cuenta añadida',
+            loading: 'Eliminando cuenta',
+            success: 'Cuenta eliminada',
             error: 'Error',
         });
     }
 
     return (
         <>
-            <Toaster richColors closeButton />
             <Button onClick={onOpen} color="danger" radius="full" variant="bordered" size="sm" isIconOnly endContent={<i className="fa-solid fa-ban"></i>} />
             <Modal
                 isOpen={isOpen}

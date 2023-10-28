@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 import md5 from "md5"
 import axios from "axios"
 import api from "../../variables.json"
 
-import checkSessionInicio from "../utils/checkSessionInicio";
+import { checkSession } from "../utils/sessions";
+import { checkToken } from "../utils/tokens";
 
 import { Toaster, toast } from 'sonner'
 
@@ -16,23 +17,7 @@ import Logo from "../assets/logos/LogoSinTexto.png";
 
 export default function InicioSesion() {
 
-  const [usuario, setUsuario] = useState()
-  const [cargando, setCargando] = useState(true)
-
-  useEffect(() => {
-    checkSessionInicio(setUsuario, setCargando)
-    if (!cargando && usuario.informacion != undefined) {
-      window.location.replace("/perfil")
-    }
-  }, [cargando])
-
-  const rand = () => {
-    return Math.random().toString(36).substr(2);
-  };
-
-  const token = () => {
-    return rand() + rand() + rand() + rand() + rand() + rand() + rand() + rand() + rand() + rand() + rand();
-  };
+  checkSession()
 
   const {
     register,
@@ -50,21 +35,16 @@ export default function InicioSesion() {
       (contrasenaEncriptada) => {
         toast.promise(() => new Promise((resolve, reject) => {
           axios.get(api.directorio + "usuarios/nombre=" + data.usuario).then(response => {
-            if (response.data.length > 0) {
-              if (response.data[0]["contra"] == contrasenaEncriptada) {
-                const tokenP = token()
-                axios.post(api.directorio + "crearsesion", { id: response.data[0]["id_usuario"], fecha: Math.floor(new Date().getTime() / 1000.0), dispositivo: navigator.userAgent, token: tokenP }).then(function () {
-                  localStorage.setItem("token", tokenP)
-                  window.location.replace("/perfil")
-                  resolve()
-                }).catch(function () {
-                  reject()
-                })
+            if (response.data.result.length > 0) {
+              if (response.data.result[0]["contra"] == contrasenaEncriptada) {
+                checkToken(response.data.result[0]["nick_usuario"], response.data.result[0]["contra"], resolve, reject)
               } else {
-                toast.error("Los datos de sesión no son correctos")
+                reject()
+                toast.error("Los datos de sesión no son correctos.")
               }
             } else {
-              toast.error("Los datos de sesión no son correctos")
+              reject()
+              toast.error("Los datos de sesión no son correctos.")
             }
           })
         }), {
@@ -84,7 +64,7 @@ export default function InicioSesion() {
   return (
     //añadir background image
     <div className="flex justify-center items-center h-[100vh] bg-[url(../assets/backgrounds/Fondo.jpg)] bg-center bg-[cover] bg-no-repeat">
-      <Toaster richColors closeButton />
+    <Toaster richColors closeButton />
       <div className="flex justify-center items-center">
         <Card className="py-4 m-4 h-[20rem] glass max-w-[20rem] w-[30rem] md:max-w-[30rem] min-h-[70vh] flex flex-col items-center justify-center px-[5rem] rounded-md">
           <CardBody className="w-[20rem] mt-[1rem]">

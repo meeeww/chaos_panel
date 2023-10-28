@@ -1,13 +1,12 @@
 import { useState, useMemo } from "react";
 
-import axios from "axios"
-import api from "../../../../variables.json";
-import sendLog from "../../../utils/sendLog";
+import { actualizarEnlace } from "../../../services/enlaces";
 
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/react";
-import { Toaster, toast } from 'sonner'
+import { toast } from 'sonner'
 
 export default function ModalEnlazar(info) {
+
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
     const [valor, setValor] = useState(1)
@@ -27,17 +26,7 @@ export default function ModalEnlazar(info) {
                 break;
         }
         toast.promise(() => new Promise((resolve, reject) => {
-            axios.put(api.directorio + "usuarios/enlaces", { id_usuario: info.info.usuario.informacion.id_usuario, columna: valorFinal, valor: cuenta }).then(function (check) {
-                if (check.data["fieldCount"] >= 0) {
-                    sendLog(info.info.usuario.informacion.id_usuario, "Añadir Enlaze", { "accion": "Añadido Enlace" })
-                    info.cambioDatos(true)
-                    resolve()
-                } else {
-                    reject()
-                }
-            }).catch(function () {
-                reject()
-            })
+            actualizarEnlace(info.info, valorFinal, cuenta, resolve, reject, info.cambioDatos)
         }), {
             loading: 'Añadiendo enlace',
             success: 'Enlace añadido',
@@ -85,7 +74,6 @@ export default function ModalEnlazar(info) {
 
     return (
         <>
-            <Toaster richColors closeButton />
             <Button onClick={onOpen} color="primary" endContent={<i className="fa-solid fa-plus"></i>}>
                 Enlazar Cuenta
             </Button>

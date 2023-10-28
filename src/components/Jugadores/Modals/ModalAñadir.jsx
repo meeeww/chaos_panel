@@ -41,7 +41,6 @@ export default function ModalUsuarios(cambioDatos) {
 
     return (
         <>
-            <Toaster richColors closeButton />
             <Button color="primary" onPress={onOpen} endContent={<i className="fa-solid fa-plus"></i>}>
                 Crear Usuario
             </Button>

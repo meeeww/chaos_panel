@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import Layout from "../components/Layout/Layout.jsx"
 import TablaEquipos from "../components/Equipos/Tabla/Tabla.jsx"
 
-import checkSession from "../utils/checkSession.js";
-import returnSession from "../utils/returnSession";
+//import checkSession from "../utils/checkSession.js";
+//import returnSession from "../utils/returnSession";
 
 function Inicio() {
 
@@ -12,9 +12,9 @@ function Inicio() {
   const [seguridad, setSeguridad] = useState(false)
 
   useEffect(() => {
-    checkSession(setUsuario, setCargando, setSeguridad)
+    //checkSession(setUsuario, setCargando, setSeguridad)
     if (!cargando) {
-      returnSession(usuario)
+      //returnSession(usuario)
     }
   }, [cargando])
 

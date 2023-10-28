@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
-import md5 from "md5"
 import axios from "axios"
 import api from "../../variables.json"
+import md5 from "md5";
 
-import checkSessionInicio from "../utils/checkSessionInicio";
+import { checkSession } from "../utils/sessions";
+import { createToken } from "../utils/tokens";
 import getEdad from "../utils/getEdad";
 
 import { Toaster, toast } from 'sonner'
@@ -17,23 +18,7 @@ import Logo from "../assets/logos/LogoSinTexto.png";
 
 export default function Registro() {
 
-    const [usuario, setUsuario] = useState()
-    const [cargando, setCargando] = useState(true)
-
-    useEffect(() => {
-        checkSessionInicio(setUsuario, setCargando)
-        if (!cargando && usuario.informacion != undefined) {
-            window.location.replace("/perfil")
-        }
-    }, [cargando])
-
-    const rand = () => {
-        return Math.random().toString(36).substr(2);
-    };
-
-    const token = () => {
-        return rand() + rand() + rand() + rand() + rand() + rand() + rand() + rand() + rand() + rand() + rand();
-    };
+    checkSession()
 
     const {
         register,
@@ -52,23 +37,8 @@ export default function Registro() {
                 toast.promise(() => new Promise((resolve, reject) => {
                     if (getEdad((Date.parse(data.fecha) / 1000.0)) >= 16) {
                         axios.get(api.directorio + "usuarios/nombre=" + data.usuario).then(response => {
-                            if (response.data.length == 0) {
-                                const tokenP = token()
-                                axios.post(api.directorio + "registrarse", { nombre: data.nombre, apellido: data.apellido, nick: data.usuario, edad: (Date.parse(data.fecha) / 1000.0), contra: contrasenaEncriptada }).then(function () {
-                                    localStorage.setItem("token", tokenP)
-                                    axios.get(api.directorio + "usuarios/nombre=" + data.usuario).then(response => {
-                                        if (response.data.length > 0) {
-                                            const tokenP = token()
-                                            axios.post(api.directorio + "crearsesion", { id: response.data[0]["id_usuario"], fecha: Math.floor(new Date().getTime() / 1000.0), dispositivo: navigator.userAgent, token: tokenP }).then(function () {
-                                                localStorage.setItem("token", tokenP)
-                                                window.location.replace("/")
-                                                resolve()
-                                            })
-                                        }
-                                    })
-                                }).catch(function () {
-                                    reject()
-                                })
+                            if (response.data.result.length == 0) { //hay que crear el usuario y generar token
+                                createToken(data, contrasenaEncriptada, resolve, reject)
                             } else {
                                 toast.error("Ya existe el usuario")
                                 reject()

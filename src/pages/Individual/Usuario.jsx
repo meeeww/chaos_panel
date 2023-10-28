@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 
-import checkSession from "../../utils/checkSession";
+//import checkSession from "../../utils/checkSession";
 import returnSession from "../../utils/returnSession";
 
 import Layout from "../../components/Layout/Layout.jsx"
@@ -13,7 +13,7 @@ function Inicio() {
   const [seguridad, setSeguridad] = useState(false)
 
   useEffect(() => {
-    checkSession(setUsuario, setCargando, setSeguridad)
+    //checkSession(setUsuario, setCargando, setSeguridad)
     if (!cargando) {
       returnSession(usuario)
     }

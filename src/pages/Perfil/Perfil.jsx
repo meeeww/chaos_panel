@@ -3,16 +3,12 @@ import { useState, useEffect } from "react";
 import Layout from "../../components/Layout/Layout.jsx"
 import { Card, CardHeader, CardBody, Image, Divider } from "@nextui-org/react";
 
-import axios from "axios";
-import api from "../../../variables.json"
-
 import ModalPerfil from "./ModalEditar/ModalEditar.jsx";
 
 import CuentasTabla from "./Cuentas.jsx";
 import Enlazar from "./Enlazamientos.jsx";
 
-import checkSession from "../../utils/checkSession.js";
-import returnSession from "../../utils/returnSession";
+import { returnSession } from "../../utils/sessions.js";
 import getPerms from "../../utils/getPerms.js";
 import getEdad from "../../utils/getEdad.js";
 
@@ -20,53 +16,33 @@ import { columns } from "./ModalEditar/data";
 
 export default function Perfil() {
 
-  const [usuario, setUsuario] = useState()
-  const [equipo, setEquipo] = useState()
+  const [usuario, setUsuario] = useState();
   const [cargando, setCargando] = useState(true)
-  const [extraData, setExtraData] = useState(false)
-  const [seguridad, setSeguridad] = useState(false)
-  const [cuentas, setCuentas] = useState()
-  const [cambioDatos, setCambioDeDatos] = useState(false)
 
   useEffect(() => {
-    setCambioDeDatos(false)
-    checkSession(setUsuario, setCargando, setSeguridad)
-    if (!cargando) {
-      returnSession(usuario)
-    }
-    if (usuario != undefined) {
-      if (Object.keys(usuario).length != 0) {
-        axios.get(api.directorio + "usuarios/cuentas/id=" + usuario.informacion.id_usuario).then((cuenta) => {
-          setCuentas(cuenta.data)
-          axios.get(api.directorio + "usuarios/equipo/id=" + usuario.informacion.id_usuario).then((equipito) => {
-            setEquipo(equipito.data)
-            setExtraData(true)
-          })
-        })
-      }
-    }
-  }, [cargando, cambioDatos])
+    returnSession(setCargando, window.localStorage.getItem("token")).then((datos) => {
+      setUsuario(datos)
 
-  if (usuario == undefined) {
-    if (seguridad) {
-      window.location.replace("/iniciosesion")
-    }
-    return <></>
-  } else {
-    if (Object.keys(usuario).length == 0) {
-      window.location.replace("/iniciosesion")
-    }
+    })
+  }, [cargando]);
+
+  if (cargando || localStorage.getItem("usuario") == null) {
+    return (
+      <Layout>
+
+      </Layout>
+    );
   }
 
   return (
-    <Layout info={usuario}>
+    <Layout>
       <div className="flex justify-between mr-16">
         <Card className="py-4 w-[45%] max-h-[713.69px]">
           <CardHeader className="pb-0 pt-2 px-4 flex-col items-center">
             <Image
               alt="Card background"
               className="object-cover rounded-xl"
-              src={"https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/profile-icons/" + usuario.informacion.icono + ".jpg"}
+              src={"https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/profile-icons/" + usuario.info.icono + ".jpg"}
               width={270}
             />
           </CardHeader>
@@ -74,7 +50,7 @@ export default function Perfil() {
           <CardBody className="py-2">
             <div className="flex mb-[3rem] justify-between items-center">
               <h4 className="font-[800] text-4xl">Mi Perfil</h4>
-              <h6 className="font-[300] text-bs pr-6">{usuario.informacion.nombre_usuario + " " + usuario.informacion.apellido_usuario}</h6>
+              <h6 className="font-[300] text-bs pr-6">{usuario.info.nombre_usuario + " " + usuario.info.apellido_usuario}</h6>
             </div>
             <div className="overflow-y-auto no-scrollbar pr-4">
               <div className="flex flex-col gap-2">
@@ -86,7 +62,7 @@ export default function Perfil() {
                           <div className="flex justify-between items-center">
                             <p>{columna.name}</p>
                             <div className="flex justify-center items-center gap-4">
-                              {extraData ? <ModalPerfil jugador={usuario} columna={columna} cambioDatos={setCambioDeDatos} equipo={equipo} /> : <></>}
+                              <ModalPerfil jugador={usuario} columna={columna} cambioDatos={setCargando} /><></>
                             </div>
                           </div>
                           <Divider className="my-2" />
@@ -98,27 +74,25 @@ export default function Perfil() {
                           <div className="flex justify-between items-center">
                             <p>{columna.name}</p>
                             <div className="flex justify-center items-center gap-4">
-                              <p className="font-[600] text-lg">{getPerms(usuario.informacion[columna.uid])}</p>
+                              <p className="font-[600] text-lg">{getPerms(usuario.info[columna.uid])}</p>
                             </div>
                           </div>
                           <Divider className="my-2" />
                         </div>
                       )
                     case "Equipo":
-                      if (equipo != undefined) {
-                        if (equipo.length != 0) {
-                          return (
-                            <div key={columna.name}>
-                              <div className="flex justify-between items-center">
-                                <p>{columna.name}</p>
-                                <div className="flex justify-center items-center gap-4">
-                                  {extraData ? <p className="font-[600] text-lg">{equipo[0].nombre_equipo}</p> : <></>}
-                                </div>
+                      if (usuario.equipo.length > 0) {
+                        return (
+                          <div key={columna.name}>
+                            <div className="flex justify-between items-center">
+                              <p>{columna.name}</p>
+                              <div className="flex justify-center items-center gap-4">
+                                <p className="font-[600] text-lg">{usuario.equipo.nombre_equipo}</p>
                               </div>
-                              <Divider className="my-2" />
                             </div>
-                          )
-                        }
+                            <Divider className="my-2" />
+                          </div>
+                        )
                       }
                       break;
                     case "Edad":
@@ -127,8 +101,8 @@ export default function Perfil() {
                           <div className="flex justify-between items-center">
                             <p>{columna.name}</p>
                             <div className="flex justify-center items-center gap-4">
-                              <p className="font-[600] text-lg">{getEdad(usuario.informacion[columna.uid])}</p>
-                              {extraData ? <ModalPerfil jugador={usuario} columna={columna} cambioDatos={setCambioDeDatos} equipo={equipo} /> : <></>}
+                              <p className="font-[600] text-lg">{getEdad(usuario.info[columna.uid])}</p>
+                              <ModalPerfil jugador={usuario} columna={columna} cambioDatos={setCargando} />
                             </div>
                           </div>
                           <Divider className="my-2" />
@@ -140,7 +114,7 @@ export default function Perfil() {
                           <div className="flex justify-between items-center">
                             <p>{columna.name}</p>
                             <div className="flex justify-center items-center gap-4">
-                              <p className="font-[600] text-lg">{usuario.informacion[columna.uid]}</p>
+                              <p className="font-[600] text-lg">{usuario.info[columna.uid]}</p>
                             </div>
                           </div>
                           <Divider className="my-2" />
@@ -152,8 +126,8 @@ export default function Perfil() {
                           <div className="flex justify-between items-center">
                             <p>{columna.name}</p>
                             <div className="flex justify-center items-center gap-4">
-                              <p className="font-[600] text-lg">{usuario.informacion[columna.uid]}</p>
-                              {extraData ? <ModalPerfil jugador={usuario} columna={columna} cambioDatos={setCambioDeDatos} equipo={equipo} /> : <></>}
+                              <p className="font-[600] text-lg">{usuario.info[columna.uid]}</p>
+                              <ModalPerfil jugador={usuario} columna={columna} cambioDatos={setCargando} />
                             </div>
                           </div>
                           <Divider className="my-2" />
@@ -166,8 +140,8 @@ export default function Perfil() {
           </CardBody>
         </Card>
         <div className="flex flex-col w-[50%] gap-4">
-          {cuentas == undefined ? <></> : <CuentasTabla usuario={usuario} cuentas={cuentas} cambioDatos={setCambioDeDatos} />}
-          {<Enlazar cambioDatos={setCambioDeDatos} usuario={usuario} />}
+          {<CuentasTabla usuario={usuario} cambioDatos={setCargando} />}
+          {<Enlazar usuario={usuario} cambioDatos={setCargando} />}
         </div>
       </div>
     </Layout>

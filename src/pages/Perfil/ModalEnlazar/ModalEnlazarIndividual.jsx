@@ -1,30 +1,18 @@
 import { useState } from "react";
 
-import axios from "axios"
-import api from "../../../../variables.json";
-import sendLog from "../../../utils/sendLog";
+import { actualizarEnlace } from "../../../services/enlaces";
 
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input } from "@nextui-org/react";
-import { Toaster, toast } from 'sonner'
+import { toast } from 'sonner'
 
-export default function ModalEnlazarIndividual(info) {
+export default function ModalEnlazarIndividual(datos) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
     const [valor, setValor] = useState()
 
     const handleUpload = () => {
         toast.promise(() => new Promise((resolve, reject) => {
-            axios.put(api.directorio + "usuarios/enlaces", { id_usuario: info.usuario.usuario.informacion.id_usuario, columna: info.tipo, valor: valor }).then(function (check) {
-                if (check.data["fieldCount"] >= 0) {
-                    sendLog(info.info.usuario.informacion.id_usuario, "Añadir Enlaze", { "accion": "Añadido Enlace" })
-                    info.cambioDatos(true)
-                    resolve()
-                } else {
-                    reject()
-                }
-            }).catch(function () {
-                reject()
-            })
+            actualizarEnlace(datos.usuario, datos.tipo, valor, resolve, reject, datos.cambioDatos)
         }), {
             loading: 'Añadiendo enlace',
             success: 'Enlace añadido',
@@ -34,7 +22,6 @@ export default function ModalEnlazarIndividual(info) {
 
     return (
         <>
-            <Toaster richColors closeButton />
             <Button onClick={onOpen} color="warning" radius="full" variant="bordered" size="sm" isIconOnly endContent={<i className="fa-solid fa-hammer"></i>} />
             <Modal
                 isOpen={isOpen}
@@ -44,7 +31,7 @@ export default function ModalEnlazarIndividual(info) {
                 <ModalContent>
                     {(onClose) => (
                         <>
-                            <ModalHeader className="flex flex-col gap-1">{"Modificar " + (info.tipo.charAt(0).toUpperCase() + info.tipo.slice(1))}</ModalHeader>
+                            <ModalHeader className="flex flex-col gap-1">{"Modificar " + (datos.tipo.charAt(0).toUpperCase() + datos.tipo.slice(1))}</ModalHeader>
                             <ModalBody>
                                 <Input type="text" placeholder={"Nombre de Cuenta"} className="w-full sm:max-w-[100%]" isRequired onChange={(e) => { setValor(e.target.value) }} />
                             </ModalBody>

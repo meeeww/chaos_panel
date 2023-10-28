@@ -11,7 +11,7 @@ export default function Enlazar(cuentas) {
             <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
                 <div className="flex mb-[1rem] w-full justify-between items-center">
                     <h4 className="font-[800] text-2xl">Mis Enlaces</h4>
-                    {<ModalEnlazar info={cuentas} cambioDatos={cuentas.cambioDatos} />}
+                    {<ModalEnlazar info={cuentas.usuario} cambioDatos={cuentas.cambioDatos} />}
                 </div>
             </CardHeader>
             <Divider className="mt-2" />
@@ -19,13 +19,13 @@ export default function Enlazar(cuentas) {
                 <div className="flex justify-between items-center">
                     <div className="flex flex-col gap-1">
                         <h3 className="font-[600] text-lg">Circuito Tormenta</h3>
-                        <h4 className="font-[300] text-sm">{cuentas.usuario.informacion.circuitotormenta}</h4>
+                        <h4 className="font-[300] text-sm">{cuentas.usuario.info["circuitotormenta"]}</h4>
                     </div>
                     <div className="flex gap-2">
-                        {cuentas.usuario.informacion.circuitotormenta != null ?
+                        {cuentas.usuario.info["circuitotormenta"] != null ?
                             <>
-                                <ModalEnlazarIndividual usuario={cuentas} tipo={"circuitotormenta"} cambioDatos={cuentas.cambioDatos} />
-                                <ModalEliminar usuario={cuentas} tipo={"circuitotormenta"} cambioDatos={cuentas.cambioDatos} />
+                                <ModalEnlazarIndividual usuario={cuentas.usuario} tipo={"circuitotormenta"} cambioDatos={cuentas.cambioDatos} />
+                                <ModalEliminar usuario={cuentas.usuario} tipo={"circuitotormenta"} cambioDatos={cuentas.cambioDatos} />
                             </> :
                             <></>
                         }
@@ -34,13 +34,13 @@ export default function Enlazar(cuentas) {
                 <div className="flex justify-between items-center">
                     <div className="flex flex-col gap-1">
                         <h3 className="font-[600] text-lg">Twitter</h3>
-                        <h4 className="font-[300] text-sm">{cuentas.usuario.informacion.twitter}</h4>
+                        <h4 className="font-[300] text-sm">{cuentas.usuario.info["twitter"]}</h4>
                     </div>
                     <div className="flex gap-2">
-                        {cuentas.usuario.informacion.twitter != null ?
+                        {cuentas.usuario.info["twitter"] != null ?
                             <>
-                                <ModalEnlazarIndividual usuario={cuentas} tipo={"twitter"} cambioDatos={cuentas.cambioDatos} />
-                                <ModalEliminar usuario={cuentas} tipo={"twitter"} cambioDatos={cuentas.cambioDatos} />
+                                <ModalEnlazarIndividual usuario={cuentas.usuario} tipo={"twitter"} cambioDatos={cuentas.cambioDatos} />
+                                <ModalEliminar usuario={cuentas.usuario} tipo={"twitter"} cambioDatos={cuentas.cambioDatos} />
                             </> :
                             <></>
                         }
@@ -49,13 +49,13 @@ export default function Enlazar(cuentas) {
                 <div className="flex justify-between items-center">
                     <div className="flex flex-col gap-1">
                         <h3 className="font-[600] text-lg">Discord</h3>
-                        <h4 className="font-[300] text-sm">{cuentas.usuario.informacion.discord}</h4>
+                        <h4 className="font-[300] text-sm">{cuentas.usuario.info["discord"]}</h4>
                     </div>
                     <div className="flex gap-2">
-                        {cuentas.usuario.informacion.discord != null ?
+                        {cuentas.usuario.info["discord"] != null ?
                             <>
-                                <ModalEnlazarIndividual usuario={cuentas} tipo={"discord"} cambioDatos={cuentas.cambioDatos} />
-                                <ModalEliminar usuario={cuentas} tipo={"discord"} cambioDatos={cuentas.cambioDatos} />
+                                <ModalEnlazarIndividual usuario={cuentas.usuario} tipo={"discord"} cambioDatos={cuentas.cambioDatos} />
+                                <ModalEliminar usuario={cuentas.usuario} tipo={"discord"} cambioDatos={cuentas.cambioDatos} />
                             </> :
                             <></>
                         }

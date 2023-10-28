@@ -1,13 +1,11 @@
 import { useState } from "react";
 
-import axios from "axios"
-import api from "../../../../variables.json";
-import sendLog from "../../../utils/sendLog";
+import { eliminarEnlace } from "../../../services/enlaces";
 
 import { Modal, ModalContent, ModalHeader, ModalBody, Button, useDisclosure, Checkbox } from "@nextui-org/react";
-import { Toaster, toast } from 'sonner'
+import { toast } from 'sonner'
 
-export default function ModalEliminar(info) {
+export default function ModalEliminar(datos) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
     const [confirmacion, setConfirmacion] = useState(false)
@@ -18,13 +16,7 @@ export default function ModalEliminar(info) {
 
     const handleUpload = () => {
         toast.promise(() => new Promise((resolve, reject) => {
-            axios.delete(api.directorio + "usuarios/enlaces", { data: { id_usuario: info.usuario.usuario.informacion.id_usuario, columna: info.tipo } }).then(function () {
-                sendLog(info.usuario.usuario.informacion.id_usuario, "Añadir Enlaze", { "accion": "Añadido Enlace" })
-                info.cambioDatos(true)
-                resolve()
-            }).catch(function () {
-                reject()
-            })
+            eliminarEnlace(datos.usuario, datos.tipo, resolve, reject, datos.cambioDatos)
         }), {
             loading: 'Eliminando enlace',
             success: 'Enlace eliminado',
@@ -34,7 +26,6 @@ export default function ModalEliminar(info) {
 
     return (
         <>
-            <Toaster richColors closeButton />
             <Button onClick={onOpen} color="danger" radius="full" variant="bordered" size="sm" isIconOnly endContent={<i className="fa-solid fa-ban"></i>} />
             <Modal
                 isOpen={isOpen}

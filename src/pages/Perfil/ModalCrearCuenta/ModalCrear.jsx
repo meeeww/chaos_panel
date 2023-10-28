@@ -1,66 +1,22 @@
 import { useState, useMemo } from "react";
 
-import axios from "axios"
-import api from "../../../../variables.json";
-import sendLog from "../../../utils/sendLog";
+import { crearCuenta } from "../../../services/cuentas";
 
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/react";
-import { Toaster, toast } from 'sonner'
+import { toast } from 'sonner'
 
 export default function ModalCrearCuenta(info) {
+
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
     const [valor, setValor] = useState("")
+    const [tag, setTag] = useState("EUW")
     const [valorPrimaria, setValorPrimaria] = useState("")
     const [valorSecundaria, setValorSecundaria] = useState("")
 
     const handleUpload = () => {
         toast.promise(() => new Promise((resolve, reject) => {
-            let principal = ""
-            let secundaria = ""
-
-            switch (valorPrimaria) {
-                case 1:
-                    principal = "Toplane"
-                    break;
-                case 2:
-                    principal = "Jungla"
-                    break;
-                case 3:
-                    principal = "Midlane"
-                    break;
-                case 4:
-                    principal = "ADC"
-                    break;
-                case 5:
-                    principal = "Support"
-                    break;
-            }
-
-            switch (valorSecundaria) {
-                case 1:
-                    secundaria = "Toplane"
-                    break;
-                case 2:
-                    secundaria = "Jungla"
-                    break;
-                case 3:
-                    secundaria = "Midlane"
-                    break;
-                case 4:
-                    secundaria = "ADC"
-                    break;
-                case 5:
-                    secundaria = "Support"
-                    break;
-            }
-            axios.post(api.directorio + "crearcuenta", { id_usuario: info.info.usuario.informacion.id_usuario, invocador: valor, linea_principal: principal, linea_secundaria: secundaria }).then(function () {
-                sendLog(info.info.usuario.informacion.id_usuario, "Añadir Cuenta", { "accion": "Perfil Cambiado" })
-                info.cambioDatos(true)
-                resolve()
-            }).catch(function () {
-                reject()
-            })
+            crearCuenta(valor, tag, valorPrimaria, valorSecundaria, info.usuario, resolve, reject, info.cambioDatos)
         }), {
             loading: 'Añadiendo cuenta',
             success: 'Cuenta añadida',
@@ -140,7 +96,6 @@ export default function ModalCrearCuenta(info) {
 
     return (
         <>
-            <Toaster richColors closeButton />
             <Button onClick={onOpen} color="primary" endContent={<i className="fa-solid fa-plus"></i>}>
                 Nueva Cuenta
             </Button>
@@ -154,7 +109,24 @@ export default function ModalCrearCuenta(info) {
                         <>
                             <ModalHeader className="flex flex-col gap-1">{"Añadir cuenta de League of Legends"}</ModalHeader>
                             <ModalBody>
-                                <Input type="text" placeholder={"Nombre de Invocador"} className="w-full sm:max-w-[100%]" isRequired onChange={(e) => { setValor(e.target.value) }} />
+                                <div className="flex justify-between items-center">
+                                    <Input type="text" placeholder={"Nombre de Invocador"} className="w-full sm:max-w-[100%]" isRequired onChange={(e) => { setValor(e.target.value) }} />
+                                    <div className="flex justify-end items-center">
+                                        <Input
+                                            type="text"
+                                            placeholder="EUW"
+                                            labelPlacement="outside"
+                                            className="w-full sm:max-w-[90%]"
+                                            onChange={(e) => { setTag(e.target.value) }}
+                                            startContent={
+                                                <div className="pointer-events-none flex items-center">
+                                                    <span className="text-default-400 text-small">#</span>
+                                                </div>
+                                            }
+                                        />
+
+                                    </div>
+                                </div>
                                 <div>
                                     {RenderInput()}
                                 </div>
@@ -168,13 +140,7 @@ export default function ModalCrearCuenta(info) {
                                         if (valorPrimaria == valorSecundaria) {
                                             toast.error("No puedes poner la misma línea como ambas opciones.")
                                         } else {
-                                            axios.get(api.directorio + "cuenta/nombre=" + valor).then((cuentaComprobacion) => {
-                                                if (cuentaComprobacion.data.length > 0) {
-                                                    toast.error("Esta cuenta ya ha sido vinculada.")
-                                                } else {
-                                                    handleUpload()
-                                                }
-                                            })
+                                            handleUpload();
                                         }
                                     } else {
                                         toast.error('No has rellenado todos los campos.')

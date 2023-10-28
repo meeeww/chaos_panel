@@ -3,7 +3,6 @@ import { useState, useMemo } from "react";
 import axios from "axios"
 import api from "../../../../variables.json";
 import sendLog from "../../../utils/sendLog";
-import md5 from "md5";
 
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, DropdownSection } from "@nextui-org/react";
 import { Toaster, toast } from 'sonner'
@@ -129,7 +128,7 @@ export default function ModalJugadores(info) {
         if (info.columna.tipo == "password") {
             const encriptarPass = () => {
                 return new Promise((resolve) => {
-                    resolve(md5(valor))
+                    //resolve(md5(valor))
                 })
             }
 
@@ -181,7 +180,6 @@ export default function ModalJugadores(info) {
 
     return (
         <>
-            <Toaster richColors closeButton />
             <Button onClick={onOpen} size="sm" isIconOnly aria-label="Modificar" color="warning"><i className="fa-solid fa-hammer text-white"></i></Button>
             <Modal
                 isOpen={isOpen}

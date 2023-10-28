@@ -1,0 +1,55 @@
+{
+    "status": 200,
+    "success": true,
+    "result": {
+        "info": {
+            "id_usuario": 52,
+            "id_equipo": 81,
+            "id_discord": null,
+            "nombre_usuario": "Omar",
+            "apellido_usuario": "Zas",
+            "nick_usuario": "zas",
+            "edad": 1098057600,
+            "rol": 20,
+            "icono": "13",
+            "usuario_activado": 0,
+            "circuitotormenta": "moo",
+            "twitter": "kanuto",
+            "discord": "lol"
+        },
+        "equipo": {
+            "id_equipo": 81,
+            "id_liga": null,
+            "id_temporada": null,
+            "stage": null,
+            "nombre_equipo": "Koryü Budö",
+            "logo_equipo": "imagenEquipo_1696363329537.png",
+            "acronimo_equipo": "KB"
+        },
+        "cuentas": [
+            {
+                "id_cuenta": 2,
+                "id_usuario": 52,
+                "id_juego": 1,
+                "invocador": "Fresitabonita",
+                "tag": "EUW",
+                "id_lol": "MRIE3IB1ZBIkLVTQ5nvEdV-0JkH8cI_RU4WnD7wAF8XKQs94",
+                "puuid_lol": "EwELBCKj5kiW7l8n0rMQREPcbQq8F_AHGZvKcIbO7qCLSw7cg8xOcSiSPuWdgYfueyYCEEqTiRE4PA",
+                "linea_principal": "Support",
+                "linea_secundaria": "Jungla"
+            },
+            {
+                "id_cuenta": 26,
+                "id_usuario": 52,
+                "id_juego": 1,
+                "invocador": "faker",
+                "tag": "EUW",
+                "id_lol": "OL8sqfk5W1e5TQxXe-NWjxie8EAd5YP6rf-2dIZwlVh7DbUXNv6u-dRpgA",
+                "puuid_lol": "rIXS5JlCgIFN52IrLrKzDJG4p7HvvO4BP4RsNRay-i0yvcUBc7RZgZsNvA3fvsGngdOh2Rlp0fUJ5A",
+                "linea_principal": "Support",
+                "linea_secundaria": "Jungla"
+            }
+        ],
+        "estadisticas": {}
+    }
+}

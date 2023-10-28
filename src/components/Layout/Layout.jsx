@@ -1,44 +1,104 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
+import PropTypes from 'prop-types';
 
-import { NextUIProvider, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Avatar, DropdownSection } from "@nextui-org/react";
+import { NextUIProvider } from "@nextui-org/react";
 
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Avatar, DropdownSection, Skeleton } from "@nextui-org/react";
+
+import { Toaster } from "sonner";
 import Logo from "../../assets/logos/LogoSinTexto.png"
 
-export default function Layout(datos) {
+const Layout = ({ children }) => {
 
     const [sidebarOpen, setSidebarOpen] = useState(false)
 
+    let usuario = JSON.parse(localStorage.getItem("usuario"))
+
+    if(usuario == null){
+        return(
+            <></>
+        )
+    }
+
     const renderAdmin = () => {
-        if (datos.info.informacion.rol >= 20) {
+        if (usuario) {
+            if (usuario.info.rol >= 20) {
+                return (
+                    <div>
+                        <h3 className="mb-2 ml-4 text-sm font-[700] text-bodydark2">Liga</h3>
+                        <ul className="mb-6 flex flex-col gap-1.5">
+                            <li>
+                                <NavLink
+                                    to={"/equipos"}
+                                    className={"group relative flex items-center gap-2.5 rounded-md py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-[var(--color-gris-sidebar)]"}
+                                >
+                                    <i className="fa-solid fa-people-group w-[20px] text-center"></i>
+                                    Equipos
+                                </NavLink>
+                                <NavLink
+                                    to={"/usuarios"}
+                                    className={"group relative flex items-center gap-2.5 rounded-md py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-[var(--color-gris-sidebar)]"}
+                                >
+                                    <i className="fa-solid fa-users w-[20px] text-center"></i>
+                                    Usuarios
+                                </NavLink>
+                            </li>
+                        </ul>
+                    </div>
+                )
+            }
+        }
+
+    }
+
+    const renderUser = () => {
+        if (usuario) {
             return (
-                <div>
-                    <h3 className="mb-2 ml-4 text-sm font-[700] text-bodydark2">Liga</h3>
-                    <ul className="mb-6 flex flex-col gap-1.5">
-                        <li>
-                            <NavLink
-                                to={"/equipos"}
-                                className={"group relative flex items-center gap-2.5 rounded-md py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-[var(--color-gris-sidebar)]"}
-                            >
-                                <i className="fa-solid fa-people-group w-[20px] text-center"></i>
-                                Equipos
-                            </NavLink>
-                            <NavLink
-                                to={"/usuarios"}
-                                className={"group relative flex items-center gap-2.5 rounded-md py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-[var(--color-gris-sidebar)]"}
-                            >
-                                <i className="fa-solid fa-users w-[20px] text-center"></i>
-                                Usuarios
-                            </NavLink>
-                        </li>
-                    </ul>
-                </div>
+                <>
+                    <p className="font-[500] text-[var(--color-texto-header)] text-sm">{usuario.info.nick_usuario}</p>
+                    <p className="text-[var(--color-texto-header)] text-xs">{usuario.info.nombrerol}</p>
+                </>
+            )
+        } else {
+            return (
+                <Skeleton className="h-3 w-3/5 rounded-lg"/>
+            )
+        }
+    }
+
+    const renderAvatar = () => {
+        if (usuario) {
+            return (
+                <Avatar
+                    isBordered
+                    as="button"
+                    className="transition-transform"
+                    src={`https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/profile-icons/${usuario.info.icono}.jpg`}
+                />
+            )
+        } else {
+            return (
+                <Skeleton className="flex rounded-full h-10 w-10"/>
+            )
+        }
+    }
+
+    const renderNick = () => {
+        if (usuario) {
+            return (
+                <p className="font-semibold">{usuario.info.nick_usuario}</p>
+            )
+        } else {
+            return (
+                <Skeleton className="flex rounded-full" />
             )
         }
     }
 
     return (
         <NextUIProvider>
+            <Toaster richColors closeButton />
             <div className="flex h-screen overflow-hidden">
                 <aside className={`absolute bg-[--color-sidebar] left-0 top-0 z-[9999] flex h-screen w-[19rem] flex-col overflow-y-hidden duration-300 ease-linear lg:static lg:translate-x-0 text-[--color-texto-sidebar] ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'
                     }`}>
@@ -159,31 +219,23 @@ export default function Layout(datos) {
                                 </div>
                                 <div className="flex justify-center items-center gap-6">
                                     <div className="text-end">
-                                        <p className="font-[500] text-[var(--color-texto-header)] text-sm">{datos.info.informacion.nick_usuario}</p>
-                                        <p className="text-[var(--color-texto-header)] text-xs">{datos.info.nombrerol}</p>
+                                        {renderUser()}
                                     </div>
                                     <Dropdown placement="bottom-end">
                                         <DropdownTrigger>
-                                            <Avatar
-                                                isBordered
-                                                as="button"
-                                                className="transition-transform"
-                                                src={`https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/profile-icons/${datos.info.informacion.icono}.jpg`}
-                                            />
+                                            {renderAvatar()}
                                         </DropdownTrigger>
                                         <DropdownMenu aria-label="Usuario" variant="flat" className="text-[var(--color-principal-light)]">
                                             <DropdownSection title="Sesión Iniciada" showDivider>
-                                                <DropdownItem key="sesion" className="h-4" onClick={() => { window.location = "/perfil" }}>
-                                                    <p className="font-semibold">{datos.info.informacion.nick_usuario}</p>
+                                                <DropdownItem key="sesion" textValue="sesion" className="h-4" onClick={() => { window.location = "/perfil" }}>
+                                                    {renderNick()}
                                                 </DropdownItem>
                                             </DropdownSection>
                                             <DropdownSection title="Usuario" showDivider>
-                                                <DropdownItem key="perfil" description="Ver información de tu perfil" startContent={<i className="fa-solid fa-user mr-[2px]"></i>} onPress={() => { window.location.replace("/perfil") }}>Perfil</DropdownItem>
-                                                <DropdownItem key="contactos" description="Consultar tus contactos" startContent={<i className="fa-solid fa-address-book"></i>} variant="disabled">Contactos</DropdownItem>
-                                                <DropdownItem key="ajustes" description="Modificar ajustes de tu cuenta" startContent={<i className="fa-solid fa-gear"></i>} variant="disabled">Ajustes</DropdownItem>
+                                                <DropdownItem textValue="perfil" key="perfil" description="Ver información de tu perfil" startContent={<i className="fa-solid fa-user mr-[2px]"></i>} onPress={() => { window.location.replace("/perfil") }}>Perfil</DropdownItem>
                                             </DropdownSection>
                                             <DropdownSection title="Cerrar Sesión">
-                                                <DropdownItem key="logout" className="text-danger" color="danger" description="Cerrar la sesión actual" startContent={<i className="fa-solid fa-right-from-bracket"></i>} onClick={() => { window.localStorage.removeItem("token"); window.location.replace("/iniciosesion") }}>Cerrar Sesión</DropdownItem>
+                                                <DropdownItem key="logout" textValue="cerrarsesion" className="text-danger" color="danger" description="Cerrar la sesión actual" startContent={<i className="fa-solid fa-right-from-bracket"></i>} onClick={() => { window.localStorage.removeItem("token"); window.localStorage.removeItem("usuario"); window.location.replace("/iniciosesion") }}>Cerrar Sesión</DropdownItem>
                                             </DropdownSection>
                                         </DropdownMenu>
                                     </Dropdown>
@@ -193,7 +245,7 @@ export default function Layout(datos) {
                     </header>
                     <main>
                         <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
-                            {datos.children}
+                            {children}
                         </div>
                     </main>
                 </div>
@@ -201,3 +253,9 @@ export default function Layout(datos) {
         </NextUIProvider>
     )
 }
+
+Layout.propTypes = {
+    children: PropTypes.node,
+};
+
+export default Layout;

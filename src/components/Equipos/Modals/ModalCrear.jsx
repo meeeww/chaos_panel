@@ -40,7 +40,6 @@ export default function ModalEquipos(cambioDatos) {
 
     return (
         <>
-            <Toaster richColors closeButton />
             <Button color="primary" onPress={onOpen} endContent={<i className="fa-solid fa-plus"></i>}>
                 Crear Equipo
             </Button>

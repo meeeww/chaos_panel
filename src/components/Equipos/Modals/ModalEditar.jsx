@@ -139,7 +139,6 @@ export default function ModalEquipos(info) {
 
     return (
         <>
-            <Toaster richColors closeButton />
             <Button onClick={onOpen} size="sm" isIconOnly aria-label="Modificar" color="warning"><i className="fa-solid fa-hammer text-white"></i></Button>
             <Modal
                 isOpen={isOpen}
