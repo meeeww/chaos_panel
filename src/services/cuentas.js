@@ -13,6 +13,8 @@ async function crearCuenta(valor, tag = "EUW", valorPrimaria, valorSecundaria, u
         .then((cuentaComprobacion) => {
             if (cuentaComprobacion.data.existe) {
                 toast.error("Esta cuenta ya ha sido vinculada.");
+            } else if (cuentaComprobacion.data.existe == false && cuentaComprobacion.data.success == false) {
+                toast.error("Esta cuenta no existe.");
             } else {
                 switch (valorPrimaria) {
                     case 1:

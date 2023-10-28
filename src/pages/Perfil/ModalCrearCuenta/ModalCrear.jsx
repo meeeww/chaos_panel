@@ -110,7 +110,7 @@ export default function ModalCrearCuenta(info) {
                             <ModalHeader className="flex flex-col gap-1">{"Añadir cuenta de League of Legends"}</ModalHeader>
                             <ModalBody>
                                 <div className="flex justify-between items-center">
-                                    <Input type="text" placeholder={"Nombre de Invocador"} className="w-full sm:max-w-[100%]" isRequired onChange={(e) => { setValor(e.target.value) }} />
+                                    <Input type="text" placeholder={"Riot ID"} className="w-full sm:max-w-[100%]" isRequired onChange={(e) => { setValor(e.target.value) }} />
                                     <div className="flex justify-end items-center">
                                         <Input
                                             type="text"
