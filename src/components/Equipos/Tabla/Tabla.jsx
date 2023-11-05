@@ -28,7 +28,9 @@ import { columns, statusOptions } from "./data";
 
 const INITIAL_VISIBLE_COLUMNS = ["id_equipo", "nombre_equipo", "logo_equipo", "id_liga", "actions"];
 
-export default function Tabla() {
+// eslint-disable-next-line react/prop-types
+export default function Tabla({listaEquipos, setCambioDatos, cambioDatos}) {
+
     const [filterValue, setFilterValue] = useState("");
     const [selectedKeys, setSelectedKeys] = useState(new Set([]));
     const [visibleColumns, setVisibleColumns] = useState(new Set(INITIAL_VISIBLE_COLUMNS));
@@ -39,17 +41,12 @@ export default function Tabla() {
         direction: "ascending",
     });
     const [page, setPage] = useState(1);
-    const [users, setUsers] = useState([{
-        "id_equipo": 33,
-        "id_liga": null,
-        "id_temporada": null,
-        "stage": null,
-        "nombre_equipo": "Prueba1",
-        "logo_equipo": "imagenEquipo_1695225337422undefined.png",
-        "acronimo_equipo": "ppp"
-    }])
+    const [users, setUsers] = useState(listaEquipos)
 
-    const [cambioDeDatos, setCambioDeDatos] = useState(false)
+    useEffect(() =>{
+        setUsers(listaEquipos)
+    },[cambioDatos, listaEquipos])
+
     const hasSearchFilter = Boolean(filterValue);
 
     const headerColumns = useMemo(() => {
@@ -62,19 +59,6 @@ export default function Tabla() {
         id_liga: 1,
         nombre_liga: 'Primer Split'
     }])
-
-    const [cargando, setCargando] = useState(true)
-
-    useEffect(() => {
-        setCambioDeDatos(false)
-        axios.get(api.directorio + `equipos`).then((equipos) => {
-            setUsers(equipos.data)
-            axios.get(api.directorio + `ligas`).then((ligas) => {
-                setLigas(ligas.data)
-                setCargando(false)
-            })
-        })
-    }, [rowsPerPage, page, cambioDeDatos])
 
     const filteredItems = useMemo(() => {
         let filteredUsers = [...users];
@@ -140,13 +124,13 @@ export default function Tabla() {
                 return (
                     <div className="relative flex justify-end items-center gap-2">
                         <Button onClick={() => { window.location.replace("/equipo?id=" + user.id_equipo) }} size="sm" isIconOnly aria-label="Informacion" color="primary"><i className="fa-solid fa-info font-[900]"></i></Button>
-                        {!cargando ? <ModalBorrar equipo={user} cambioDatos={setCambioDeDatos} /> : null}
+                        <ModalBorrar equipo={user} cambioDatos={setCambioDatos} />
                     </div>
                 );
             default:
                 return cellValue;
         }
-    }, [cargando, ligas]);
+    }, []);
 
     const onNextPage = useCallback(() => {
         if (page < pages) {
@@ -235,7 +219,7 @@ export default function Tabla() {
                                 ))}
                             </DropdownMenu>
                         </Dropdown>
-                        <ModalEquipos cambioDatos={setCambioDeDatos} />
+                        <ModalEquipos cambioDatos={setCambioDatos} />
                     </div>
                 </div>
                 <div className="flex justify-between items-center">
@@ -293,15 +277,6 @@ export default function Tabla() {
             </div>
         );
     }, [selectedKeys, items.length, page, pages, hasSearchFilter]);
-
-    if (cargando) {
-        return (
-            <div className="w-full h-full flex justify-center items-center mt-16">
-                <CircularProgress aria-label="Cargando..." />
-            </div>
-        )
-    }
-
 
     return (
         <Table

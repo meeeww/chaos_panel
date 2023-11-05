@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo, useCallback } from "react";
+import React, { useState, useMemo, useCallback, useEffect } from "react";
 import {
     Table,
     TableHeader,
@@ -15,11 +15,10 @@ import {
     Chip,
     User,
     Pagination,
-    CircularProgress,
 } from "@nextui-org/react";
 
-import axios from "axios";
-import api from "../../../../variables.json"
+import getEdad from "../../../utils/getEdad"
+import getPermisos from "../../../utils/getPerms"
 
 import ModalCrear from "../Modals/ModalCrear"
 import ModalBorrar from "../Modals/ModalBorrar"
@@ -28,7 +27,8 @@ import { columns, statusOptions } from "./data";
 
 const INITIAL_VISIBLE_COLUMNS = ["id_usuario", "nick_usuario", "actions"];
 
-export default function Tabla() {
+// eslint-disable-next-line react/prop-types
+export default function Tabla({listaUsuarios, setCambioDatos, cambioDatos}) {
 
     const [filterValue, setFilterValue] = useState("");
     const [selectedKeys, setSelectedKeys] = useState(new Set([]));
@@ -40,24 +40,12 @@ export default function Tabla() {
         direction: "ascending",
     });
     const [page, setPage] = useState(1);
-    const [users, setUsers] = useState([{
-        "id_usuario": 16,
-        "id_equipo": null,
-        "id_discord": null,
-        "nombre_usuario": "Juan",
-        "apellido_usuario": "Zas",
-        "nick_usuario": "zas",
-        "nombre_ingame": "SupportConPanza",
-        "id_ingame": "MRIE3IB1ZBIkLVTQ5nvEdV-0JkH8cI_RU4WnD7wAF8XKQs94",
-        "puuid_ingame": "EwELBCKj5kiW7l8n0rMQREPcbQq8F_AHGZvKcIbO7qCLSw7cg8xOcSiSPuWdgYfueyYCEEqTiRE4PA",
-        "edad": 20,
-        "rol": 0,
-        "linea_principal": "Support",
-        "linea_secundaria": "Toplane",
-        "verificado": 0
-    }])
+    const [users, setUsers] = useState(listaUsuarios)
 
-    const [cambioDeDatos, setCambioDeDatos] = useState(false)
+    useEffect(() =>{
+        setUsers(listaUsuarios)
+    },[cambioDatos, listaUsuarios])
+
     const hasSearchFilter = Boolean(filterValue);
 
     const headerColumns = useMemo(() => {
@@ -65,16 +53,6 @@ export default function Tabla() {
 
         return columns.filter((column) => Array.from(visibleColumns).includes(column.uid));
     }, [visibleColumns]);
-
-    const [cargando, setCargando] = useState(true)
-
-    useEffect(() => {
-        setCambioDeDatos(false)
-        axios.get(api.directorio + `usuarios`).then((usuarios) => {
-            setUsers(usuarios.data)
-            setCargando(false)
-        })
-    }, [rowsPerPage, page, cambioDeDatos])
 
     const filteredItems = useMemo(() => {
         let filteredUsers = [...users];
@@ -128,13 +106,14 @@ export default function Tabla() {
                         {user.nombre_usuario}
                     </User>
                 );
-            case "role":
+            case "edad":
                 return (
-                    <div className="flex flex-col">
-                        <p className="text-bold text-small capitalize">{cellValue}</p>
-                        <p className="text-bold text-tiny capitalize text-default-400">{user.linea_principal}</p>
-                    </div>
-                );
+                    <p>{getEdad(cellValue) + " Años"}</p>
+                )
+            case "rol":
+                return (
+                    <p>{getPermisos(cellValue)}</p>
+                )
             case "verificado":
                 return (
                     <Chip className="capitalize" color={cellValue == 0 ? "warning" : "success"} size="sm" variant="flat">
@@ -145,13 +124,13 @@ export default function Tabla() {
                 return (
                     <div className="relative flex justify-end items-center gap-2">
                         <Button onClick={() => { window.location.replace("/usuario?id=" + user.id_usuario) }} size="sm" isIconOnly aria-label="Informacion" color="primary"><i className="fa-solid fa-info font-[900]"></i></Button>
-                        {!cargando ? <ModalBorrar equipo={user} cambioDatos={setCambioDeDatos} /> : null}
+                        <ModalBorrar equipo={user} cambioDatos={setCambioDatos} />
                     </div>
                 );
             default:
                 return cellValue;
         }
-    }, [cargando]);
+    }, []);
 
     const onNextPage = useCallback(() => {
         if (page < pages) {
@@ -240,7 +219,7 @@ export default function Tabla() {
                                 ))}
                             </DropdownMenu>
                         </Dropdown>
-                        <ModalCrear cambioDatos={setCambioDeDatos} />
+                        <ModalCrear cambioDatos={setCambioDatos} />
                     </div>
                 </div>
                 <div className="flex justify-between items-center">
@@ -298,14 +277,6 @@ export default function Tabla() {
             </div>
         );
     }, [selectedKeys, items.length, page, pages, hasSearchFilter]);
-
-    if (cargando) {
-        return (
-            <div className="w-full h-full flex justify-center items-center mt-16">
-                <CircularProgress aria-label="Cargando..." />
-            </div>
-        )
-    }
 
     return (
         <Table

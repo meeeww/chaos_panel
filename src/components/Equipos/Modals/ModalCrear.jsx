@@ -1,11 +1,9 @@
 import { useState } from "react";
 
-import axios from "axios";
-import api from "../../../../variables.json"
-import sendLog from "../../../utils/sendLog";
+import { crearEquipo } from "../../../services/equipos";
 
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input } from "@nextui-org/react";
-import { Toaster, toast } from 'sonner'
+import { toast } from 'sonner'
 
 export default function ModalEquipos(cambioDatos) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -24,13 +22,7 @@ export default function ModalEquipos(cambioDatos) {
         formdata.append("nombre", nombre);
         formdata.append("acronimo", acronimo);
         toast.promise(() => new Promise((resolve, reject) => {
-            axios.post(api.directorio + "crearequipo", formdata).then(function () {
-                cambioDatos.cambioDatos(true)
-                sendLog(16, "Crear Equipo", { nombre_equipo: nombre, acronimo_equipo: acronimo, imagen: true })
-                resolve()
-            }).catch(function () {
-                reject()
-            })
+            crearEquipo(nombre, formdata, resolve, reject, cambioDatos.cambioDatos)
         }), {
             loading: 'Creando equipo',
             success: 'Equipo creado',

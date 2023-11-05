@@ -1,38 +1,40 @@
 import { useState, useEffect } from "react"
 
-//import checkSession from "../utils/checkSession.js";
-//import returnSession from "../utils/returnSession";
+import { conseguirUsuarios } from "../services/usuarios";
+import {returnSession} from "../utils/sessions.js";
 
 import Layout from "../components/Layout/Layout.jsx"
 import TablaUsuarios from "../components/Jugadores/Tabla/Tabla.jsx"
 
+import { CircularProgress } from "@nextui-org/react"
+
 function Inicio() {
 
-  const [usuario, setUsuario] = useState()
+  const [usuarios, setUsuarios] = useState()
   const [cargando, setCargando] = useState(true)
-  const [seguridad, setSeguridad] = useState(false)
+  const [cambioDatos, setCambioDatos] = useState(false)
 
   useEffect(() => {
-    //checkSession(setUsuario, setCargando, setSeguridad)
-    if (!cargando) {
-      //returnSession(usuario)
-    }
-  }, [cargando])
+    returnSession(window.localStorage.getItem("token"))
+    conseguirUsuarios(setCambioDatos).then((listaUsuarios) => {
+      setUsuarios(listaUsuarios.result)
+      setCargando(false)
+    })
+  }, [cambioDatos]);
 
-  if (usuario == undefined) {
-    if (seguridad) {
-      window.location.replace("/iniciosesion")
-    }
-    return <></>
-  } else {
-    if (Object.keys(usuario).length == 0) {
-      window.location.replace("/iniciosesion")
-    }
+  if (cargando || localStorage.getItem("usuario") == null) {
+    return (
+      <Layout>
+        <div className="w-full h-full flex justify-center items-center mt-16">
+          <CircularProgress aria-label="Cargando..." />
+        </div>
+      </Layout>
+    );
   }
 
   return (
-    <Layout info={usuario}>
-      <TablaUsuarios></TablaUsuarios>
+    <Layout>
+      <TablaUsuarios listaUsuarios={usuarios} setCambioDatos={setCambioDatos} cambioDatos={cambioDatos}></TablaUsuarios>
     </Layout>
   )
 }

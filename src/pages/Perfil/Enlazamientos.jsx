@@ -6,11 +6,49 @@ import ModalEliminar from "./ModalEnlazar/ModalEliminar";
 
 export default function Enlazar(cuentas) {
 
-    return (
-        <Card className="py-4 h-[425px]">
+    if(Object.keys(cuentas).length == 0){
+        return (
+            <Card className="py-4 w-full h-[425px]">
             <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
                 <div className="flex mb-[1rem] w-full justify-between items-center">
-                    <h4 className="font-[800] text-2xl">Mis Enlaces</h4>
+                    <h4 className="font-[800] text-2xl">Enlaces</h4>
+                </div>
+            </CardHeader>
+            <Divider className="mt-2" />
+            <CardBody className="overflow-y-scroll no-scrollbar flex flex-col gap-6">
+                <div className="flex justify-between items-center">
+                    <div className="flex flex-col gap-1">
+                        <h3 className="font-[600] text-lg">Circuito Tormenta</h3>
+                    </div>
+                    <div className="flex gap-2">
+                    </div>
+                </div>
+                <div className="flex justify-between items-center">
+                    <div className="flex flex-col gap-1">
+                        <h3 className="font-[600] text-lg">Twitter</h3>
+                    </div>
+                    <div className="flex gap-2">
+                    </div>
+                </div>
+                <div className="flex justify-between items-center">
+                    <div className="flex flex-col gap-1">
+                        <h3 className="font-[600] text-lg">Discord</h3>
+                    </div>
+                    <div className="flex gap-2">
+                    </div>
+                </div>
+            </CardBody>
+        </Card>
+        )
+    }
+
+    
+
+    return (
+        <Card className="py-4 w-full h-[425px]">
+            <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
+                <div className="flex mb-[1rem] w-full justify-between items-center">
+                    <h4 className="font-[800] text-2xl">Enlaces</h4>
                     {<ModalEnlazar info={cuentas.usuario} cambioDatos={cuentas.cambioDatos} />}
                 </div>
             </CardHeader>

@@ -1,15 +1,16 @@
 import { useState, useMemo } from "react";
 
-import axios from "axios";
-import api from "../../../../variables.json"
-import sendLog from "../../../utils/sendLog";
+import { crearUsuario } from "../../../services/usuarios"
+
+import getEdad from "../../../utils/getEdad";
 
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, DropdownSection } from "@nextui-org/react";
-import { Toaster, toast } from 'sonner'
+import { toast } from 'sonner'
 
 export default function ModalUsuarios(cambioDatos) {
+
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
-    
+
     const [selectedKeys, setSelectedKeys] = useState(new Set(["Permisos"]));
 
     const selectedValue = useMemo(
@@ -25,30 +26,19 @@ export default function ModalUsuarios(cambioDatos) {
     const [rol, setRol] = useState(0)
 
     const handleUpload = () => {
-        const encriptarPass = () => {
-            return new Promise((resolve) => {
-                //resolve(md5(contra))
-            })
-        }
-
-        encriptarPass().then(
-            (contrasenaEncriptada) => {
-                toast.promise(() => new Promise((resolve, reject) => {
-                    axios.post(api.directorio + "crearusuario", { nombre: nombre, apellido: apellido, nick: nick, edad: (Date.parse(edad) / 1000.0), rol: rol, contra: contrasenaEncriptada }).then(function () {
-                        cambioDatos.cambioDatos(true)
-                        sendLog(48, "Crear Usuario", { nombre: nombre, apellido: apellido, nick: nick, edad: edad, rol: rol })
-                        resolve()
-                    }).catch(function () {
-                        reject()
-                    })
-                }), {
-                    loading: 'Creando usuario',
-                    success: 'Usuario creado',
-                    error: 'Error',
-                });
+        toast.promise(() => new Promise((resolve, reject) => {
+            if (getEdad((Date.parse(edad) / 1000.0)) >= 16) {
+                crearUsuario(nombre, apellido, nick, (Date.parse(edad) / 1000.0), rol, contra, resolve, reject, cambioDatos.cambioDatos)
+            } else {
+                reject()
+                toast.error("El usuario debe de tener 16 años o más")
             }
-        )
-        
+
+        }), {
+            loading: 'Creando usuario',
+            success: 'Usuario creado',
+            error: 'Error',
+        });
     }
 
     return (

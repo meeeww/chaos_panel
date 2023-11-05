@@ -1,11 +1,9 @@
 import { useState } from "react";
 
-import axios from "axios"
-import api from "../../../../variables.json";
-import sendLog from "../../../utils/sendLog";
+import { eliminarEquipo } from "../../../services/equipos";
 
 import { Modal, ModalContent, ModalHeader, ModalBody, Button, useDisclosure, Checkbox } from "@nextui-org/react";
-import { Toaster, toast } from 'sonner'
+import { toast } from 'sonner'
 
 export default function ModalEquipos(equipo) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -18,13 +16,7 @@ export default function ModalEquipos(equipo) {
 
     const confirmarBorracion = () => {
         toast.promise(() => new Promise((resolve, reject) => {
-            axios.delete(api.directorio + "borrarequipo", { data: { id: equipo["equipo"].id_equipo } }).then(function () {
-                equipo.cambioDatos(true)
-                sendLog(16, "Borrar Equipo", { id_equipo: equipo["equipo"].id_equipo, nombre_equipo: equipo["equipo"].nombre_equipo, acronimo_equipo: equipo["equipo"].acronimo_equipo, imagen: true, liga_equipo: equipo["equipo"].id_liga, temporada_equipo: equipo["equipo"].id_temporada, stage: equipo["equipo"].stage })
-                resolve()
-            }).catch(function () {
-                reject()
-            })
+            eliminarEquipo(equipo["equipo"].id_equipo, resolve, reject, equipo.cambioDatos)
         }), {
             loading: 'Borrando equipo',
             success: 'Equipo borrado',

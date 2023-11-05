@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import md5 from "md5"
-import { actualizarPerfil } from "../../../services/usuario";
+import { actualizarPerfil } from "../../../services/usuarios";
 
 import getEdad from "../../../utils/getEdad";
 
@@ -9,7 +9,6 @@ import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDi
 import { toast } from 'sonner'
 
 export default function ModalPerfil(info) {
-    console.log(info.jugador)
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
     const [valor, setValor] = useState("")
