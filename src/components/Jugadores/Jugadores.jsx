@@ -173,7 +173,7 @@ export default function Jugador({ usuario, cambioDatos }) {
                                             <div key={columna.name} className="flex items-center justify-between">
                                                 <p className="text-sm w-[5rem]">{columna.name}</p>
                                                 <p className="text-md font-[500] text-center w-[9rem]">{jugador[columna.uid]}</p>
-                                                <ModalJugadores jugador={jugador} columna={columna} cambioDatos={cambioDatos} equipos={listaEquipos} />
+                                                {/* <ModalJugadores jugador={jugador} columna={columna} cambioDatos={cambioDatos} equipos={listaEquipos} /> */}
                                             </div>
                                         )
                                     }
