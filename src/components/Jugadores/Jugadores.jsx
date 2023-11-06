@@ -17,10 +17,15 @@ import Enlazar from "../../pages/Perfil/Enlazamientos";
 export default function Jugador({ usuario, listaEquipos, cambioDatos }) {
     const [jugador, setJugador] = useState(usuario.info);
     const [equipo, setEquipo] = useState(usuario.equipo);
+    const [equipoActivo, setEquipoActivo] = useState(false)
 
     useEffect(() => {
+        setEquipoActivo(false)
         setJugador(usuario.info)
         setEquipo(usuario.equipo)
+        if(usuario.equipo.id_liga != undefined){
+            setEquipoActivo(true)
+        }
     }, [cambioDatos, usuario.info, usuario.equipo])
 
     const renderChip = () => {
@@ -39,8 +44,8 @@ export default function Jugador({ usuario, listaEquipos, cambioDatos }) {
     };
 
     const renderChipEquipo = (activo) => {
-        const icon = activo === 1 ? "fa-check" : "fa-xmark";
-        const color = activo === 1 ? "success" : "danger";
+        const icon = activo === true ? "fa-check" : "fa-xmark";
+        const color = activo === true ? "success" : "danger";
 
         return (
             <Chip
@@ -49,10 +54,12 @@ export default function Jugador({ usuario, listaEquipos, cambioDatos }) {
                 color={color}
                 className="pl-2"
             >
-                {activo === 1 ? "Activo" : "Inactivo"}
+                {activo === true ? "Activo" : "Inactivo"}
             </Chip>
         );
     };
+
+    console.log(equipo)
 
     const renderEquipo = () => {
         if (Object.keys(equipo).length > 0) {
@@ -67,7 +74,7 @@ export default function Jugador({ usuario, listaEquipos, cambioDatos }) {
                         />
                         <div className="flex flex-col gap-2">
                             <p className="text-md">{equipo.nombre_equipo}</p>
-                            {renderChipEquipo(equipo.activa)}
+                            {renderChipEquipo(equipoActivo)}
                         </div>
                     </CardHeader>
                     <Divider />
