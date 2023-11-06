@@ -98,4 +98,21 @@ async function actualizarPerfil(usuario, columna, valor, cambioDatos, resolve, r
         });
 }
 
-export { crearUsuario, eliminarUsuario, conseguirUsuarios, conseguirUsuarioPorId, actualizarPerfil };
+async function actualizarUsuario(usuario, columna, valor, cambioDatos, resolve, reject) {
+    axios
+        .put(
+            api.directorio + "usuarios",
+            { id_usuario: usuario.jugador.id_usuario, columna: columna, valor: valor },
+            { headers: { "x-auth-token": localStorage.getItem("token") } }
+        )
+        .then(function () {
+            cambioDatos(true);
+            sendLog(usuario.jugador.id_usuario, "Actualizar Usuario", { id: usuario.jugador.id_usuario });
+            resolve();
+        })
+        .catch(function () {
+            reject();
+        });
+}
+
+export { crearUsuario, eliminarUsuario, conseguirUsuarios, conseguirUsuarioPorId, actualizarPerfil, actualizarUsuario };

@@ -1,11 +1,11 @@
 import { useState, useMemo } from "react";
 
-import axios from "axios"
-import api from "../../../../variables.json";
-import sendLog from "../../../utils/sendLog";
+import md5 from "md5";
+
+import { actualizarUsuario } from "../../../services/usuarios";
 
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, DropdownSection } from "@nextui-org/react";
-import { Toaster, toast } from 'sonner'
+import { toast } from 'sonner'
 
 export default function ModalJugadores(info) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -128,22 +128,15 @@ export default function ModalJugadores(info) {
         if (info.columna.tipo == "password") {
             const encriptarPass = () => {
                 return new Promise((resolve) => {
-                    //resolve(md5(valor))
+                    resolve(md5(valor))
                 })
             }
 
             encriptarPass().then(
                 (contrasenaEncriptada) => {
                     toast.promise(() => new Promise((resolve, reject) => {
+                        actualizarUsuario(info, info.columna.modificar, contrasenaEncriptada, info.cambioDatos, resolve, reject)
                         resolve()
-                        axios.put(api.directorio + "modificarusuario", { id: info.jugador.id_usuario, columna: info.columna.modificar, valor: contrasenaEncriptada }).then(function () {
-                            console.log("errpr")
-                            info.cambioDatos(true)
-                            sendLog(info.jugador.id_usuario, "Actualizar Contraseña", { id: info.jugador.id_usuario })
-                            resolve()
-                        }).catch(function () {
-                            reject()
-                        })
                     }), {
                         loading: 'Actualizando contraseña',
                         success: 'Contraseña actualizada',
@@ -154,21 +147,9 @@ export default function ModalJugadores(info) {
         } else {
             toast.promise(() => new Promise((resolve, reject) => {
                 if (info.columna.modificar == "edad") {
-                    axios.put(api.directorio + "modificarusuario", { id: info.jugador.id_usuario, columna: info.columna.modificar, valor: (Date.parse(valor) / 1000.0) }).then(function () {
-                        sendLog(48, "Modificar Usuario", { nombre: info.jugador.nombre_usuario, apellido: info.jugador.apellido_usuario, nick: info.jugador.nick_usuario, edad: (Date.parse(info.jugador.edad) / 1000.0), rol: info.jugador.rol })
-                        info.cambioDatos(true)
-                        resolve()
-                    }).catch(function () {
-                        reject()
-                    })
+                    actualizarUsuario(info, info.columna.modificar, (Date.parse(valor) / 1000.0), info.cambioDatos, resolve, reject)
                 } else {
-                    axios.put(api.directorio + "modificarusuario", { id: info.jugador.id_usuario, columna: info.columna.modificar, valor: valor }).then(function () {
-                        sendLog(48, "Modificar Usuario", { nombre: info.jugador.nombre_usuario, apellido: info.jugador.apellido_usuario, nick: info.jugador.nick_usuario, edad: (Date.parse(info.jugador.edad) / 1000.0), rol: info.jugador.rol })
-                        info.cambioDatos(true)
-                        resolve()
-                    }).catch(function () {
-                        reject()
-                    })
+                    actualizarUsuario(info, info.columna.modificar, valor, info.cambioDatos, resolve, reject)
                 }
             }), {
                 loading: 'Modificando usuario',

@@ -1,29 +1,27 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardHeader, CardBody, CardFooter, Divider, Link, Image, Chip } from "@nextui-org/react";
 
-import api from "../../../variables.json"
+import api from "../../../variables.json";
 
 import ModalJugadores from "./Modals/ModalEditar";
-
 import Cuentas from "../../pages/Perfil/Cuentas";
 
 import { columns } from "./data";
 import { columnsEquipo } from "../Equipos/data";
-
 import getEdad from "../../utils/getEdad";
-import getPerms from "../../utils/getPerms"
+
+import getPerms from "../../utils/getPerms";
 import Enlazar from "../../pages/Perfil/Enlazamientos";
 
-export default function Jugador({ usuario, cambioDatos }) {
+export default function Jugador({ usuario, listaEquipos, cambioDatos }) {
+    const [jugador, setJugador] = useState(usuario.info);
+    const [equipo, setEquipo] = useState(usuario.equipo);
 
-    console.log(usuario)
-
-    console.log(cambioDatos)
-
-    const [jugador] = useState(usuario.info)
-    const [equipo] = useState(usuario.equipo)
-    const [cuentas] = useState(usuario.cuentas)
+    useEffect(() => {
+        setJugador(usuario.info)
+        setEquipo(usuario.equipo)
+    }, [cambioDatos, usuario.info, usuario.equipo])
 
     const renderChip = () => {
         if (jugador.id_discord != null) {
@@ -36,48 +34,36 @@ export default function Jugador({ usuario, cambioDatos }) {
                 >
                     {jugador.id_discord}
                 </Chip>
-            )
+            );
         }
-    }
+    };
 
     const renderChipEquipo = (activo) => {
-        switch (activo) {
-            case 0:
-                return (
-                    <Chip
-                        startContent={<i className="fa-solid fa-xmark"></i>}
-                        variant="flat"
-                        color="danger"
-                        className="pl-2"
-                    >
-                        Inactivo
-                    </Chip>
-                )
-            case 1:
-                return (
-                    <Chip
-                        startContent={<i className="fa-solid fa-check"></i>}
-                        variant="flat"
-                        color="success"
-                        className="pl-2"
-                    >
-                        Activo
-                    </Chip>
-                )
-        }
-    }
+        const icon = activo === 1 ? "fa-check" : "fa-xmark";
+        const color = activo === 1 ? "success" : "danger";
+
+        return (
+            <Chip
+                startContent={<i className={`fa-solid ${icon}`}></i>}
+                variant="flat"
+                color={color}
+                className="pl-2"
+            >
+                {activo === 1 ? "Activo" : "Inactivo"}
+            </Chip>
+        );
+    };
 
     const renderEquipo = () => {
-        if (equipo.length != 0) {
+        if (Object.keys(equipo).length > 0) {
             return (
                 <Card className="max-w-[300px] w-full">
                     <CardHeader className="flex gap-3">
                         <Image
                             alt="Logo Equipo"
-                            height={100}
                             radius="sm"
-                            src={(api.directorio + "images/" + equipo.logo_equipo)}
-                            width={100}
+                            src={api.directorio + "images/" + equipo.logo_equipo}
+                            className="h-[100px]"
                         />
                         <div className="flex flex-col gap-2">
                             <p className="text-md">{equipo.nombre_equipo}</p>
@@ -97,109 +83,76 @@ export default function Jugador({ usuario, cambioDatos }) {
                     </CardBody>
                     <Divider />
                     <CardFooter>
-                        <Link
-                            isExternal
-                            showAnchorIcon
-                            href={"/equipo?id=" + equipo.id_equipo}
-                        >
+                        <Link isExternal showAnchorIcon href={"/equipo?id=" + equipo.id_equipo}>
                             Visitar Página del Equipo
                         </Link>
                     </CardFooter>
                 </Card>
-            )
+            );
         }
-    }
+    };
+
+    const renderColumn = (columna) => {
+        const renderContent = () => {
+            if (columna.name === "Edad") {
+                return getEdad(jugador[columna.uid]);
+            } else if (columna.name === "Contraseña") {
+                return "--";
+            } else if (columna.name === "Equipo") {
+                return equipo ? equipo.nombre_equipo : "";
+            } else if (columna.name === "Rol") {
+                return getPerms(jugador[columna.uid]);
+            } else {
+                return jugador[columna.uid];
+            }
+        };
+
+        return (
+            <div key={columna.name} className="flex items-center justify-between">
+                <p className="text-sm w-[5rem]">{columna.name}</p>
+                <p className="text-md font-[500] text-center w-[9rem]">{renderContent()}</p>
+                <ModalJugadores jugador={jugador} columna={columna} cambioDatos={cambioDatos} equipos={listaEquipos} />
+            </div>
+        );
+    };
 
     return (
-        <>
-            <div className="flex flex-col gap-8">
-                <div className="flex gap-16">
-                    <Card className="max-w-[300px] w-full">
-                        <CardHeader className="flex gap-3">
-                            <Image
-                                alt="Logo Usuario"
-                                height={100}
-                                radius="sm"
-                                src={("https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/profile-icons/" + jugador.icono + ".jpg")}
-                                width={100}
-                            />
-                            <div className="flex flex-col gap-2">
-                                <div className="flex gap-1">
-                                    <p className="text-md">{jugador.nombre_usuario}</p>
-                                    <p className="text-md">{jugador.apellido_usuario}</p>
-                                </div>
-                                <p className="text-md">{jugador.nombre_equipo}</p>
-                                {renderChip()}
+        <div className="flex flex-col gap-8">
+            <div className="flex gap-16">
+                <Card className="max-w-[300px] w-full">
+                    <CardHeader className="flex gap-3">
+                        <Image
+                            alt="Logo Usuario"
+                            height={100}
+                            radius="sm"
+                            src={`https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/profile-icons/${jugador.icono}.jpg`}
+                            width={100}
+                        />
+                        <div className="flex flex-col gap-2">
+                            <div className="flex gap-1">
+                                <p className="text-md">{jugador.nombre_usuario}</p>
+                                <p className="text-md">{jugador.apellido_usuario}</p>
                             </div>
-                        </CardHeader>
-                        <Divider />
-                        <CardBody>
-                            <div className="flex flex-col gap-2">
-                                {columns.map((columna) => {
-                                    if (columna.name == "Edad") {
-                                        return (
-                                            <div key={columna.name} className="flex items-center justify-between">
-                                                <p className="text-sm w-[5rem]">{columna.name}</p>
-                                                <p className="text-md font-[500] text-center w-[9rem]">{getEdad(jugador[columna.uid])}</p>
-                                                {/* <ModalJugadores jugador={jugador} columna={columna} cambioDatos={cambioDatos} equipos={listaEquipos} /> */}
-                                            </div>
-                                        )
-                                    } else if (columna.name == "Contraseña") {
-                                        return (
-                                            <div key={columna.name} className="flex items-center justify-between">
-                                                <p className="text-sm w-[5rem]">{columna.name}</p>
-                                                <p className="text-md font-[500] text-center w-[9rem]">--</p>
-                                                {/* <ModalJugadores jugador={jugador} columna={columna} cambioDatos={setCambioDeDatos} equipos={listaEquipos} /> */}
-                                            </div>
-                                        )
-                                    } else if (equipo && columna.name == "Equipo") {
-                                        return (
-                                            <div key={columna.name} className="flex items-center justify-between">
-                                                <p className="text-sm w-[5rem]">{columna.name}</p>
-                                                <p className="text-md font-[500] text-center w-[9rem]">{equipo["nombre_equipo"]}</p>
-                                                {/* <ModalJugadores jugador={jugador} columna={columna} cambioDatos={setCambioDeDatos} /> */}
-                                            </div>
-                                        )
-                                    } else if (columna.name == "Rol") {
-                                        return (
-                                            <div key={columna.name} className="flex items-center justify-between">
-                                                <p className="text-sm w-[5rem]">{columna.name}</p>
-                                                <p className="text-md font-[500] text-center w-[9rem]">{getPerms(jugador[columna.uid])}</p>
-                                                {/* <ModalJugadores jugador={jugador} columna={columna} cambioDatos={setCambioDeDatos} equipos={listaEquipos} /> */}
-                                            </div>
-                                        )
-                                    } else {
-                                        return (
-                                            <div key={columna.name} className="flex items-center justify-between">
-                                                <p className="text-sm w-[5rem]">{columna.name}</p>
-                                                <p className="text-md font-[500] text-center w-[9rem]">{jugador[columna.uid]}</p>
-                                                {/* <ModalJugadores jugador={jugador} columna={columna} cambioDatos={cambioDatos} equipos={listaEquipos} /> */}
-                                            </div>
-                                        )
-                                    }
-                                })}
-                            </div>
-                        </CardBody>
-                        <Divider />
-                        <CardFooter>
-                            <Link
-                                isExternal
-                                showAnchorIcon
-                                href="#"
-                            >
-                                Visitar Página del Usuario
-                            </Link>
-                        </CardFooter>
-                    </Card>
-                    {renderEquipo()}
-                    <div className="flex w-[400px] gap-4">
-                        {<Enlazar usuario={usuario} cambioDatos={cambioDatos} />}
-                    </div>
-                </div>
-                <div className="flex w-full gap-4">
-                    {<Cuentas usuario={usuario} cambioDatos={cambioDatos} />}
+                            <p className="text-md">{jugador.nombre_equipo}</p>
+                            {renderChip()}
+                        </div>
+                    </CardHeader>
+                    <Divider />
+                    <CardBody>
+                        <div className="flex flex-col gap-2">
+                            {columns.map((columna) => renderColumn(columna))}
+                        </div>
+                    </CardBody>
+                    <Divider />
+                </Card>
+                {renderEquipo()}
+                <div className="flex w-[400px] gap-4">
+                    <Enlazar usuario={usuario} cambioDatos={cambioDatos} />
                 </div>
             </div>
-        </>
-    )
+            <div className="flex w-full gap-4">
+                <Cuentas usuario={usuario} cambioDatos={cambioDatos} />
+            </div>
+        </div>
+    );
 }
