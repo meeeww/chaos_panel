@@ -113,9 +113,9 @@ export default function ModalUsuarios(cambioDatos) {
                                 </Button>
                                 <Button color="primary" onPress={onClose} onClick={() => {
                                     if (nombre == "")
-                                        setNombre("NECESITA CAMBIAR")
+                                        setNombre("NECESITA MODIFICACIÓN")
                                     if (apellido == "")
-                                        setApellido("NECESITA CAMBIAR")
+                                        setApellido("NECESITA MODIFICACIÓN")
                                     if (edad == "" || edad == 0)
                                         setEdad("2000-01-01")
                                     if (nombre != "" && apellido != "" && nick != "" ) {
