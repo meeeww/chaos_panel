@@ -30,7 +30,7 @@ export default function Perfil() {
   if (cargando || localStorage.getItem("usuario") == null) {
     return (
       <Layout>
-        <div className="flex justify-between mr-16">
+        <div className="flex justify-between">
           <Card className="py-4 w-[45%] max-h-[713.69px]">
             <CardHeader className="pb-0 pt-2 px-4 flex-col items-center">
               <Skeleton className="object-cover rounded-xl w-[270px] h-[270px]" />
@@ -150,8 +150,8 @@ export default function Perfil() {
 
   return (
     <Layout>
-      <div className="flex justify-between mr-16">
-        <Card className="py-4 w-[45%] max-h-[713.69px]">
+      <div className="flex sm:flex-row flex-col justify-between">
+        <Card className="py-4 sm:w-[45%] max-h-[713.69px]">
           <CardHeader className="pb-0 pt-2 px-4 flex-col items-center">
             <Image
               alt="Card background"
@@ -253,7 +253,7 @@ export default function Perfil() {
             </div>
           </CardBody>
         </Card>
-        <div className="flex flex-col w-[50%] gap-4">
+        <div className="flex flex-col sm:w-[50%] sm:py-0 py-4 gap-4">
           {<CuentasTabla usuario={usuario} cambioDatos={setCambio} />}
           {<Enlazar usuario={usuario} cambioDatos={setCambio} />}
         </div>

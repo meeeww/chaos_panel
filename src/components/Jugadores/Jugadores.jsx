@@ -59,8 +59,6 @@ export default function Jugador({ usuario, listaEquipos, cambioDatos }) {
         );
     };
 
-    console.log(equipo)
-
     const renderEquipo = () => {
         if (Object.keys(equipo).length > 0) {
             return (
@@ -125,8 +123,8 @@ export default function Jugador({ usuario, listaEquipos, cambioDatos }) {
 
     return (
         <div className="flex flex-col gap-8">
-            <div className="flex gap-16">
-                <Card className="max-w-[300px] w-full">
+            <div className="flex sm:flex-row flex-col gap-16">
+                <Card className="sm:max-w-[300px] w-full">
                     <CardHeader className="flex gap-3">
                         <Image
                             alt="Logo Usuario"
@@ -153,7 +151,7 @@ export default function Jugador({ usuario, listaEquipos, cambioDatos }) {
                     <Divider />
                 </Card>
                 {renderEquipo()}
-                <div className="flex w-[400px] gap-4">
+                <div className="flex sm:w-[400px] gap-4">
                     <Enlazar usuario={usuario} cambioDatos={cambioDatos} />
                 </div>
             </div>
