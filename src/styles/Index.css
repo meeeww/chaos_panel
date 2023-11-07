@@ -5,7 +5,7 @@
 @tailwind utilities;
 
 @layer utilities {
-    @variants responsive {
+
 
         /* Hide scrollbar for Chrome, Safari and Opera */
         .no-scrollbar::-webkit-scrollbar {
@@ -24,9 +24,6 @@
             background: #555;
         }
 
-        /* Hide scrollbar for IE, Edge and Firefox */
-        .no-scrollbar {}
-
         .glass{
             backdrop-filter: blur(16px) saturate(168%);
             -webkit-backdrop-filter: blur(16px) saturate(168%);
@@ -34,7 +31,7 @@
             border-radius: 12px;
             border: 1px solid rgba(255, 255, 255, 0.125);
         }
-    }
+
 }
 
 :root {

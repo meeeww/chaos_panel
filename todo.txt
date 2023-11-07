@@ -1,15 +1,8 @@
 hecho
 
 haciendo
-    - Cuando la cuenta no existe, aparece como si la hubiera añadido pero no lo hace, cosa que esta bien (Cambio visual)
-    - Cambiar todo lo que ponga "Chaos Championship" a "Chaos Series" // falta el sendemail, cambiar de configurar
 
 para hacer
-    - Migrar Summoner Name a Riot ID
-    - mostrar la lista de cuentas en la pagina individual de un usuario (el boton de añadir cuenta no deberia de funcionar ahora)
-    - terminar pagina principal
-    - Comprobar que existe la cuenta en CT
-    - Al comprobar cuentas, filtrar solo por las de EUW1 y evitar errores en Discord
-    - En los modales de permisos, actualizar los roles o que los coja de DB
-    - al crear usuario = (cannot read properties of undefined reading icons)
-    - mostrar la lista de equipos en el modal "modificar equipo" de un usuario dentro de la pagina de equipo
+    - terminar la pagina principal
+    - arreglar la pagina de edición de equipos
+    - inhouses (generar partidos y comodines, y pausa tactica)
