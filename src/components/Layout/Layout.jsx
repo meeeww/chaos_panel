@@ -16,6 +16,7 @@ const Layout = ({ children }) => {
     let usuario = JSON.parse(localStorage.getItem("usuario"))
 
     if(usuario == null){
+        window.location.replace("/iniciosesion")
         return(
             <></>
         )
@@ -49,7 +50,43 @@ const Layout = ({ children }) => {
                 )
             }
         }
+    }
 
+    const renderJugador = () => {
+        if (usuario) {
+            if (usuario.info.rol >= 20) {
+                return (
+                    <div>
+                        <h3 className="mb-2 ml-4 text-sm font-[700] text-bodydark2">Partidos</h3>
+                        <ul className="mb-6 flex flex-col gap-1.5">
+                            <li>
+                                <NavLink
+                                    to={"/partidos"}
+                                    className={"group relative flex items-center gap-2.5 rounded-md py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-[var(--color-gris-sidebar)]"}
+                                >
+                                    <i className="fa-solid fa-camera-retro w-[20px] text-center"></i>
+                                    Partidos
+                                </NavLink>
+                                <NavLink
+                                    to={"/inhouses"}
+                                    className={"group relative flex items-center gap-2.5 rounded-md py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-[var(--color-gris-sidebar)]"}
+                                >
+                                    <i className="fa-solid fa-handshake w-[20px] text-center"></i>
+                                    Inhouses
+                                </NavLink>
+                                <NavLink
+                                    to={"/clasificacion"}
+                                    className={"group relative flex items-center gap-2.5 rounded-md py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-[var(--color-gris-sidebar)]"}
+                                >
+                                    <i className="fa-solid fa-table w-[20px] text-center"></i>
+                                    Clasificacion
+                                </NavLink>
+                            </li>
+                        </ul>
+                    </div>
+                )
+            }
+        }
     }
 
     const renderUser = () => {
@@ -121,6 +158,7 @@ const Layout = ({ children }) => {
                     <div className="no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear">
                         <nav className="mt-5 py-4 px-4 lg:mt-9 lg:px-6">
                             {renderAdmin()}
+                            {renderJugador()}
                             <div>
                                 <h3 className="mb-2 ml-4 text-sm font-[700] text-bodydark2">Usuario</h3>
                                 <ul className="mb-6 flex flex-col gap-1.5">
