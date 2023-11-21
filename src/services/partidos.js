@@ -1,45 +1,26 @@
 import axios from "axios";
 import api from "../../variables.json";
-import md5 from "md5";
 
 import { toast } from "sonner";
 
+import getEpoch from "../utils/getEpoch";
+
 import sendLog from "../utils/sendLog";
 
-async function crearUsuario(nombre, apellido, nick, edad, rol, contra, resolve, reject, cambioDatos) {
-    const encriptarPass = () => {
-        return new Promise((resolve) => {
-            resolve(md5(contra));
-        });
-    };
-
-    encriptarPass().then(
-        axios.get(api.directorio + "usuarios/nombre=" + nick, { headers: { "x-auth-token": localStorage.getItem("token") } }).then(function(comprobacion){
-            if(comprobacion.data.result.length == 0){
-                axios
-                .post(
-                    api.directorio + "usuarios",
-                    { nombre: nombre, apellido: apellido, nick: nick, edad: edad, rol: rol, contra: contra },
-                    { headers: { "x-auth-token": localStorage.getItem("token") } }
-                )
-                .then(function (respuesta) {
-                    if (respuesta.data.status == 200) {
-                        cambioDatos(true);
-                        resolve();
-                    } else {
-                        reject();
-                    }
-                })
-                .catch(function () {
-                    reject();
-                })
+async function crearInhouse(fecha, resolve, reject, cambioDatos) {
+    axios
+        .post(api.directorio + "partidos/inhouses", { fecha: getEpoch(fecha) }, { headers: { "x-auth-token": localStorage.getItem("token") } })
+        .then(function (respuesta) {
+            if (respuesta.data.status == 200) {
+                cambioDatos(true);
+                resolve();
             } else {
-                toast.error("Este usuario ya existe.")
-                reject()
+                reject();
             }
         })
-        
-    );
+        .catch(function () {
+            reject();
+        });
 }
 
 async function eliminarUsuario(id, resolve, reject, cambioDatos) {
@@ -70,9 +51,9 @@ async function conseguirInhouses(setCambioDatos) {
     }
 }
 
-async function conseguirUsuarioPorId(idUsuario, setCambioDatos) {
+async function conseguirInhousePorId(idInhouse, setCambioDatos) {
     try {
-        const respuesta = await axios.get(api.directorio + "usuarios/id=" + idUsuario, { headers: { "x-auth-token": localStorage.getItem("token") } });
+        const respuesta = await axios.get(api.directorio + "partidos/inhouses/id=" + idInhouse, { headers: { "x-auth-token": localStorage.getItem("token") } });
         setCambioDatos(false);
         return respuesta.data;
     } catch (e) {
@@ -81,16 +62,16 @@ async function conseguirUsuarioPorId(idUsuario, setCambioDatos) {
     }
 }
 
-async function actualizarPerfil(usuario, columna, valor, cambioDatos, resolve, reject) {
+async function inscribirseInhouse(inhouse, usuario, side, posicion, cambioDatos, resolve, reject) {
     axios
         .put(
-            api.directorio + "usuarios",
-            { id_usuario: usuario.info.id_usuario, columna: columna, valor: valor },
+            api.directorio + "partidos/inhouses",
+            { id_inhouse: inhouse, id_usuario: usuario, side: side, posicion: posicion },
             { headers: { "x-auth-token": localStorage.getItem("token") } }
         )
         .then(function () {
             cambioDatos(true);
-            sendLog(usuario.info.id_usuario, "Actualizar Perfil", { id: usuario.info.id_usuario });
+            sendLog(usuario, "Inscribirse", { id_inhouse: inhouse, id_usuario: usuario, side: side, posicion: posicion });
             resolve();
         })
         .catch(function () {
@@ -115,4 +96,4 @@ async function actualizarUsuario(usuario, columna, valor, cambioDatos, resolve, 
         });
 }
 
-export { crearUsuario, eliminarUsuario, conseguirInhouses, conseguirUsuarioPorId, actualizarPerfil, actualizarUsuario };
+export { crearInhouse, eliminarUsuario, conseguirInhouses, conseguirInhousePorId, inscribirseInhouse, actualizarUsuario };

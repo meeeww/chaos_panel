@@ -1,40 +1,33 @@
 import { useState } from "react";
 
-import { crearEquipo } from "../../../services/equipos";
+import { crearInhouse } from "../../../services/partidos";
 
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input } from "@nextui-org/react";
 import { toast } from 'sonner'
 
 export default function ModalEquipos(cambioDatos) {
+
+    let usuario = JSON.parse(localStorage.getItem("usuario"))
+
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
-    const [file, setFile] = useState()
-    const [nombre, setNombre] = useState("")
-    const [acronimo, setAcronimo] = useState("")
-
-    const handleFile = (e) => {
-        setFile(e.target.files[0])
-    }
+    const [fecha, setFecha] = useState()
 
     const handleUpload = () => {
-        const formdata = new FormData()
-        formdata.append("imagenEquipo", file)
-        formdata.append("nombre", nombre);
-        formdata.append("acronimo", acronimo);
         toast.promise(() => new Promise((resolve, reject) => {
-            crearEquipo(nombre, formdata, resolve, reject, cambioDatos.cambioDatos)
+            crearInhouse(fecha, resolve, reject, cambioDatos.cambioDatos)
         }), {
-            loading: 'Creando equipo',
-            success: 'Equipo creado',
+            loading: 'Creando inhouse',
+            success: 'Inhouse creado',
             error: 'Error',
         });
     }
 
     return (
         <>
-            <Button color="primary" onPress={onOpen} endContent={<i className="fa-solid fa-plus"></i>}>
+            {usuario.info.rol >= 20 ? <Button color="primary" onPress={onOpen} endContent={<i className="fa-solid fa-plus"></i>}>
                 Crear Inhouse
-            </Button>
+            </Button> : ""}
             <Modal
                 isOpen={isOpen}
                 onOpenChange={onOpenChange}
@@ -43,18 +36,17 @@ export default function ModalEquipos(cambioDatos) {
                 <ModalContent>
                     {(onClose) => (
                         <>
-                            <ModalHeader className="flex flex-col gap-1">Crear Equipo</ModalHeader>
+                            <ModalHeader className="flex flex-col gap-1">Crear Inhouse</ModalHeader>
                             <ModalBody>
-                                <Input type="text" placeholder="Nombre" className="w-full sm:max-w-[100%]" onChange={(e) => { setNombre(e.target.value) }} isRequired />
-                                <Input type="date" variant={"flat"} placeholder="Acrónimo (MÁX 3 CARÁCTERES)" onChange={(e) => { setAcronimo(e.target.value) }} isRequired />
-                                <Input id="upload" type="file" variant={"flat"} onChange={handleFile} />
+                                <Input type="datetime-local" placeholder="Fecha" onChange={(e) => { setFecha(e.target.value) }} isRequired />
                             </ModalBody>
                             <ModalFooter>
                                 <Button color="danger" variant="flat" onPress={onClose}>
                                     Cerrar
                                 </Button>
                                 <Button color="primary" onPress={onClose} onClick={() => {
-                                    if (file != undefined && nombre != "" && acronimo != "") {
+                                    console.log(fecha)
+                                    if (fecha != "") {
                                         handleUpload()
                                     } else {
                                         toast.error('No has rellenado todos los campos.')

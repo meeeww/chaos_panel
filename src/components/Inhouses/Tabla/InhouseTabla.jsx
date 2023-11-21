@@ -6,7 +6,6 @@ import {
     TableBody,
     TableRow,
     TableCell,
-    Input,
     Button,
     DropdownTrigger,
     Dropdown,
@@ -17,21 +16,19 @@ import {
     Pagination,
 } from "@nextui-org/react";
 
-import getEdad from "../../../utils/getEdad"
+import getDate from "../../../utils/getDate";
 import getPermisos from "../../../utils/getPerms"
 
 import ModalCrear from "../Modals/ModalCrear"
-import ModalBorrar from "../Modals/ModalBorrar"
 
 import { columns, statusOptions } from "./data";
 
-const INITIAL_VISIBLE_COLUMNS = ["id_usuario", "nick_usuario", "actions"];
+const INITIAL_VISIBLE_COLUMNS = ["id_partido", "fecha", "progreso"];
 
 // eslint-disable-next-line react/prop-types
-export default function InhouseTabla({listaInhouses, setCambioDatos, cambioDatos}) {
+export default function InhouseTabla({ listaInhouses, setCambioDatos, cambioDatos }) {
 
     const [filterValue, setFilterValue] = useState("");
-    const [selectedKeys, setSelectedKeys] = useState(new Set([]));
     const [visibleColumns, setVisibleColumns] = useState(new Set(INITIAL_VISIBLE_COLUMNS));
     const [statusFilter, setStatusFilter] = useState("all");
     const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -42,9 +39,9 @@ export default function InhouseTabla({listaInhouses, setCambioDatos, cambioDatos
     const [page, setPage] = useState(1);
     const [inhouses, setInhouses] = useState(listaInhouses)
 
-    useEffect(() =>{
+    useEffect(() => {
         setInhouses(listaInhouses)
-    },[cambioDatos, listaInhouses])
+    }, [cambioDatos, listaInhouses])
 
     const hasSearchFilter = Boolean(filterValue);
 
@@ -64,12 +61,12 @@ export default function InhouseTabla({listaInhouses, setCambioDatos, cambioDatos
         }
         if (statusFilter !== "all" && Array.from(statusFilter).length !== statusOptions.length) {
             filteredUsers = filteredUsers.filter((user) =>
-                Array.from(statusFilter).includes(user.status),
+                Array.from(statusFilter)[0].includes(user.progreso),
             );
         }
 
         return filteredUsers;
-    }, [inhouses, filterValue, statusFilter]);
+    }, [inhouses, filterValue, statusFilter, hasSearchFilter]);
 
     const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -93,38 +90,23 @@ export default function InhouseTabla({listaInhouses, setCambioDatos, cambioDatos
     const renderCell = useCallback((user, columnKey) => {
         const cellValue = user[columnKey];
         switch (columnKey) {
+            case "fecha":
+                return (
+                    <p>{getDate(cellValue)}</p>
+                )
+            case "progreso":
+                if (!cellValue)
+                    return (
+                        <div className="flex justify-center items-center float-right bg-green-400 w-24 text-center p-1 px-1 rounded-lg cursor-pointer" onClick={() => { window.location.replace("/inhouse?id=" + user["id_partido"]) }}>
+                            <p className="px-1">En Espera</p>
+                            <i className="fa-solid fa-arrow-right"></i>
+                        </div>
 
-            case "nick_usuario":
+                    );
                 return (
-                    <User
-                        avatarProps={{ radius: "lg", src: "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/profile-icons/" + user.icono + ".jpg" }}
-                        description={user.nombre_usuario}
-                        name={cellValue}
-                        onClick={() => { window.location.replace("/usuario?id=" + user.id_usuario) }}
-                        className="cursor-pointer"
-                    >
-                        {user.nombre_usuario}
-                    </User>
-                );
-            case "edad":
-                return (
-                    <p>{getEdad(cellValue) + " Años"}</p>
-                )
-            case "rol":
-                return (
-                    <p>{getPermisos(cellValue)}</p>
-                )
-            case "verificado":
-                return (
-                    <Chip className="capitalize" color={cellValue == 0 ? "warning" : "success"} size="sm" variant="flat">
-                        {cellValue == 0 ? <div>Inactivo</div> : <div>Activo</div>}
-                    </Chip>
-                );
-            case "actions":
-                return (
-                    <div className="relative flex justify-end items-center gap-2">
-                        <Button onClick={() => { window.location.replace("/usuario?id=" + user.id_usuario) }} size="sm" isIconOnly aria-label="Informacion" color="primary"><i className="fa-solid fa-info font-[900]"></i></Button>
-                        <ModalBorrar equipo={user} cambioDatos={setCambioDatos} />
+                    <div className="flex justify-center items-center float-right bg-red-400 w-24 text-center p-1 px-1 rounded-lg cursor-pointer" onClick={() => { window.location.replace("/inhouse?id=" + user["id_partido"]) }}>
+                        <p className="px-1">Finalizado</p>
+                        <i className="fa-solid fa-arrow-right"></i>
                     </div>
                 );
             default:
@@ -158,25 +140,11 @@ export default function InhouseTabla({listaInhouses, setCambioDatos, cambioDatos
         }
     }, []);
 
-    const onClear = useCallback(() => {
-        setFilterValue("")
-        setPage(1)
-    }, [])
-
     const topContent = useMemo(() => {
         return (
             <div className="flex flex-col gap-4">
                 <div className="flex justify-between gap-3 items-end">
-                    <Input
-                        isClearable
-                        className="w-full sm:max-w-[44%]"
-                        placeholder="Buscar por nombre..."
-                        startContent={<i className="fa-solid fa-magnifying-glass"></i>}
-                        value={filterValue}
-                        onClear={() => onClear()}
-                        onValueChange={onSearchChange}
-                    />
-                    <div className="flex gap-3">
+                    <div className="flex gap-3 justify-end w-full">
                         <Dropdown>
                             <DropdownTrigger className="hidden sm:flex">
                                 <Button endContent={<i className="fa-solid fa-chevron-down"></i>} variant="flat">
@@ -223,7 +191,7 @@ export default function InhouseTabla({listaInhouses, setCambioDatos, cambioDatos
                     </div>
                 </div>
                 <div className="flex justify-between items-center">
-                    <span className="text-default-400 text-small">Total de {inhouses.length} usuarios</span>
+                    <span className="text-default-400 text-small">Total de {inhouses.length} inhouses</span>
                     <label className="flex items-center text-default-400 text-small">
                         Filas por página
                         <select
@@ -252,11 +220,6 @@ export default function InhouseTabla({listaInhouses, setCambioDatos, cambioDatos
     const bottomContent = useMemo(() => {
         return (
             <div className="py-2 px-2 flex justify-between items-center">
-                <span className="w-[30%] text-small text-default-400">
-                    {selectedKeys === "all"
-                        ? "Todos los usuarios seleccionados"
-                        : `Seleccionados ${selectedKeys.size} de ${filteredItems.length} usuarios`}
-                </span>
                 <Pagination
                     isCompact
                     showControls
@@ -276,7 +239,7 @@ export default function InhouseTabla({listaInhouses, setCambioDatos, cambioDatos
                 </div>
             </div>
         );
-    }, [selectedKeys, items.length, page, pages, hasSearchFilter]);
+    }, [items.length, page, pages, hasSearchFilter]);
 
     return (
         <Table
@@ -287,19 +250,17 @@ export default function InhouseTabla({listaInhouses, setCambioDatos, cambioDatos
             classNames={{
                 wrapper: "max-h-[382px]",
             }}
-            selectedKeys={selectedKeys}
-            selectionMode="multiple"
             sortDescriptor={sortDescriptor}
             topContent={topContent}
             topContentPlacement="outside"
-            onSelectionChange={setSelectedKeys}
             onSortChange={setSortDescriptor}
         >
             <TableHeader columns={headerColumns}>
                 {(column) => (
                     <TableColumn
                         key={column.uid}
-                        align={column.uid === "actions" ? "center" : "start"}
+                        align={column.uid === "progreso" ? "end" : "start"}
+                        className={column.uid === "progreso" ? "text-right" : "float-center"}
                         allowsSorting={column.sortable}
                     >
                         {column.name}
@@ -308,7 +269,7 @@ export default function InhouseTabla({listaInhouses, setCambioDatos, cambioDatos
             </TableHeader>
             <TableBody emptyContent={"No se han encontrado inhouses"} items={sortedItems}>
                 {(item) => (
-                    <TableRow key={item.id_usuario}>
+                    <TableRow key={item.id_partido}>
                         {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
                     </TableRow>
                 )}

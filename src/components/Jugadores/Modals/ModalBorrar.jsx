@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { eliminarEquipo } from "../../../services/equipos";
+import { eliminarUsuario } from "../../../services/usuarios";
 
 import { Modal, ModalContent, ModalHeader, ModalBody, Button, useDisclosure, Checkbox } from "@nextui-org/react";
 import { toast } from 'sonner'
@@ -16,10 +16,10 @@ export default function ModalEquipos(equipo) {
 
     const confirmarBorracion = () => {
         toast.promise(() => new Promise((resolve, reject) => {
-            eliminarEquipo(equipo["equipo"].id_equipo, resolve, reject, equipo.cambioDatos)
+            eliminarUsuario(equipo["equipo"].id_usuario, resolve, reject, equipo.cambioDatos)
         }), {
-            loading: 'Borrando equipo',
-            success: 'Equipo borrado',
+            loading: 'Borrando usuario',
+            success: 'Usuario borrado',
             error: 'Error',
         });
     }
@@ -35,10 +35,10 @@ export default function ModalEquipos(equipo) {
                 <ModalContent>
                     {(onClose) => (
                         <>
-                            <ModalHeader className="flex flex-col gap-1">Eliminar Equipo</ModalHeader>
+                            <ModalHeader className="flex flex-col gap-1">Eliminar Usuario</ModalHeader>
                             <ModalBody>
                                 <div className="flex flex-col justify-center gap-2 mb-8">
-                                    <Checkbox onChange={cambiarConfirmacion} id="checkBoxConfirmacion">¿Estás seguro de que quieres eliminar el equipo?</Checkbox>
+                                    <Checkbox onChange={cambiarConfirmacion} id="checkBoxConfirmacion">¿Estás seguro de que quieres eliminar el usuario?</Checkbox>
                                 </div>
                                 <div className="flex justify-evenly">
                                     <Button color="danger" variant="flat" onPress={onClose}>

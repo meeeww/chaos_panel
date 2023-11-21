@@ -1,140 +1,162 @@
 import { useState, useMemo } from "react";
 
-import axios from "axios"
-import api from "../../../../variables.json";
-import sendLog from "../../../utils/sendLog";
+import md5 from "md5";
 
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/react";
-import { Toaster, toast } from 'sonner'
+import { actualizarUsuario } from "../../../services/usuarios";
 
-export default function ModalEquipos(info) {
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, DropdownSection } from "@nextui-org/react";
+import { toast } from 'sonner'
+
+export default function ModalJugadores(info) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
-    const [valor, setValor] = useState("")
+    const [valor, setValor] = useState()
 
-    const RenderInput = (tipo, columna) => {
-        const [selectedKeysLiga, setSelectedKeysLiga] = useState(new Set([info.equipo.nombre_liga]));
+    let equiposOrdenados = info.equipos && info.equipos.sort(function (a, b) {
+        var textA = a.nombre_equipo.toUpperCase();
+        var textB = b.nombre_equipo.toUpperCase();
+        return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+    })
 
-        const selectedValueLiga = useMemo(
-            () => Array.from(selectedKeysLiga).join(", ").replaceAll("_", " "),
-            [selectedKeysLiga]
+    const RenderInput = (columna) => {
+        const [selectedKeys, setSelectedKeys] = useState(new Set(["Seleccionar"]));
+
+        const selectedValu = useMemo(
+            () => Array.from(selectedKeys).join(", ").replaceAll("_", " "),
+            [selectedKeys]
         );
 
-        const [selectedKeysTemporada, setSelectedKeysTemporada] = useState(new Set([info.equipo.nombre_temporada]));
-
-        const selectedValueTemporada = useMemo(
-            () => Array.from(selectedKeysTemporada).join(", ").replaceAll("_", " "),
-            [selectedKeysTemporada]
-        );
-
-        const [selectedKeysStage, setSelectedKeysStage] = useState(new Set([info.equipo.stage]));
-
-        const selectedValueStage = useMemo(
-            () => Array.from(selectedKeysStage).join(", ").replaceAll("_", " "),
-            [selectedKeysStage]
-        );
-
-        if (tipo == "number") {
-            switch (columna) {
-                case "id_liga":
-                    return (
-                        <Dropdown>
-                            <DropdownTrigger>
-                                <Button
-                                    variant="bordered"
-                                    className="capitalize"
-                                >
-                                    {selectedValueLiga}
-                                </Button>
-                            </DropdownTrigger>
-                            <DropdownMenu
-                                aria-label="Selection Liga"
-                                variant="flat"
-                                disallowEmptySelection
-                                selectionMode="single"
-                                selectedKeys={selectedKeysLiga}
-                                onSelectionChange={setSelectedKeysLiga}
+        switch (columna) {
+            case "rol":
+                return (
+                    <Dropdown>
+                        <DropdownTrigger>
+                            <Button
+                                variant="bordered"
+                                className="capitalize"
                             >
-                                {info.ligas.map((liga) => (
-                                    <DropdownItem key={liga.nombre_liga} value={liga.id_liga} onPress={(e) => { setValor(e.target.value) }}>{liga.nombre_liga}</DropdownItem>
+                                {selectedValu}
+                            </Button>
+                        </DropdownTrigger>
+                        <DropdownMenu
+                            aria-label="Selection Rol"
+                            className="h-[19.5rem] overflow-y-auto"
+                            variant="solid"
+                            disallowEmptySelection
+                            selectionMode="single"
+                            selectedKeys={selectedKeys}
+                            onSelectionChange={setSelectedKeys}
+                        >
+                            <DropdownSection showDivider={true}>
+                                <DropdownItem key={"Usuario"} value={0} onPress={(e) => { setValor(e.target.value) }}>Usuario</DropdownItem>
+                                <DropdownItem key={"Jugador"} value={1} onPress={(e) => { setValor(e.target.value) }}>Jugador</DropdownItem>
+                                <DropdownItem key={"Jugador Reserva"} value={2} onPress={(e) => { setValor(e.target.value) }}>Jugador Reserva</DropdownItem>
+                            </DropdownSection>
+
+                            <DropdownSection showDivider={true}>
+                                <DropdownItem key={"Coach"} value={5} onPress={(e) => { setValor(e.target.value) }}>Coach</DropdownItem>
+                                <DropdownItem key={"Manager"} value={6} onPress={(e) => { setValor(e.target.value) }}>Manager</DropdownItem>
+                                <DropdownItem key={"Sub-Presidente"} value={7} onPress={(e) => { setValor(e.target.value) }}>Sub-Presidente</DropdownItem>
+                                <DropdownItem key={"Presidente"} value={8} onPress={(e) => { setValor(e.target.value) }}>Presidente</DropdownItem>
+                            </DropdownSection>
+
+                            <DropdownSection showDivider={true}>
+                                <DropdownItem key={"Caster"} value={10} onPress={(e) => { setValor(e.target.value) }}>Caster</DropdownItem>
+                                <DropdownItem key={"Realizador"} value={11} onPress={(e) => { setValor(e.target.value) }}>Realizador</DropdownItem>
+                                <DropdownItem key={"Community Manager"} value={12} onPress={(e) => { setValor(e.target.value) }}>Community Manager</DropdownItem>
+                                <DropdownItem key={"Diseñador"} value={13} onPress={(e) => { setValor(e.target.value) }}>Diseñador</DropdownItem>
+                            </DropdownSection>
+
+                            <DropdownSection showDivider={true}>
+                                <DropdownItem key={"Arbrito"} value={15} onPress={(e) => { setValor(e.target.value) }}>Arbrito</DropdownItem>
+                                <DropdownItem key={"Arbitro Jefe"} value={16} onPress={(e) => { setValor(e.target.value) }}>Arbitro Jefe</DropdownItem>
+                                <DropdownItem key={"Desarrollador"} value={17} onPress={(e) => { setValor(e.target.value) }}>Desarrollador</DropdownItem>
+                            </DropdownSection>
+
+                            <DropdownSection showDivider={true}>
+                                <DropdownItem key={"CTO"} value={20} onPress={(e) => { setValor(e.target.value) }}>CTO</DropdownItem>
+                                <DropdownItem key={"COO"} value={21} onPress={(e) => { setValor(e.target.value) }}>COO</DropdownItem>
+                                <DropdownItem key={"CEO"} value={22} onPress={(e) => { setValor(e.target.value) }}>CEO</DropdownItem>
+                            </DropdownSection>
+                        </DropdownMenu>
+                    </Dropdown>
+                )
+            case "id_equipo":
+                return (
+                    <Dropdown>
+                        <DropdownTrigger>
+                            <Button
+                                variant="bordered"
+                                className="capitalize"
+                            >
+                                {selectedValu}
+                            </Button>
+                        </DropdownTrigger>
+                        <DropdownMenu
+                            aria-label="Selection Rol"
+                            className="h-[19.5rem] overflow-y-auto"
+                            variant="solid"
+                            disallowEmptySelection
+                            selectionMode="single"
+                            selectedKeys={selectedKeys}
+                            onSelectionChange={setSelectedKeys}
+                        >
+                            <DropdownSection>
+                                {equiposOrdenados && equiposOrdenados.map((equipito) => (
+                                    <DropdownItem key={equipito.id_equipo} value={equipito.id_equipo} onPress={(e) => { setValor(e.target.value) }}>{equipito.nombre_equipo}</DropdownItem>
                                 ))}
-                            </DropdownMenu>
-                        </Dropdown>
-                    )
-                case "id_temporada":
-                    return (
-                        <Dropdown>
-                            <DropdownTrigger>
-                                <Button
-                                    variant="bordered"
-                                    className="capitalize"
-                                >
-                                    {selectedValueTemporada}
-                                </Button>
-                            </DropdownTrigger>
-                            <DropdownMenu
-                                aria-label="Selection Temporada"
-                                variant="flat"
-                                disallowEmptySelection
-                                selectionMode="single"
-                                selectedKeys={selectedKeysTemporada}
-                                onSelectionChange={setSelectedKeysTemporada}
-                            >
-                                {info.temporadas.map((temporada) => (
-                                    <DropdownItem key={temporada.nombre_temporada} value={temporada.id_temporada} onPress={(e) => { setValor(e.target.value) }}>{temporada.nombre_temporada}</DropdownItem>
-                                ))}
-                            </DropdownMenu>
-                        </Dropdown>
-                    )
-                case "stage":
-                    return (
-                        <Dropdown>
-                            <DropdownTrigger>
-                                <Button
-                                    variant="bordered"
-                                    className="capitalize"
-                                >
-                                    {selectedKeysStage}
-                                </Button>
-                            </DropdownTrigger>
-                            <DropdownMenu
-                                aria-label="Selection Stage"
-                                variant="flat"
-                                disallowEmptySelection
-                                selectionMode="single"
-                                selectedKeys={selectedValueStage}
-                                onSelectionChange={setSelectedKeysStage}
-                            >
-                                <DropdownItem key={"Fase Regular"} onPress={(e) => { setValor(e.target.innerText) }}>Fase Regular</DropdownItem>
-                                <DropdownItem key={"Octavos"} onPress={(e) => { setValor(e.target.innerText) }}>Octavos</DropdownItem>
-                                <DropdownItem key={"Cuartos"} onPress={(e) => { setValor(e.target.innerText) }}>Cuartos</DropdownItem>
-                                <DropdownItem key={"Semifinal"} onPress={(e) => { setValor(e.target.innerText) }}>Semifinal</DropdownItem>
-                                <DropdownItem key={"Final"} onPress={(e) => { setValor(e.target.innerText) }}>Final</DropdownItem>
-                            </DropdownMenu>
-                        </Dropdown>
-                    )
-            }
-        } else {
-            return (
-                <Input type="text" placeholder={info.equipo[info.columna.uid]} className="w-full sm:max-w-[100%]" isRequired onChange={(e) => { setValor(e.target.value) }} />
-            )
+                            </DropdownSection>
+                        </DropdownMenu>
+                    </Dropdown>
+                )
+            case "edad":
+                return (
+                    <Input type="date" placeholder={info.jugador[info.columna.uid]} className="w-full sm:max-w-[100%]" isRequired onChange={(e) => { setValor(e.target.value) }} />
+                )
+            case "contra":
+                return (
+                    <Input type="password" className="w-full sm:max-w-[100%]" isRequired onChange={(e) => { setValor(e.target.value) }} />
+                )
+            default:
+                return (
+                    <Input type="text" placeholder={info.jugador[info.columna.uid]} className="w-full sm:max-w-[100%]" isRequired onChange={(e) => { setValor(e.target.value) }} />
+                )
         }
     }
 
     const handleUpload = () => {
-        toast.promise(() => new Promise((resolve, reject) => {
-            axios.put(api.directorio + "modificarequipo", { id: info.equipo.id_equipo, columna: info.columna.modificar, valor: valor }).then(function () {
-                sendLog(16, "Modificar Equipo", { id_equipo: info.equipo.id_equipo, nombre_equipo: info.equipo.nombre_equipo, columna_modificada: info.columna.modificar, valor_modificado: valor })
-                info.cambioDatos(true)
-                resolve()
-            }).catch(function () {
-                reject()
-            })
-        }), {
-            loading: 'Modificando equipo',
-            success: 'Equipo modificado',
-            error: 'Error',
-        });
+        if (info.columna.tipo == "password") {
+            const encriptarPass = () => {
+                return new Promise((resolve) => {
+                    resolve(md5(valor))
+                })
+            }
+
+            encriptarPass().then(
+                (contrasenaEncriptada) => {
+                    toast.promise(() => new Promise((resolve, reject) => {
+                        actualizarUsuario(info, info.columna.modificar, contrasenaEncriptada, info.cambioDatos, resolve, reject)
+                        resolve()
+                    }), {
+                        loading: 'Actualizando contraseña',
+                        success: 'Contraseña actualizada',
+                        error: 'Error',
+                    });
+                }
+            )
+        } else {
+            toast.promise(() => new Promise((resolve, reject) => {
+                if (info.columna.modificar == "edad") {
+                    actualizarUsuario(info, info.columna.modificar, (Date.parse(valor) / 1000.0), info.cambioDatos, resolve, reject)
+                } else {
+                    actualizarUsuario(info, info.columna.modificar, valor, info.cambioDatos, resolve, reject)
+                }
+            }), {
+                loading: 'Modificando usuario',
+                success: 'Usuario modificado',
+                error: 'Error',
+            });
+        }
     }
 
     return (
@@ -148,16 +170,16 @@ export default function ModalEquipos(info) {
                 <ModalContent>
                     {(onClose) => (
                         <>
-                            <ModalHeader className="flex flex-col gap-1">Modificar {info.columna.name}</ModalHeader>
+                            <ModalHeader className="flex flex-col gap-1">Modificar {info.columna.name == "Edad" ? "Fecha de Nacimiento" : info.columna.name}</ModalHeader>
                             <ModalBody>
-                                {RenderInput(info.columna.tipo, info.columna.modificar)}
+                                {RenderInput(info.columna.modificar)}
                             </ModalBody>
                             <ModalFooter>
                                 <Button color="danger" variant="flat" onPress={onClose}>
                                     Cerrar
                                 </Button>
                                 <Button color="primary" onPress={onClose} onClick={() => {
-                                    if (valor != "") {
+                                    if (valor != null) {
                                         handleUpload()
                                     } else {
                                         toast.error('No has rellenado todos los campos.')

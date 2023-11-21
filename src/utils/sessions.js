@@ -27,4 +27,18 @@ const returnSession = async (token, setCargando) => {
     }
 };
 
-export { checkSession, returnSession };
+const returnSessionInicio = async (token, setCargando) => {
+    if (token) {
+        const response = await axios.post(api.directorio + "auth", { type: "buscar", token: token });
+        if (response.data.status === 200) {
+            localStorage.setItem("usuario", JSON.stringify(response.data.result));
+            if (setCargando != undefined) setCargando(false);
+            window.location.replace("/perfil");
+            return response.data.result;
+        }
+    } else {
+        window.location.replace("/iniciosesion");
+    }
+};
+
+export { checkSession, returnSession, returnSessionInicio };
