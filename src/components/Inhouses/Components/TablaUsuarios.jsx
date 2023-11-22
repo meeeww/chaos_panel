@@ -4,6 +4,7 @@ import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, User, 
 import { columns } from "../data";
 
 import ModalInscribirse from "../Modals/ModalInscribirse"
+import ModalDesinscribirse from "../Modals/ModalDesinscribirse";
 
 import { obtenerInformacionAdicional, encontrarPrimeraPosicionConIdNull } from "../../../utils/Inhouse/recibirInfoExtra";
 
@@ -15,6 +16,10 @@ const statusColorMap = {
 
 export default function TablaUsuarios({ inhouse, jugadoresBlue, jugadoresRed, cambioDatos }) {
 
+    const [usuarioInscrito, setUsuarioInscrito] = useState(false);
+
+    let usuario = JSON.parse(localStorage.getItem("usuario")).info.id_usuario
+
     const [jugadoresBlueFiltrados, setJugadoresBlueFiltrados] = useState(jugadoresBlue);
     const [jugadoresRedFiltrados, setJugadoresRedFiltrados] = useState(jugadoresRed);
 
@@ -22,6 +27,17 @@ export default function TablaUsuarios({ inhouse, jugadoresBlue, jugadoresRed, ca
     const [redState, setRedState] = useState(0);
 
     useEffect(() => {
+        for (let i = 0; i < jugadoresBlue.length; i++) {
+            if (jugadoresBlue[i].id === usuario) {
+                setUsuarioInscrito(true)
+            }
+        }
+    
+        for (let i = 0; i < jugadoresRed.length; i++) {
+            if (jugadoresRed[i].id === usuario) {
+                setUsuarioInscrito(true)
+            }
+        }
         const fetchInformacionAdicional = async () => {
             try {
                 const jugadoresActualizadosBlue = await obtenerInformacionAdicional(jugadoresBlueFiltrados, localStorage.getItem("token"));
@@ -37,7 +53,7 @@ export default function TablaUsuarios({ inhouse, jugadoresBlue, jugadoresRed, ca
         };
 
         fetchInformacionAdicional();
-    }, [jugadoresBlueFiltrados, jugadoresBlue, jugadoresRedFiltrados, jugadoresRed]);
+    }, [jugadoresBlueFiltrados, jugadoresBlue, jugadoresRedFiltrados, jugadoresRed, cambioDatos]);
 
     const renderCell = useCallback((user, columnKey) => {
         const cellValue = user[columnKey];
@@ -154,7 +170,8 @@ export default function TablaUsuarios({ inhouse, jugadoresBlue, jugadoresRed, ca
                 </Table>
             </div>
             <div className="w-full">
-                <ModalInscribirse inhouse={inhouse} blueLleno={blueState} redLleno={redState} cambioDatos={cambioDatos} />
+                {!usuarioInscrito ? <ModalInscribirse inhouse={inhouse} blueLleno={blueState} redLleno={redState} cambioDatos={cambioDatos} /> : <ModalDesinscribirse inhouse={inhouse} blueLleno={blueState} redLleno={redState} cambioDatos={cambioDatos} />}
+                
             </div>
         </div>
     );

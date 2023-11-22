@@ -6,7 +6,7 @@ import { inscribirseInhouse } from "../../../services/partidos";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/react";
 import { toast } from 'sonner'
 
-export default function ModalInscribirse({ inhouse ,blueLleno, redLleno, cambioDatos }) {
+export default function ModalDesinscribirse({ inhouse ,blueLleno, redLleno, cambioDatos }) {
 
     let usuario = JSON.parse(localStorage.getItem("usuario"))
 
@@ -41,8 +41,8 @@ export default function ModalInscribirse({ inhouse ,blueLleno, redLleno, cambioD
 
     return (
         <div className="float-right">
-            {usuario.info.rol >= 20 ? <Button color="primary" onPress={onOpen} endContent={<i className="fa-solid fa-arrow-right-to-bracket"></i>}>
-                Inscribirse
+            {usuario.info.rol >= 20 ? <Button color="danger" onPress={onOpen} endContent={<i className="fa-solid fa-arrow-right-to-bracket"></i>}>
+                Desinscribirse
             </Button> : ""}
             <Modal
                 isOpen={isOpen}

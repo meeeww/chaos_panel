@@ -69,9 +69,13 @@ async function inscribirseInhouse(inhouse, usuario, side, posicion, cambioDatos,
             { id_inhouse: inhouse, id_usuario: usuario, side: side, posicion: posicion },
             { headers: { "x-auth-token": localStorage.getItem("token") } }
         )
-        .then(function () {
+        .then(function (response) {
             cambioDatos(true);
             sendLog(usuario, "Inscribirse", { id_inhouse: inhouse, id_usuario: usuario, side: side, posicion: posicion });
+            if(response.data.result == "El usuario ya existe."){
+                reject();
+                toast.error("Ya te has inscrito anteriormente.")
+            }
             resolve();
         })
         .catch(function () {
