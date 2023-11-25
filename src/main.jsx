@@ -1,8 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 
-import Inicio from './pages/Inicio.jsx'
-
 import InicioSesion from './pages/InicioSesion.jsx'
 import Registro from './pages/Registro.jsx'
 

@@ -9,6 +9,8 @@ import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Avatar, Dropdown
 import { Toaster } from "sonner";
 import Logo from "../../assets/logos/LogoSinTexto.png"
 
+import getPerms from "../../utils/getPerms";
+
 const Layout = ({ children }) => {
 
     const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -57,7 +59,7 @@ const Layout = ({ children }) => {
             return (
                 <>
                     <p className="font-[500] text-[var(--color-texto-header)] text-sm">{usuario.info.nick_usuario}</p>
-                    <p className="text-[var(--color-texto-header)] text-xs">{usuario.info.nombrerol}</p>
+                    <p className="text-[var(--color-texto-header)] text-xs">{getPerms(usuario.info.rol)}</p>
                 </>
             )
         } else {

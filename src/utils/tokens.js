@@ -1,15 +1,14 @@
 import axios from "axios";
 import api from "../../variables.json";
 
-import { returnSession } from "./sessions";
+import { returnSession, returnSessionInicio } from "./sessions";
 
 async function checkToken(nick, contra, resolve, reject) {
     if (nick && contra) {
         axios.post(api.directorio + "auth", { type: "main", nick: nick, contra: contra }).then((check) => {
             if (check.data["status"] == 200) {
                 localStorage.setItem("token", check.data["token"]);
-                returnSession(check.data["token"])
-                window.location.replace("/perfil");
+                returnSessionInicio(check.data["token"])
                 resolve();
             } else {
                 reject();
