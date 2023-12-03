@@ -98,19 +98,16 @@ const Layout = ({ children }) => {
     }
   };
 
-    const renderUser = () => {
-        if (usuario) {
-            return (
-                <>
-                    <p className="font-[500] text-[var(--color-texto-header)] text-sm">{usuario.info.nick_usuario}</p>
-                    <p className="text-[var(--color-texto-header)] text-xs">{getPerms(usuario.info.rol)}</p>
-                </>
-            )
-        } else {
-            return (
-                <Skeleton className="h-3 w-3/5 rounded-lg"/>
-            )
-        }
+  const renderUser = () => {
+    if (usuario) {
+      return (
+        <>
+          <p className="font-[500] text-[var(--color-texto-header)] text-sm">{usuario.info.nick_usuario}</p>
+          <p className="text-[var(--color-texto-header)] text-xs">{getPerms(usuario.info.rol)}</p>
+        </>
+      );
+    } else {
+      return <Skeleton className="h-3 w-3/5 rounded-lg" />;
     }
   };
 
@@ -220,8 +217,17 @@ const Layout = ({ children }) => {
                     </DropdownTrigger>
                     <DropdownMenu aria-label="Notificaciones" variant="flat" className="text-[var(--color-principal-light)]">
                       <DropdownSection title="Notificaciones">
-                        <DropdownItem key="notificacion1" description="Se recuerda a todo usuario que para aparecer en la página de draft se requiere modificar su nombre y apellido.">
-                          Aviso Importante
+                        <DropdownItem
+                          key="notificacion1"
+                          description="Se recuerda a todo usuario que para aparecer en la página de draft se requiere modificar su nombre y apellido."
+                        >
+                          Aviso Administración
+                        </DropdownItem>
+                        <DropdownItem
+                          key="notificacion1"
+                          description="Se recuerda que para inscribirse en el draft se deberá de contactar con un administrador a través de Discord."
+                        >
+                          Aviso Administración
                         </DropdownItem>
                       </DropdownSection>
                     </DropdownMenu>
