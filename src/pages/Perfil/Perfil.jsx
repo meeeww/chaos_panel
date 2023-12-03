@@ -147,11 +147,11 @@ export default function Perfil() {
       </Layout>
     );
   }
-
+  
   return (
     <Layout>
       <div className="flex sm:flex-row flex-col justify-between">
-        <Card className="py-4 sm:w-[45%] max-h-[713.69px]">
+        <Card className="py-4 sm:w-[45%] max-h-[713.69px] p-4">
           <CardHeader className="pb-0 pt-2 px-4 flex-col items-center">
             <Image
               alt="Card background"

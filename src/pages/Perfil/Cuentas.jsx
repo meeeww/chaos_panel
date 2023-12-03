@@ -41,7 +41,7 @@ export default function Cuentas(usuario) {
                 </div>
             </CardHeader>
             <Divider className="mt-2" />
-            <CardBody className="flex flex-col gap-6 overflow-y-auto no-scrollbar">
+            <CardBody className="flex flex-col gap-6 overflow-y-auto no-scrollbar p-4">
                 {usuario.usuario.cuentas && usuario.usuario.cuentas.map((cuenta) => {
                     return (
                         <div key={cuenta.id_cuenta} className="flex justify-between items-center">
