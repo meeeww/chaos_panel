@@ -200,66 +200,51 @@ const Layout = ({ children }) => {
               </div>
               <div className="flex items-center gap-6 lg:gap-12">
                 <div className="flex gap-4">
+                  <Dropdown placement="bottom-end">
+                    <DropdownTrigger>
+                      <div className="relative flex items-center justify-center">
+                        <Avatar
+                          as="button"
+                          className="transition-transform w-8 h-8 bg-transparent border-1"
+                          icon={<i className="fa-solid fa-envelope text-sm text-[var(--color-iconos-header)]"></i>}
+                        />
+                        <span className="absolute -top-0.5 -right-[0.4rem] z-99999 h-2 w-2 rounded-full bg-red-500 inline">
+                          <span className="absolute -z-9999 inline-flex h-full w-full animate-ping rounded-full bg-red-500 left-0 opacity-75"></span>
+                        </span>
+                      </div>
+                    </DropdownTrigger>
+                    <DropdownMenu aria-label="Notificaciones" variant="flat" className="text-[var(--color-principal-light)]">
+                      <DropdownSection title="Notificaciones">
+                        <DropdownItem key="notificacion1" description="Se recuerda a todo usuario que para aparecer en la página de draft se requiere modificar su nombre y apellido.">
+                          Aviso Importante
+                        </DropdownItem>
+                      </DropdownSection>
+                    </DropdownMenu>
+                  </Dropdown>
                   {/* <Dropdown placement="bottom-end">
-                                        <DropdownTrigger>
-                                            <div className="relative flex items-center justify-center">
-                                                <Avatar
-                                                    as="button"
-                                                    className="transition-transform w-8 h-8 bg-transparent border-1"
-                                                    icon={<i className="fa-solid fa-envelope text-sm text-[var(--color-iconos-header)]"></i>}
-                                                />
-                                                <span className="absolute -top-0.5 -right-[0.4rem] z-99999 h-2 w-2 rounded-full bg-red-500 inline">
-                                                    <span className="absolute -z-9999 inline-flex h-full w-full animate-ping rounded-full bg-red-500 left-0 opacity-75"></span>
-                                                </span>
-                                            </div>
-                                        </DropdownTrigger>
-                                        <DropdownMenu aria-label="Notificaciones" variant="flat" className="text-[var(--color-principal-light)]">
-                                            <DropdownSection title="Notificaciones">
-                                                <DropdownItem
-                                                    key="notificacion1"
-                                                    description="Notificacion numero 1, probandoooooooooo XDdddddddddddddddddddddddd dddddddddd"
-                                                >
-                                                    Notificacion 1
-                                                </DropdownItem>
-                                                <DropdownItem
-                                                    key="notificacion2"
-                                                    description="Notificacion numero 2, probando"
-                                                >
-                                                    Notificacion 2
-                                                </DropdownItem>
-                                            </DropdownSection>
-                                        </DropdownMenu>
-                                    </Dropdown>
-                                    <Dropdown placement="bottom-end">
-                                        <DropdownTrigger>
-                                            <div className="relative flex items-center justify-center">
-                                                <Avatar
-                                                    as="button"
-                                                    className="transition-transform w-8 h-8 bg-transparent border-1"
-                                                    icon={<i className="fa-solid fa-comment text-sm text-[var(--color-iconos-header)]"></i>}
-                                                />
-                                                <span className="absolute -top-0.5 -right-[0.4rem] z-99999 h-2 w-2 rounded-full bg-red-500 inline">
-                                                    <span className="absolute -z-9999 inline-flex h-full w-full animate-ping rounded-full bg-red-500 left-0 opacity-75"></span>
-                                                </span>
-                                            </div>
-                                        </DropdownTrigger>
-                                        <DropdownMenu aria-label="Notificaciones" variant="flat" className="text-[var(--color-principal-light)]">
-                                            <DropdownSection title="Notificaciones">
-                                                <DropdownItem
-                                                    key="notificacion1"
-                                                    description="Notificacion numero 1, probandoooooooooo XDdddddddddddddddddddddddd dddddddddd"
-                                                >
-                                                    Notificacion 1
-                                                </DropdownItem>
-                                                <DropdownItem
-                                                    key="notificacion2"
-                                                    description="Notificacion numero 2, probando"
-                                                >
-                                                    Notificacion 2
-                                                </DropdownItem>
-                                            </DropdownSection>
-                                        </DropdownMenu>
-                                    </Dropdown> */}
+                    <DropdownTrigger>
+                      <div className="relative flex items-center justify-center">
+                        <Avatar
+                          as="button"
+                          className="transition-transform w-8 h-8 bg-transparent border-1"
+                          icon={<i className="fa-solid fa-comment text-sm text-[var(--color-iconos-header)]"></i>}
+                        />
+                        <span className="absolute -top-0.5 -right-[0.4rem] z-99999 h-2 w-2 rounded-full bg-red-500 inline">
+                          <span className="absolute -z-9999 inline-flex h-full w-full animate-ping rounded-full bg-red-500 left-0 opacity-75"></span>
+                        </span>
+                      </div>
+                    </DropdownTrigger>
+                    <DropdownMenu aria-label="Notificaciones" variant="flat" className="text-[var(--color-principal-light)]">
+                      <DropdownSection title="Notificaciones">
+                        <DropdownItem key="notificacion1" description="Notificacion numero 1, probandoooooooooo XDdddddddddddddddddddddddd dddddddddd">
+                          Notificacion 1
+                        </DropdownItem>
+                        <DropdownItem key="notificacion2" description="Notificacion numero 2, probando">
+                          Notificacion 2
+                        </DropdownItem>
+                      </DropdownSection>
+                    </DropdownMenu>
+                  </Dropdown> */}
                 </div>
                 <div className="flex justify-center items-center gap-6">
                   <div className="text-end">{renderUser()}</div>
