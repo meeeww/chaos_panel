@@ -67,7 +67,16 @@ export default function ModalEnlazar(info) {
                         <DropdownItem key={"Discord"} value={3} onPress={(e) => { setValor(e.target.value) }}>{"Discord"}</DropdownItem>
                     </DropdownMenu>
                 </Dropdown>
-                <Input type="text" placeholder={"Nombre de Cuenta"} className="w-full sm:max-w-[100%]" isRequired onChange={(e) => { setCuenta(e.target.value) }} />
+                {valor == 2 ? (<>
+                    <Input type="text" placeholder={"Nombre de Cuenta"} className="w-full sm:max-w-[100%]" isRequired onChange={(e) => { setCuenta(e.target.value) }}
+                        startContent={
+                            <div className="pointer-events-none flex items-center">
+                                <span className="text-default-400 text-small">@</span>
+                            </div>
+                        } />
+                </>) : (<>
+                    <Input type="text" placeholder={"Nombre de Cuenta"} className="w-full sm:max-w-[100%]" isRequired onChange={(e) => { setCuenta(e.target.value) }} />
+                </>)}
             </div>
         )
     }

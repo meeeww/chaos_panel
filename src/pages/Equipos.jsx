@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
-import returnSession from "../utils/returnSession.js";
 import { conseguirEquipos } from "../services/equipos.js";
+import { returnSessionAdmin } from "../utils/sessions.js";
 
 import Layout from "../components/Layout/Layout.jsx"
 import TablaEquipos from "../components/Equipos/Tabla/Tabla.jsx"
@@ -15,7 +15,7 @@ function Inicio() {
   const [cambioDatos, setCambioDatos] = useState(false)
 
   useEffect(() => {
-    returnSession(window.localStorage.getItem("token"))
+    returnSessionAdmin(window.localStorage.getItem("token"))
     conseguirEquipos(setCambioDatos).then((listaEquipos) => {
       setEquipos(listaEquipos.result)
       setCargando(false)
