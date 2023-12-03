@@ -53,7 +53,7 @@ export default function Enlazar(cuentas) {
                 </div>
             </CardHeader>
             <Divider className="mt-2" />
-            <CardBody className="overflow-y-scroll no-scrollbar flex flex-col gap-6">
+            <CardBody className="overflow-y-scroll no-scrollbar flex flex-col gap-6 p-4">
                 <div className="flex justify-between items-center">
                     <div className="flex flex-col gap-1">
                         <h3 className="font-[600] text-lg">Circuito Tormenta</h3>

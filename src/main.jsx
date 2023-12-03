@@ -10,6 +10,12 @@ import Equipos from "./pages/Equipos.jsx"
 import Equipo from './pages/Individual/Equipo.jsx'
 import Usuario from './pages/Individual/Usuario.jsx'
 
+import Partidos from './pages/Partidos/Partidos.jsx'
+import Inhouses from './pages/Partidos/Inhouses.jsx'
+import Clasificacion from './pages/Partidos/Clasificacion.jsx'
+
+import Inhouse from './pages/Individual/Inhouse.jsx'
+
 import Perfil from './pages/Perfil/Perfil.jsx'
 
 import './styles/Index.css'
@@ -47,6 +53,22 @@ const router = createBrowserRouter([
   {
     path: "/equipo",
     element: <Equipo />,
+  },
+  {
+    path: "/partidos",
+    element: <Partidos />,
+  },
+  {
+    path: "/inhouses",
+    element: <Inhouses />,
+  },
+  {
+    path: "/inhouse",
+    element: <Inhouse />,
+  },
+  {
+    path: "/clasificacion",
+    element: <Clasificacion />,
   },
   {
     path: "/perfil",
