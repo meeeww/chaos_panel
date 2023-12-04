@@ -23,8 +23,7 @@ async function createToken(data, contrasenaEncriptada, resolve, reject){
             axios.post(api.directorio + "auth", { type: "main", nick: data.usuario, contra: contrasenaEncriptada }).then((check) => {
                 if (check.data["status"] == 200) {
                     localStorage.setItem("token", check.data["token"]);
-                    returnSession(check.data["token"])
-                    window.location.replace("/perfil");
+                    returnSession(localStorage.getItem("token"), true)
                     resolve();
                 } else {
                     reject();

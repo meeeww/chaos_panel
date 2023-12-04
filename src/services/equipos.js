@@ -59,4 +59,64 @@ async function conseguirEquipos(setCambioDatos) {
     }
 }
 
-export { crearEquipo, eliminarEquipo, conseguirEquipos };
+async function conseguirEquiposPorId(idEquipo, setCambioDatos) {
+    try {
+        const respuesta = await axios.get(api.directorio + "equipos/id=" + idEquipo, { headers: { "x-auth-token": localStorage.getItem("token") } });
+        setCambioDatos(false);
+        return respuesta.data;
+    } catch (e) {
+        console.log(e);
+        throw e; // Debes relanzar el error para que pueda ser manejado en el código que llama a esta función
+    }
+}
+
+async function conseguirLigas( setCambioDatos) {
+    try {
+        const respuesta = await axios.get(api.directorio + "ligas", { headers: { "x-auth-token": localStorage.getItem("token") } });
+        setCambioDatos(false);
+        return respuesta.data;
+    } catch (e) {
+        console.log(e);
+        throw e; // Debes relanzar el error para que pueda ser manejado en el código que llama a esta función
+    }
+}
+
+async function conseguirTemporadas( setCambioDatos) {
+    try {
+        const respuesta = await axios.get(api.directorio + "temporadas", { headers: { "x-auth-token": localStorage.getItem("token") } });
+        setCambioDatos(false);
+        return respuesta.data;
+    } catch (e) {
+        console.log(e);
+        throw e; // Debes relanzar el error para que pueda ser manejado en el código que llama a esta función
+    }
+}
+
+async function conseguirUsuarios(idEquipo, setCambioDatos) {
+    try {
+        const respuesta = await axios.get(api.directorio + "equipos/usuarios/id=" + idEquipo, { headers: { "x-auth-token": localStorage.getItem("token") } });
+        setCambioDatos(false);
+        return respuesta.data;
+    } catch (e) {
+        console.log(e);
+        throw e; // Debes relanzar el error para que pueda ser manejado en el código que llama a esta función
+    }
+}
+
+async function modificarEquipo(info, valor, resolve, reject, setCambioDatos){
+    axios
+        .put(
+            api.directorio + "equipos",
+            { id: info.equipo[0].id_equipo, columna: info.columna.modificar, valor: valor },
+            { headers: { "x-auth-token": localStorage.getItem("token") } }
+        )
+        .then(function () {
+            setCambioDatos(true);
+            resolve();
+        })
+        .catch(function () {
+            reject();
+        });
+}
+
+export { crearEquipo, eliminarEquipo, conseguirEquipos, conseguirEquiposPorId, conseguirLigas, conseguirTemporadas, conseguirUsuarios, modificarEquipo };

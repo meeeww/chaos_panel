@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-import Layout from "../../components/Layout/Layout.jsx"
+import Layout from "../../components/Layout/Layout.jsx";
 import { Card, CardHeader, CardBody, Image, Divider, Skeleton } from "@nextui-org/react";
 
 import ModalPerfil from "./ModalEditar/ModalEditar.jsx";
@@ -15,16 +15,15 @@ import getEdad from "../../utils/getEdad.js";
 import { columns } from "./ModalEditar/data";
 
 export default function Perfil() {
-
   const [usuario, setUsuario] = useState();
-  const [cargando, setCargando] = useState(true)
-  const [cambio, setCambio] = useState(false)
+  const [cargando, setCargando] = useState(true);
+  const [cambio, setCambio] = useState(false);
 
   useEffect(() => {
-    returnSession(window.localStorage.getItem("token"), setCargando).then((datos) => {
-      setUsuario(datos)
-    })
-    setCambio(false)
+    returnSession(window.localStorage.getItem("token"), false, setCargando).then((datos) => {
+      console.log("aqui");
+      setUsuario(datos);
+    });
   }, [cambio]);
 
   if (cargando || localStorage.getItem("usuario") == null) {
@@ -59,12 +58,11 @@ export default function Perfil() {
                           <div key={columna.name}>
                             <div className="flex justify-between items-center">
                               <p>{columna.name}</p>
-                              <div className="flex justify-center items-center gap-4">
-                              </div>
+                              <div className="flex justify-center items-center gap-4"></div>
                             </div>
                             <Divider className="my-2" />
                           </div>
-                        )
+                        );
                       case "Rol":
                         return (
                           <div key={columna.name}>
@@ -79,13 +77,13 @@ export default function Perfil() {
                             </div>
                             <Divider className="my-2" />
                           </div>
-                        )
+                        );
                       case "Equipo":
                         return (
                           <Skeleton className="w-3/5 rounded-lg">
                             <div className="h-3 w-3/5 rounded-lg bg-default-200"></div>
                           </Skeleton>
-                        )
+                        );
                       case "Edad":
                         return (
                           <div key={columna.name}>
@@ -101,7 +99,7 @@ export default function Perfil() {
                             </div>
                             <Divider className="my-2" />
                           </div>
-                        )
+                        );
                       case "Nick":
                         return (
                           <div key={columna.name}>
@@ -116,7 +114,7 @@ export default function Perfil() {
                             </div>
                             <Divider className="my-2" />
                           </div>
-                        )
+                        );
                       default:
                         return (
                           <div key={columna.name}>
@@ -132,7 +130,7 @@ export default function Perfil() {
                             </div>
                             <Divider className="my-2" />
                           </div>
-                        )
+                        );
                     }
                   })}
                 </div>
@@ -147,7 +145,7 @@ export default function Perfil() {
       </Layout>
     );
   }
-  
+
   return (
     <Layout>
       <div className="flex sm:flex-row flex-col justify-between">
@@ -176,12 +174,13 @@ export default function Perfil() {
                           <div className="flex justify-between items-center">
                             <p>{columna.name}</p>
                             <div className="flex justify-center items-center gap-4">
-                              <ModalPerfil jugador={usuario} columna={columna} cambioDatos={setCambio} /><></>
+                              <ModalPerfil jugador={usuario} columna={columna} cambioDatos={setCambio} />
+                              <></>
                             </div>
                           </div>
                           <Divider className="my-2" />
                         </div>
-                      )
+                      );
                     case "Rol":
                       return (
                         <div key={columna.name}>
@@ -193,7 +192,7 @@ export default function Perfil() {
                           </div>
                           <Divider className="my-2" />
                         </div>
-                      )
+                      );
                     case "Equipo":
                       if (usuario.equipo.length > 0) {
                         return (
@@ -206,7 +205,7 @@ export default function Perfil() {
                             </div>
                             <Divider className="my-2" />
                           </div>
-                        )
+                        );
                       }
                       break;
                     case "Edad":
@@ -221,7 +220,7 @@ export default function Perfil() {
                           </div>
                           <Divider className="my-2" />
                         </div>
-                      )
+                      );
                     case "Nick":
                       return (
                         <div key={columna.name}>
@@ -233,7 +232,7 @@ export default function Perfil() {
                           </div>
                           <Divider className="my-2" />
                         </div>
-                      )
+                      );
                     default:
                       return (
                         <div key={columna.name}>
@@ -246,7 +245,7 @@ export default function Perfil() {
                           </div>
                           <Divider className="my-2" />
                         </div>
-                      )
+                      );
                   }
                 })}
               </div>

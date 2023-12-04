@@ -224,7 +224,7 @@ const Layout = ({ children }) => {
                           Aviso Administración
                         </DropdownItem>
                         <DropdownItem
-                          key="notificacion1"
+                          key="notificacion2"
                           description="Se recuerda que para inscribirse en el draft se deberá de contactar con un administrador a través de Discord."
                         >
                           Aviso Administración
