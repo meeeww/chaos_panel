@@ -8,9 +8,29 @@ const columns = [
     { name: "ACCIONES", uid: "actions" },
 ];
 
-const statusOptions = [
-    { name: "Activo", uid: 1 },
-    { name: "Inactivo", uid: 0 },
+const tipoRol = [
+    { name: "Usuarios", uid: "0" },
+    { name: "Jugadores", uid: "1" },
+    { name: "Jugadores Reserva", uid: "2" },
+
+    { name: "Coaches", uid: "5" },
+    { name: "Managers", uid: "6" },
+    { name: "Sub Presidentes", uid: "7" },
+    { name: "Presidentes", uid: "8" },
+
+    { name: "Casters", uid: "10" },
+    { name: "Realizadores", uid: "11" },
+    { name: "Community Managers", uid: "12" },
+    { name: "Diseñadores", uid: "13" },
+
+    { name: "Arbritos", uid: "15" },
+    { name: "Arbritos Jefe", uid: "16" },
+    { name: "Desarrolladores", uid: "17" },
+
+    { name: "CTO", uid: "20" },
+    { name: "CMO", uid: "21" },
+    { name: "COO", uid: "22" },
+    { name: "CEO", uid: "23" },
 ];
 
-export { columns, statusOptions }
+export { columns, tipoRol }

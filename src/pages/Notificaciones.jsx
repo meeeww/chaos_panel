@@ -33,7 +33,7 @@ function Notificaciones() {
 
   return (
     <Layout>
-      <TablaUsuarios listaUsuarios={usuarios} setCambioDatos={setCambioDatos} cambioDatos={cambioDatos}></TablaUsuarios>
+      
     </Layout>
   );
 }

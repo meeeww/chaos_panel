@@ -103,7 +103,7 @@ const Layout = ({ children }) => {
       if (usuario.info.rol >= 20) {
         return (
           <div>
-            <h3 className="mb-2 ml-4 text-sm font-[700] text-bodydark2">Partidos</h3>
+            <h3 className="mb-2 ml-4 text-sm font-[700] text-bodydark2">Administración</h3>
             <ul className="mb-6 flex flex-col gap-1.5">
               <li>
                 <NavLink

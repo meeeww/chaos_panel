@@ -102,7 +102,13 @@ export default function ModalUsuarios(cambioDatos) {
                                             <DropdownItem key={15} onPress={(e) => { setRol(e.target.value) }}>Arbrito</DropdownItem>
                                             <DropdownItem key={16} onPress={(e) => { setRol(e.target.value) }}>Arbitro Jefe</DropdownItem>
                                             <DropdownItem key={17} onPress={(e) => { setRol(e.target.value) }}>Desarrollador</DropdownItem>
-                                            <DropdownItem key={20} onPress={(e) => { setRol(e.target.value) }}>Fundador</DropdownItem>
+                                        </DropdownSection>
+
+                                        <DropdownSection showDivider={true}>
+                                            <DropdownItem key={20} onPress={(e) => { setRol(e.target.value) }}>CTO</DropdownItem>
+                                            <DropdownItem key={21} onPress={(e) => { setRol(e.target.value) }}>CMO</DropdownItem>
+                                            <DropdownItem key={22} onPress={(e) => { setRol(e.target.value) }}>COO</DropdownItem>
+                                            <DropdownItem key={23} onPress={(e) => { setRol(e.target.value) }}>CEO</DropdownItem>
                                         </DropdownSection>
                                     </DropdownMenu>
                                 </Dropdown>
