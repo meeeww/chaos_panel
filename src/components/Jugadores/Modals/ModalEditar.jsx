@@ -75,8 +75,9 @@ export default function ModalJugadores(info) {
 
                             <DropdownSection showDivider={true}>
                                 <DropdownItem key={"CTO"} value={20} onPress={(e) => { setValor(e.target.value) }}>CTO</DropdownItem>
-                                <DropdownItem key={"COO"} value={21} onPress={(e) => { setValor(e.target.value) }}>COO</DropdownItem>
-                                <DropdownItem key={"CEO"} value={22} onPress={(e) => { setValor(e.target.value) }}>CEO</DropdownItem>
+                                <DropdownItem key={"CMO"} value={21} onPress={(e) => { setValor(e.target.value) }}>CMO</DropdownItem>
+                                <DropdownItem key={"COO"} value={22} onPress={(e) => { setValor(e.target.value) }}>COO</DropdownItem>
+                                <DropdownItem key={"CEO"} value={23} onPress={(e) => { setValor(e.target.value) }}>CEO</DropdownItem>
                             </DropdownSection>
                         </DropdownMenu>
                     </Dropdown>

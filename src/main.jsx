@@ -16,6 +16,8 @@ import Clasificacion from './pages/Partidos/Clasificacion.jsx'
 
 import Inhouse from './pages/Individual/Inhouse.jsx'
 
+import Notificaciones from "./pages/Notificaciones.jsx"
+
 import Perfil from './pages/Perfil/Perfil.jsx'
 
 import './styles/Index.css'
@@ -69,6 +71,10 @@ const router = createBrowserRouter([
   {
     path: "/clasificacion",
     element: <Clasificacion />,
+  },
+  {
+    path: "/notificaciones",
+    element: <Notificaciones />,
   },
   {
     path: "/perfil",

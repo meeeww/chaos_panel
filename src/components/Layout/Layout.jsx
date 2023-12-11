@@ -98,6 +98,31 @@ const Layout = ({ children }) => {
     }
   };
 
+  const renderNotificaciones = () => {
+    if (usuario) {
+      if (usuario.info.rol >= 20) {
+        return (
+          <div>
+            <h3 className="mb-2 ml-4 text-sm font-[700] text-bodydark2">Administración</h3>
+            <ul className="mb-6 flex flex-col gap-1.5">
+              <li>
+                <NavLink
+                  to={"/notificaciones"}
+                  className={
+                    "group relative flex items-center gap-2.5 rounded-md py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-[var(--color-gris-sidebar)]"
+                  }
+                >
+                  <i className="fa-solid fa-bell w-[20px] text-center"></i>
+                  Notificaciones
+                </NavLink>
+              </li>
+            </ul>
+          </div>
+        );
+      }
+    }
+  };
+
   const renderUser = () => {
     if (usuario) {
       return (
@@ -164,6 +189,7 @@ const Layout = ({ children }) => {
               <nav className="mt-5 py-4 px-4 lg:mt-9 lg:px-6">
                 {renderAdmin()}
                 {renderJugador()}
+                {renderNotificaciones()}
                 <div>
                   <h3 className="mb-2 ml-4 text-sm font-[700] text-bodydark2">Usuario</h3>
                   <ul className="mb-6 flex flex-col gap-1.5">
