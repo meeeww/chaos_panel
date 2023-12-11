@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 
 import { conseguirUsuarios } from "../services/usuarios";
+import { conseguirEquipos } from "../services/equipos.js"
 import { returnSessionAdmin } from "../utils/sessions.js";
 
 import Layout from "../components/Layout/Layout.jsx";
@@ -10,6 +11,7 @@ import { CircularProgress } from "@nextui-org/react";
 
 function Inicio() {
   const [usuarios, setUsuarios] = useState();
+  const [equipos, setEquipos] = useState();
   const [cargando, setCargando] = useState(true);
   const [cambioDatos, setCambioDatos] = useState(false);
 
@@ -19,6 +21,9 @@ function Inicio() {
       setUsuarios(listaUsuarios.result);
       setCargando(false);
     });
+    conseguirEquipos(setCambioDatos).then((listaEquipos) => {
+      setEquipos(listaEquipos.result)
+    })
   }, [cambioDatos]);
 
   if (cargando || localStorage.getItem("usuario") == null) {
@@ -33,7 +38,7 @@ function Inicio() {
 
   return (
     <Layout>
-      <TablaUsuarios listaUsuarios={usuarios} setCambioDatos={setCambioDatos} cambioDatos={cambioDatos}></TablaUsuarios>
+      <TablaUsuarios listaUsuarios={usuarios} listaEquipos={equipos} setCambioDatos={setCambioDatos} cambioDatos={cambioDatos}></TablaUsuarios>
     </Layout>
   );
 }

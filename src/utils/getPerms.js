@@ -1,43 +1,45 @@
 const getPerms = (rol) => {
   switch (rol) {
     case 0:
-        return "Usuario"
+      return "Usuario";
     case 1:
-        return "Jugador"
+      return "Jugador";
     case 2:
-        return "Jugador Reserva"
+      return "Jugador Reserva";
 
     case 5:
-        return "Coach"
+      return "Coach";
     case 6:
-        return "Manager"
+      return "Manager";
     case 7:
-        return "Sub Presidente"
+      return "Sub Presidente";
     case 8:
-        return "Presidente"
+      return "Presidente";
 
     case 10:
-        return "Caster"
+      return "Caster";
     case 11:
-        return "Realizador"
+      return "Realizador";
     case 12:
-        return "Community Manager"
+      return "Community Manager";
     case 13:
-        return "Diseñador"
+      return "Diseñador";
 
     case 15:
-        return "Arbitro"
+      return "Arbitro";
     case 16:
-        return "Arbitro Jefe"
+      return "Arbitro Jefe";
     case 17:
-        return "Desarrollador"
+      return "Desarrollador";
 
     case 20:
-        return "CTO"
+      return "CTO";
     case 21:
-        return "COO"
+      return "CMO";
     case 22:
-        return "CEO"
+      return "COO";
+    case 23:
+      return "CEO";
   }
 };
 

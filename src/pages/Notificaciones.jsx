@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
 
-import { conseguirUsuarios } from "../../services/usuarios.js";
-import { returnSessionAdmin } from "../../utils/sessions.js";
+import { conseguirUsuarios } from "../services/usuarios.js";
+import { returnSessionAdmin } from "../utils/sessions.js";
 
-import Layout from "../../components/Layout/Layout.jsx";
-import TablaUsuarios from "../../components/Jugadores/Tabla/Tabla.jsx";
+import Layout from "../components/Layout/Layout.jsx";
+import TablaUsuarios from "../components/Jugadores/Tabla/Tabla.jsx";
 
 import { CircularProgress } from "@nextui-org/react";
 
-function Partidos() {
+function Notificaciones() {
   const [usuarios, setUsuarios] = useState();
   const [cargando, setCargando] = useState(true);
   const [cambioDatos, setCambioDatos] = useState(false);
@@ -38,4 +38,4 @@ function Partidos() {
   );
 }
 
-export default Partidos;
+export default Notificaciones;

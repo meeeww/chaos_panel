@@ -115,4 +115,38 @@ async function actualizarUsuario(usuario, columna, valor, cambioDatos, resolve, 
         });
 }
 
-export { crearUsuario, eliminarUsuario, conseguirUsuarios, conseguirUsuarioPorId, actualizarPerfil, actualizarUsuario };
+async function actualizarUsuariosMasaRoles(usuarios, valor, cambioDatos, resolve, reject) {
+    axios
+        .put(
+            api.directorio + "usuarios/masa/roles",
+            { id_usuario: usuarios, valor: valor },
+            { headers: { "x-auth-token": localStorage.getItem("token") } }
+        )
+        .then(function () {
+            cambioDatos(true);
+            //sendLog(usuario.jugador.id_usuario, "Actualizar Usuarios En Masa", { id: usuario.jugador.id_usuario });
+            resolve();
+        })
+        .catch(function () {
+            reject();
+        });
+}
+
+async function actualizarUsuariosMasaEquipos(usuarios, valor, cambioDatos, resolve, reject) {
+    axios
+        .put(
+            api.directorio + "usuarios/masa/equipos",
+            { id_usuario: usuarios, valor: valor },
+            { headers: { "x-auth-token": localStorage.getItem("token") } }
+        )
+        .then(function () {
+            cambioDatos(true);
+            //sendLog(usuario.jugador.id_usuario, "Actualizar Usuarios En Masa", { id: usuario.jugador.id_usuario });
+            resolve();
+        })
+        .catch(function () {
+            reject();
+        });
+}
+
+export { crearUsuario, eliminarUsuario, conseguirUsuarios, conseguirUsuarioPorId, actualizarPerfil, actualizarUsuario, actualizarUsuariosMasaRoles, actualizarUsuariosMasaEquipos };
