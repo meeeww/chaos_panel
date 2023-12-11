@@ -13,7 +13,6 @@ import {
   Dropdown,
   DropdownMenu,
   DropdownItem,
-  Chip,
   User,
   Pagination,
 } from "@nextui-org/react";
@@ -24,14 +23,15 @@ import getPermisos from "../../../utils/getPerms";
 import ModalCrear from "../Modals/ModalCrear";
 import ModalBorrar from "../Modals/ModalBorrar";
 
-import ModalBorrarEnMasa from "../Modals/ModalBorrarMasa";
+import ModalEditarMasaEquipos from "../Modals/ModalEditarMasaEquipos";
+import ModalEditarMasaRoles from "../Modals/ModalEditarMasaRoles";
 
 import { columns, tipoRol } from "./data";
 
 const INITIAL_VISIBLE_COLUMNS = ["id_usuario", "nick_usuario", "actions"];
 
 // eslint-disable-next-line react/prop-types
-export default function Tabla({ listaUsuarios, setCambioDatos, cambioDatos }) {
+export default function Tabla({ listaUsuarios, listaEquipos, setCambioDatos, cambioDatos }) {
   const [filterValue, setFilterValue] = useState("");
   const [selectedKeys, setSelectedKeys] = useState(new Set([]));
   const [visibleColumns, setVisibleColumns] = useState(new Set(INITIAL_VISIBLE_COLUMNS));
@@ -44,13 +44,12 @@ export default function Tabla({ listaUsuarios, setCambioDatos, cambioDatos }) {
   const [page, setPage] = useState(1);
   const [users, setUsers] = useState(listaUsuarios);
 
-  {
-    console.log(selectedKeys);
-  }
+  const [equipos, setEquipos] = useState(listaEquipos);
 
   useEffect(() => {
     setUsers(listaUsuarios);
-  }, [cambioDatos, listaUsuarios]);
+    setEquipos(listaEquipos);
+  }, [cambioDatos, listaUsuarios, listaEquipos]);
 
   const hasSearchFilter = Boolean(filterValue);
 
@@ -67,7 +66,7 @@ export default function Tabla({ listaUsuarios, setCambioDatos, cambioDatos }) {
       filteredUsers = filteredUsers.filter((user) => user.nick_usuario.toLowerCase().includes(filterValue.toLowerCase()));
     }
     if (statusFilter !== "all" && Array.from(statusFilter).length !== tipoRol.length) {
-      filteredUsers = filteredUsers.filter((user) => Array.from(statusFilter).includes((user.rol).toString()));
+      filteredUsers = filteredUsers.filter((user) => Array.from(statusFilter).includes(user.rol.toString()));
     }
 
     return filteredUsers;
@@ -104,7 +103,6 @@ export default function Tabla({ listaUsuarios, setCambioDatos, cambioDatos }) {
             }}
             description={user.nombre_usuario}
             name={cellValue}
-            className="cursor-pointer"
           >
             {user.nombre_usuario}
           </User>
@@ -216,6 +214,7 @@ export default function Tabla({ listaUsuarios, setCambioDatos, cambioDatos }) {
                 ))}
               </DropdownMenu>
             </Dropdown>
+            {console.log(selectedKeys)}
             <ModalCrear cambioDatos={setCambioDatos} />
           </div>
         </div>
@@ -258,32 +257,38 @@ export default function Tabla({ listaUsuarios, setCambioDatos, cambioDatos }) {
   }, [selectedKeys, items.length, page, pages, hasSearchFilter]);
 
   return (
-    <Table
-      aria-label="Example table with custom cells, pagination and sorting"
-      isHeaderSticky
-      bottomContent={bottomContent}
-      bottomContentPlacement="outside"
-      classNames={{
-        wrapper: "max-h-[382px]",
-      }}
-      selectedKeys={selectedKeys}
-      selectionMode="multiple"
-      sortDescriptor={sortDescriptor}
-      topContent={topContent}
-      topContentPlacement="outside"
-      onSelectionChange={setSelectedKeys}
-      onSortChange={setSortDescriptor}
-    >
-      <TableHeader columns={headerColumns}>
-        {(column) => (
-          <TableColumn key={column.uid} align={column.uid === "actions" ? "center" : "start"} allowsSorting={column.sortable}>
-            {column.name}
-          </TableColumn>
-        )}
-      </TableHeader>
-      <TableBody emptyContent={"No se han encontrado jugadores"} items={sortedItems}>
-        {(item) => <TableRow key={item.id_usuario}>{(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}</TableRow>}
-      </TableBody>
-    </Table>
+    <>
+      <div className="flex float-right gap-4">
+        <ModalEditarMasaEquipos usuarios={selectedKeys} equipos={equipos} cambioDatos={setCambioDatos} />
+        <ModalEditarMasaRoles usuarios={selectedKeys} cambioDatos={setCambioDatos} />
+      </div>
+      <Table
+        aria-label="Example table with custom cells, pagination and sorting"
+        isHeaderSticky
+        bottomContent={bottomContent}
+        bottomContentPlacement="outside"
+        classNames={{
+          wrapper: "max-h-[382px]",
+        }}
+        selectedKeys={selectedKeys}
+        selectionMode="multiple"
+        sortDescriptor={sortDescriptor}
+        topContent={topContent}
+        topContentPlacement="outside"
+        onSelectionChange={setSelectedKeys}
+        onSortChange={setSortDescriptor}
+      >
+        <TableHeader columns={headerColumns}>
+          {(column) => (
+            <TableColumn key={column.uid} align={column.uid === "actions" ? "center" : "start"} allowsSorting={column.sortable}>
+              {column.name}
+            </TableColumn>
+          )}
+        </TableHeader>
+        <TableBody emptyContent={"No se han encontrado jugadores"} items={sortedItems}>
+          {(item) => <TableRow key={item.id_usuario}>{(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}</TableRow>}
+        </TableBody>
+      </Table>
+    </>
   );
 }
