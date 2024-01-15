@@ -2,6 +2,7 @@ import { Card, CardHeader, CardBody, Divider } from "@nextui-org/react";
 
 import ModalCrearCuenta from "./ModalCrearCuenta/ModalCrear";
 import ModalEliminarCuenta from "./ModalCrearCuenta/ModalEliminar";
+import ModalEnlazarIndividual from "./ModalEnlazar/ModalEnlazarIndividual";
 
 export default function Cuentas(usuario) {
 
@@ -49,7 +50,10 @@ export default function Cuentas(usuario) {
                                 <h3 className="font-[600] text-lg">{cuenta.invocador + "#" + cuenta.tag}</h3>
                                 <h4 className="font-[300] text-sm">{cuenta.linea_principal}, {cuenta.linea_secundaria}</h4>
                             </div>
-                            <ModalEliminarCuenta cuenta={cuenta} cambioDatos={usuario.cambioDatos} />
+                            <div className="flex gap-2">
+                                <ModalEnlazarIndividual usuario={cuenta.usuario} tipo={"lol"} cambioDatos={cuenta.cambioDatos} />
+                                <ModalEliminarCuenta cuenta={cuenta} cambioDatos={usuario.cambioDatos} />
+                            </div>
                         </div>
                     )
                 })}
