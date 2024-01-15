@@ -1,0 +1,8 @@
+hecho
+
+haciendo
+
+para hacer
+    - terminar la pagina principal
+    - arreglar la pagina de edición de equipos
+    - inhouses (generar partidos y comodines, y pausa tactica)
