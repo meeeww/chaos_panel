@@ -1,13 +1,11 @@
 import axios from "axios";
 import api from "../../variables.json";
+import getPosition from "../utils/getPosition";
 
 import sendLog from "../utils/sendLog";
 import { toast } from "sonner";
 
 async function crearCuenta(valor, tag = "EUW", valorPrimaria, valorSecundaria, usuario, resolve, reject, cambioDatos) {
-    let principal = "";
-    let secundaria = "";
-
     axios
         .get(api.directorio + "cuentas/nombre=" + valor + "&tag=" + tag, { headers: { "x-auth-token": window.localStorage.getItem("token") } })
         .then((cuentaComprobacion) => {
@@ -16,41 +14,8 @@ async function crearCuenta(valor, tag = "EUW", valorPrimaria, valorSecundaria, u
             } else if (cuentaComprobacion.data.existe == false && cuentaComprobacion.data.success == false) {
                 toast.error("Esta cuenta no existe.");
             } else {
-                switch (valorPrimaria) {
-                    case 1:
-                        principal = "Toplane";
-                        break;
-                    case 2:
-                        principal = "Jungla";
-                        break;
-                    case 3:
-                        principal = "Midlane";
-                        break;
-                    case 4:
-                        principal = "ADC";
-                        break;
-                    case 5:
-                        principal = "Support";
-                        break;
-                }
-
-                switch (valorSecundaria) {
-                    case 1:
-                        secundaria = "Toplane";
-                        break;
-                    case 2:
-                        secundaria = "Jungla";
-                        break;
-                    case 3:
-                        secundaria = "Midlane";
-                        break;
-                    case 4:
-                        secundaria = "ADC";
-                        break;
-                    case 5:
-                        secundaria = "Support";
-                        break;
-                }
+                const principal = getPosition(valorPrimaria);
+                const secundaria = getPosition(valorSecundaria);
                 axios
                     .post(
                         api.directorio + "cuentas",
