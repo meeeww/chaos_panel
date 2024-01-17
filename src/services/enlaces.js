@@ -26,8 +26,8 @@ async function actualizarEnlace(usuario, cuentaLoL, columna, valor, resolve, rej
         .put(
             api.directorio + (nuevaInfoCuenta ? "cuentas" : "usuarios/enlaces"), body, { headers: { "x-auth-token": window.localStorage.getItem("token") } }
         )
-        .then(function (responsePost) {
-            if (responsePost.data.status == 200) {
+        .then(function (response) {
+            if (response.data.status == 200) {
                 sendLog(usuario.info.id_usuario, nuevaInfoCuenta ? "Modificar Cuenta" : "Añadir Enlace", {
                     accion: nuevaInfoCuenta ? "Modificar Cuenta" : "Añadir Enlace",
                     id_usuario: usuario.info.id_usuario,
@@ -35,8 +35,11 @@ async function actualizarEnlace(usuario, cuentaLoL, columna, valor, resolve, rej
                 });
                 cambioDatos(true);
                 resolve();
-            } else if (responsePost.data.status == 500) {
+            } else if (response.data.status == 500) {
                 toast.error("Error. Avisa a la administración.");
+                reject();
+            } else if (response.data.status == 409) {
+                toast.error("La cuenta ya ha sido vinculada.");
                 reject();
             }
         })
